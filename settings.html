@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>設定 · SpinEat</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍱</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <h1>設定</h1>
+      <p class="subtitle">管理分類標籤與店家</p>
+    </header>
+
+    <!-- 店家 -->
+    <section class="panel" aria-labelledby="stores-title">
+      <div class="panel-head">
+        <h2 id="stores-title">🏪 我的店家</h2>
+        <button type="button" class="btn-primary btn-sm" id="add-store-btn">＋ 新增店家</button>
+      </div>
+      <ul class="store-list" id="store-list"></ul>
+    </section>
+
+    <!-- 標籤 -->
+    <section class="panel" aria-labelledby="tags-title">
+      <div class="panel-head">
+        <h2 id="tags-title">🏷️ 分類標籤</h2>
+      </div>
+      <form class="inline-form" id="tag-form">
+        <label class="visually-hidden" for="tag-input">新標籤名稱</label>
+        <input type="text" id="tag-input" placeholder="例如：公司附近、可外送" maxlength="12" autocomplete="off">
+        <button type="submit" class="btn-secondary btn-sm">新增</button>
+      </form>
+      <ul class="tag-list" id="tag-list"></ul>
+    </section>
+
+    <!-- 備份 -->
+    <section class="panel" aria-labelledby="backup-title">
+      <div class="panel-head">
+        <h2 id="backup-title">💾 資料備份</h2>
+      </div>
+      <p class="panel-note">資料只存在這個瀏覽器裡，清除瀏覽資料就會消失。建議定期匯出備份，也可以用來把資料搬到另一台裝置。</p>
+      <div class="backup-actions">
+        <button type="button" class="btn-secondary btn-sm" id="export-btn">⬇️ 匯出 JSON</button>
+        <label class="btn-secondary btn-sm file-btn">
+          ⬆️ 匯入 JSON
+          <input type="file" id="import-input" accept="application/json,.json">
+        </label>
+      </div>
+    </section>
+  </main>
+
+  <!-- 店家編輯表單 -->
+  <dialog class="store-dialog" id="store-dialog" aria-labelledby="store-dialog-title">
+    <form id="store-form" novalidate>
+      <h2 id="store-dialog-title">新增店家</h2>
+
+      <label class="field">
+        <span>名稱 <em>*</em></span>
+        <input type="text" name="name" maxlength="30" required autocomplete="off">
+      </label>
+
+      <label class="field">
+        <span>地址</span>
+        <input type="text" name="address" maxlength="100" autocomplete="off" placeholder="可留空，用來開啟 Google 地圖">
+      </label>
+
+      <fieldset class="field">
+        <legend>餐別 <em>*</em></legend>
+        <div class="chips" id="form-meals"></div>
+      </fieldset>
+
+      <fieldset class="field">
+        <legend>預算</legend>
+        <div class="chips" id="form-price"></div>
+      </fieldset>
+
+      <fieldset class="field">
+        <legend>分類標籤</legend>
+        <div class="chips" id="form-tags"></div>
+      </fieldset>
+
+      <label class="switch-row">
+        <input type="checkbox" name="enabled" checked>
+        <span>啟用（關閉後不會出現在轉盤上）</span>
+      </label>
+
+      <p class="form-error" id="form-error" role="alert" hidden></p>
+
+      <div class="dialog-actions">
+        <button type="button" class="btn-secondary" id="cancel-store-btn">取消</button>
+        <button type="submit" class="btn-primary">儲存</button>
+      </div>
+    </form>
+  </dialog>
+
+  <nav class="bottom-nav" aria-label="主要頁面">
+    <a href="index.html">🎡<span>轉盤</span></a>
+    <a href="settings.html" aria-current="page">⚙️<span>設定</span></a>
+  </nav>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script src="js/foods.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>
