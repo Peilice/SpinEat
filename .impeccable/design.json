@@ -1,0 +1,681 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-26T16:28:44.464Z",
+  "title": "Design System: SpinEat",
+  "provenance": {
+    "direction": "夜市彈珠台（concept-seed key 85800b72，operate mode，擲骰指定的 grounded direction；擲骰輸出只存在於該次 session transcript）",
+    "directionContract": ".impeccable/surfaces/index-html.md",
+    "review": "最終審查結論：ship（修正輪次已關閉）",
+    "userDecisions": [
+      "2026-10-27 回覆「1.拿掉」：移除格內與結果畫面的料理 emoji",
+      "2026-10-27 回覆「2.保留」：保留冰果室錯位硬陰影"
+    ],
+    "rasterAssets": "無；所有裝飾皆為 CSS、內嵌 SVG 或 canvas 產生",
+    "screenshots": [
+      ".impeccable/review/mobile.jpg",
+      ".impeccable/review/mobile-result.jpg",
+      ".impeccable/review/desktop.jpg"
+    ]
+  },
+  "extensions": {
+    "themes": [
+      {
+        "name": "icefruit",
+        "displayName": "老派冰果室",
+        "selector": ":root, [data-theme=\"icefruit\"]",
+        "colorScheme": "light",
+        "schedule": "06:00–17:59",
+        "themeColor": "#dcc58a"
+      },
+      {
+        "name": "neon",
+        "displayName": "夜市霓虹",
+        "selector": "[data-theme=\"neon\"]",
+        "colorScheme": "dark",
+        "schedule": "18:00–05:59",
+        "themeColor": "#1b1546"
+      }
+    ],
+    "colorMeta": {
+      "icefruit-tile-wall": {
+        "role": "neutral",
+        "displayName": "淡芥末磁磚牆",
+        "canonical": "oklch(82.9% 0.081 89.1)",
+        "tonalRamp": [
+          "#100a00",
+          "#2e2200",
+          "#503d01",
+          "#705b20",
+          "#917b42",
+          "#b39c63",
+          "#d9c287",
+          "#ffedc1"
+        ]
+      },
+      "icefruit-tile-deep": {
+        "role": "neutral",
+        "displayName": "深芥末磁磚",
+        "canonical": "oklch(75.2% 0.092 86.8)",
+        "tonalRamp": [
+          "#110a00",
+          "#2f2201",
+          "#513c02",
+          "#74590f",
+          "#957936",
+          "#b79b58",
+          "#dec17d",
+          "#feedc6"
+        ]
+      },
+      "icefruit-tile-cream": {
+        "role": "neutral",
+        "displayName": "米白磁磚／釘子",
+        "canonical": "oklch(93.2% 0.038 90.7)",
+        "tonalRamp": [
+          "#100a00",
+          "#2b230c",
+          "#473f28",
+          "#665d45",
+          "#867d63",
+          "#a79e84",
+          "#cdc4a8",
+          "#f8eed2"
+        ]
+      },
+      "icefruit-peacock": {
+        "role": "primary",
+        "displayName": "孔雀綠檯面",
+        "canonical": "oklch(51.5% 0.050 186.8)",
+        "tonalRamp": [
+          "#000f0d",
+          "#012b27",
+          "#1a4844",
+          "#3a6762",
+          "#5a8782",
+          "#7ba9a3",
+          "#a0cfc9",
+          "#c9faf4"
+        ]
+      },
+      "icefruit-terracotta": {
+        "role": "secondary",
+        "displayName": "陶土橘中獎格",
+        "canonical": "oklch(71.0% 0.106 43.6)",
+        "tonalRamp": [
+          "#1a0400",
+          "#411400",
+          "#6b2802",
+          "#8e4727",
+          "#b16747",
+          "#d68867",
+          "#ffae8c",
+          "#ffe9e1"
+        ]
+      },
+      "icefruit-espresso": {
+        "role": "neutral",
+        "displayName": "深咖啡",
+        "canonical": "oklch(30.2% 0.036 69.3)",
+        "tonalRamp": [
+          "#140800",
+          "#2f2110",
+          "#4c3c2b",
+          "#6b5a48",
+          "#8c7a67",
+          "#ad9b87",
+          "#d4c1ac",
+          "#ffebd5"
+        ]
+      },
+      "icefruit-umber": {
+        "role": "neutral",
+        "displayName": "焦糖棕次要文字",
+        "canonical": "oklch(41.3% 0.055 71.5)",
+        "tonalRamp": [
+          "#140800",
+          "#341f00",
+          "#523b1d",
+          "#71593a",
+          "#927859",
+          "#b59979",
+          "#dbbf9d",
+          "#ffebd4"
+        ]
+      },
+      "icefruit-sign-brown": {
+        "role": "tertiary",
+        "displayName": "招牌赭褐",
+        "canonical": "oklch(43.8% 0.094 41.9)",
+        "tonalRamp": [
+          "#1a0400",
+          "#411300",
+          "#672b12",
+          "#894a31",
+          "#ac6a50",
+          "#d08b70",
+          "#f9b094",
+          "#ffe9e1"
+        ]
+      },
+      "icefruit-paper": {
+        "role": "neutral",
+        "displayName": "米白紙面",
+        "canonical": "oklch(97.4% 0.017 88.0)",
+        "tonalRamp": [
+          "#0e0b04",
+          "#27241b",
+          "#433f36",
+          "#615d53",
+          "#817d72",
+          "#a39e93",
+          "#c8c4b8",
+          "#f3eee2"
+        ]
+      },
+      "icefruit-paper-muted": {
+        "role": "neutral",
+        "displayName": "紙面次要文字",
+        "canonical": "oklch(45.7% 0.056 71.6)",
+        "tonalRamp": [
+          "#130800",
+          "#341f01",
+          "#523a1c",
+          "#725839",
+          "#937858",
+          "#b59978",
+          "#dcbf9d",
+          "#feebd5"
+        ]
+      },
+      "icefruit-input": {
+        "role": "neutral",
+        "displayName": "輸入框米白",
+        "canonical": "oklch(99.4% 0.008 91.5)",
+        "tonalRamp": [
+          "#0c0b07",
+          "#252420",
+          "#41403b",
+          "#5f5d58",
+          "#7f7d78",
+          "#a09e99",
+          "#c6c4be",
+          "#f0eee8"
+        ]
+      },
+      "icefruit-btn-ink": {
+        "role": "neutral",
+        "displayName": "按鈕奶油字",
+        "canonical": "oklch(91.6% 0.064 92.8)",
+        "tonalRamp": [
+          "#100b00",
+          "#2d2301",
+          "#4c3f11",
+          "#6a5d31",
+          "#8a7d50",
+          "#ac9e70",
+          "#d2c495",
+          "#fdeebe"
+        ]
+      },
+      "icefruit-danger": {
+        "role": "danger",
+        "displayName": "冰果室危險紅",
+        "canonical": "oklch(49.1% 0.145 29.5)",
+        "tonalRamp": [
+          "#1f0000",
+          "#4b0100",
+          "#7b0904",
+          "#9f3328",
+          "#c45647",
+          "#eb7867",
+          "#ffab9e",
+          "#ffe9e5"
+        ]
+      },
+      "neon-night": {
+        "role": "neutral",
+        "displayName": "靛紫夜空",
+        "canonical": "oklch(23.8% 0.088 283.0)",
+        "tonalRamp": [
+          "#0a002e",
+          "#201b4c",
+          "#3a386c",
+          "#57568e",
+          "#7676b0",
+          "#9698d4",
+          "#bbbdfc",
+          "#ecedff"
+        ]
+      },
+      "neon-panel": {
+        "role": "neutral",
+        "displayName": "夜市面板",
+        "canonical": "oklch(28.1% 0.105 282.5)",
+        "tonalRamp": [
+          "#0a002e",
+          "#201754",
+          "#393675",
+          "#555497",
+          "#7475ba",
+          "#9596de",
+          "#bbbdfe",
+          "#ecedfe"
+        ]
+      },
+      "neon-board": {
+        "role": "primary",
+        "displayName": "夜市檯面靛藍",
+        "canonical": "oklch(31.7% 0.129 281.4)",
+        "tonalRamp": [
+          "#09002f",
+          "#1f105f",
+          "#373280",
+          "#5351a3",
+          "#7172c7",
+          "#9194ec",
+          "#babefe",
+          "#ebedfe"
+        ]
+      },
+      "neon-button": {
+        "role": "neutral",
+        "displayName": "夜市按鈕深紫",
+        "canonical": "oklch(34.2% 0.145 280.0)",
+        "tonalRamp": [
+          "#09002f",
+          "#1e0866",
+          "#352e89",
+          "#504fac",
+          "#6e70d1",
+          "#8e92f6",
+          "#b8befe",
+          "#ebedfe"
+        ]
+      },
+      "neon-pink": {
+        "role": "primary",
+        "displayName": "霓虹桃紅",
+        "canonical": "oklch(70.5% 0.204 0.3)",
+        "tonalRamp": [
+          "#1e000a",
+          "#480122",
+          "#78003c",
+          "#ab0158",
+          "#d53278",
+          "#fd5a98",
+          "#fea6c1",
+          "#ffe8ed"
+        ]
+      },
+      "neon-pink-pale": {
+        "role": "neutral",
+        "displayName": "淡桃紅按鈕字",
+        "canonical": "oklch(90.5% 0.056 352.8)",
+        "tonalRamp": [
+          "#1b010d",
+          "#381726",
+          "#573342",
+          "#775060",
+          "#987080",
+          "#bb90a1",
+          "#e2b6c7",
+          "#ffe7f0"
+        ]
+      },
+      "neon-lime": {
+        "role": "secondary",
+        "displayName": "萊姆螢光綠中獎格",
+        "canonical": "oklch(94.0% 0.209 120.8)",
+        "tonalRamp": [
+          "#090d00",
+          "#202800",
+          "#394600",
+          "#556701",
+          "#728902",
+          "#90ad05",
+          "#b3d60b",
+          "#dfff7a"
+        ]
+      },
+      "neon-moon": {
+        "role": "neutral",
+        "displayName": "月光白",
+        "canonical": "oklch(96.1% 0.022 300.2)",
+        "tonalRamp": [
+          "#0d0913",
+          "#26222d",
+          "#413d4a",
+          "#5f5b68",
+          "#7f7b89",
+          "#a09caa",
+          "#c6c1d1",
+          "#f0ebfb"
+        ]
+      },
+      "neon-lilac": {
+        "role": "neutral",
+        "displayName": "丁香灰紫",
+        "canonical": "oklch(76.2% 0.076 290.5)",
+        "tonalRamp": [
+          "#0d0228",
+          "#251b45",
+          "#403864",
+          "#5d5685",
+          "#7d76a7",
+          "#9e97cb",
+          "#c3bcf2",
+          "#eeecff"
+        ]
+      },
+      "neon-danger": {
+        "role": "danger",
+        "displayName": "夜市危險粉紅",
+        "canonical": "oklch(76.5% 0.142 13.4)",
+        "tonalRamp": [
+          "#1e0005",
+          "#4a0015",
+          "#790829",
+          "#9d3246",
+          "#c25464",
+          "#e87684",
+          "#ffa9b1",
+          "#fee8ea"
+        ]
+      }
+    },
+    "decorativePalette": {
+      "name": "夜市燈泡色組",
+      "values": [
+        "#ff5c9a",
+        "#d8ff3c",
+        "#7a6bff",
+        "#ff9a3c",
+        "#3cf0ff"
+      ],
+      "purpose": "只用於 js/theme.js 產生的散景光點與燈泡串，不進入介面元件。"
+    },
+    "typographyMeta": {
+      "result": {
+        "displayName": "結果料理名",
+        "purpose": "結果畫面的料理名稱，全系統最大字。"
+      },
+      "display": {
+        "displayName": "招呼語",
+        "purpose": "首頁兩行招呼語與頁面標題；冰果室明體、夜市黑體（--font-display 依主題切換）。"
+      },
+      "serial": {
+        "displayName": "抽選序號",
+        "purpose": "畫面上唯一的大數字，等寬數字。"
+      },
+      "action": {
+        "displayName": "主動作",
+        "purpose": "「幫我決定！」與結果畫面按鈕，字距加寬。"
+      },
+      "title": {
+        "displayName": "面板標題",
+        "purpose": "設定頁面板與對話框標題。"
+      },
+      "body": {
+        "displayName": "內文",
+        "purpose": "一般內容與清單。"
+      },
+      "label": {
+        "displayName": "標籤",
+        "purpose": "條件標籤；冰果室改用明體。"
+      }
+    },
+    "shadows": [
+      {
+        "name": "icefruit-sign-offset",
+        "value": "2px 2px 0 var(--text)",
+        "purpose": "冰果室招牌與條件標籤的價目牌硬陰影（使用者明確保留，僅限招牌類元素）。"
+      },
+      {
+        "name": "icefruit-result-text",
+        "value": "text-shadow: 4px 4px 0 var(--text)",
+        "purpose": "冰果室結果料理名的招牌字陰影。"
+      },
+      {
+        "name": "icefruit-greeting-text",
+        "value": "text-shadow: 2px 2px 0 rgba(255, 250, 235, 0.7)",
+        "purpose": "冰果室招呼語的淺色錯位。"
+      },
+      {
+        "name": "icefruit-accept",
+        "value": "inset 0 0 0 3px var(--text), inset 0 0 0 5px var(--lit), 3px 3px 0 var(--text)",
+        "purpose": "冰果室「就吃這個」。"
+      },
+      {
+        "name": "icefruit-go-double-rule",
+        "value": "inset 0 0 0 3px var(--btn), inset 0 0 0 5px var(--btn-ink)",
+        "purpose": "冰果室主按鈕雙線內框。"
+      },
+      {
+        "name": "icefruit-board-frame",
+        "value": "0 0 0 4px var(--tile-b), 0 0 0 6px var(--text), 0 10px 18px rgba(58, 43, 26, 0.18)",
+        "purpose": "冰果室彈珠台外框。"
+      },
+      {
+        "name": "neon-go",
+        "value": "inset 0 0 0 1.5px var(--glow), 0 0 18px rgba(255, 92, 154, 0.25)",
+        "purpose": "夜市主按鈕；懸停外光暈 26px / 0.4。"
+      },
+      {
+        "name": "neon-board",
+        "value": "0 0 0 1px rgba(255, 92, 154, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35)",
+        "purpose": "夜市彈珠台。"
+      },
+      {
+        "name": "neon-lit-slot",
+        "value": "0 0 16px var(--lit)",
+        "purpose": "夜市結果小地圖的中獎格光暈。"
+      },
+      {
+        "name": "overlay-dialog",
+        "value": "0 18px 48px rgba(0, 0, 0, 0.35)",
+        "purpose": "店家對話框。"
+      },
+      {
+        "name": "overlay-toast",
+        "value": "0 8px 20px rgba(0, 0, 0, 0.25)",
+        "purpose": "提示訊息。"
+      }
+    ],
+    "motion": [
+      {
+        "name": "drop-duration",
+        "value": "≤1600ms（96 frames @60fps）",
+        "purpose": "珠子下落上限；點檯面或按鈕可跳過。"
+      },
+      {
+        "name": "pin-flash",
+        "value": "260ms",
+        "purpose": "釘子被碰到後亮起並消退。"
+      },
+      {
+        "name": "land-pause",
+        "value": "450ms",
+        "purpose": "落格後停頓再顯示結果。"
+      },
+      {
+        "name": "lit-flash",
+        "value": "320ms（亮暗各 80ms × 2，暗時 35% 透明度），落格時震動 15ms",
+        "purpose": "中獎格像中獎燈一樣閃兩下後恆亮，落在 land-pause 之內。"
+      },
+      {
+        "name": "week-stamp",
+        "value": "0.45s cubic-bezier(0.16, 1, 0.3, 1)，延遲 0.2s，scale(1.9) rotate(-9deg) → 原位；底色 55% --lit 於 1.4s ease-out 褪掉",
+        "purpose": "按「就吃這個」後七天紀錄「今」格蓋章。"
+      },
+      {
+        "name": "result-fade",
+        "value": "0.25s ease-out",
+        "purpose": "結果畫面淡入。"
+      },
+      {
+        "name": "result-drop-in",
+        "value": "0.5s cubic-bezier(0.16, 1, 0.3, 1), translateY(-56px)",
+        "purpose": "料理名稱「掉」進結果畫面。"
+      },
+      {
+        "name": "state-color",
+        "value": "0.15s",
+        "purpose": "標籤顏色與邊框轉換。"
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce",
+        "purpose": "不播放下落，直接亮格（200ms 後進結果），取消結果動畫、中獎燈閃爍與震動；蓋章只保留底色褪掉。"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "column",
+        "value": "480px",
+        "purpose": "單欄最大寬度，桌面置中，背景延伸全視窗。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "幫我決定（冰果室）",
+      "kind": "button",
+      "refersTo": "go-button-icefruit",
+      "description": "首頁拇指位置的主按鈕，深咖啡底配雙線內框。",
+      "html": "<button class=\"ds-go\">幫我決定！</button>",
+      "css": ".ds-go { width: 100%; height: 58px; border: none; border-radius: 14px; background: #3a2b1a; color: #f2e3b3; font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: 1.2rem; letter-spacing: .2em; cursor: pointer; box-shadow: inset 0 0 0 3px #3a2b1a, inset 0 0 0 5px #f2e3b3; transition: transform .1s, box-shadow .2s; } .ds-go:active { transform: scale(.98); } .ds-go:focus-visible { outline: 2px solid #3a2b1a; outline-offset: 2px; }"
+    },
+    {
+      "name": "幫我決定（夜市）",
+      "kind": "button",
+      "refersTo": "go-button-neon",
+      "description": "夜市主按鈕：深紫底、桃紅霓虹內框與外光暈，不用亮色實底。",
+      "html": "<div class=\"ds-night\"><button class=\"ds-go-neon\">幫我決定！</button></div>",
+      "css": ".ds-night { background: #1b1546; padding: 20px; } .ds-go-neon { width: 100%; height: 58px; border: none; border-radius: 14px; background: #2f2680; color: #ffd1e3; font-family: 'Noto Sans TC', sans-serif; font-weight: 900; font-size: 1.2rem; letter-spacing: .12em; cursor: pointer; box-shadow: inset 0 0 0 1.5px #ff5c9a, 0 0 18px rgba(255,92,154,.25); transition: transform .1s, box-shadow .2s; } .ds-go-neon:hover { box-shadow: inset 0 0 0 1.5px #ff5c9a, 0 0 26px rgba(255,92,154,.4); } .ds-go-neon:active { transform: scale(.98); } .ds-go-neon:focus-visible { outline: 2px solid #ff5c9a; outline-offset: 2px; }"
+    },
+    {
+      "name": "就吃這個（冰果室）",
+      "kind": "button",
+      "refersTo": "button-accept-icefruit",
+      "description": "結果畫面的接受按鈕，陶土橘底、雙線內框加硬陰影。",
+      "html": "<div class=\"ds-result-bg\"><button class=\"ds-accept\">就吃這個</button></div>",
+      "css": ".ds-result-bg { background: #44716c; padding: 20px; } .ds-accept { width: 100%; height: 56px; border: none; border-radius: 10px; background: #d98b6a; color: #3a2b1a; font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: 1.05rem; letter-spacing: .08em; cursor: pointer; box-shadow: inset 0 0 0 3px #3a2b1a, inset 0 0 0 5px #d98b6a, 3px 3px 0 #3a2b1a; } .ds-accept:active { transform: scale(.98); } .ds-accept:focus-visible { outline: 2px solid #3a2b1a; outline-offset: 2px; }"
+    },
+    {
+      "name": "一般按鈕",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "設定頁的主要與次要按鈕。",
+      "html": "<button class=\"ds-btn\">新增店家</button> <button class=\"ds-btn-secondary\">匯入</button>",
+      "css": ".ds-btn, .ds-btn-secondary { border-radius: 10px; padding: 10px 20px; font-weight: 700; cursor: pointer; } .ds-btn { border: none; background: #3a2b1a; color: #f2e3b3; } .ds-btn-secondary { border: 1.5px solid currentColor; background: transparent; color: #3a2b1a; } .ds-btn:focus-visible, .ds-btn-secondary:focus-visible { outline: 2px solid #3a2b1a; outline-offset: 2px; }"
+    },
+    {
+      "name": "條件標籤（冰果室）",
+      "kind": "chip",
+      "refersTo": "chip-icefruit",
+      "description": "價目牌式的條件標籤，選中轉孔雀綠。",
+      "html": "<span class=\"ds-chip\">宵夜</span> <span class=\"ds-chip ds-chip-on\">排除 3 天</span>",
+      "css": ".ds-chip { display: inline-block; padding: 3px 11px; font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: .8rem; background: #fbf6ea; color: #3a2b1a; border: 1.5px solid #3a2b1a; border-radius: 6px; box-shadow: 2px 2px 0 #3a2b1a; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s; } .ds-chip:hover { border-color: #7c3e25; } .ds-chip-on { background: #44716c; color: #f7f0dc; }"
+    },
+    {
+      "name": "條件標籤（夜市）",
+      "kind": "chip",
+      "refersTo": "chip-neon",
+      "description": "夜市膠囊標籤，選中為桃紅框。",
+      "html": "<div class=\"ds-night-c\"><span class=\"ds-chip-n\">宵夜</span> <span class=\"ds-chip-n ds-chip-n-on\">排除 3 天</span></div>",
+      "css": ".ds-night-c { background: #1b1546; padding: 12px; } .ds-chip-n { display: inline-block; padding: 3px 11px; font-size: .8rem; border-radius: 999px; background: rgba(255,255,255,.07); color: #f4efff; border: 1px solid rgba(244,239,255,.14); cursor: pointer; transition: background-color .15s, border-color .15s, color .15s; } .ds-chip-n:hover { border-color: #ff5c9a; } .ds-chip-n-on { background: rgba(255,92,154,.2); border-color: #ff5c9a; color: #fff; }"
+    },
+    {
+      "name": "面板",
+      "kind": "card",
+      "refersTo": "panel-icefruit",
+      "description": "設定頁區塊，冰果室以深咖啡實線框分層、無陰影。",
+      "html": "<section class=\"ds-panel\"><h2>我的店家</h2><p>還沒有店家。</p></section>",
+      "css": ".ds-panel { background: #fbf6ea; color: #3a2b1a; border: 1.5px solid #3a2b1a; border-radius: 12px; padding: 16px; } .ds-panel h2 { margin: 0 0 12px; font-family: 'Noto Serif TC', serif; font-size: 1.05rem; } .ds-panel p { margin: 0; color: #6b5233; font-size: .85rem; }"
+    },
+    {
+      "name": "文字輸入",
+      "kind": "input",
+      "refersTo": "input-text",
+      "description": "設定頁表單欄位。",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"例如：公司附近、可外送\">",
+      "css": ".ds-input { width: 100%; border: 1px solid rgba(58,43,26,.18); background: #fffdf7; color: #3a2b1a; border-radius: 8px; padding: 8px 10px; font: inherit; } .ds-input::placeholder { color: #6b5233; } .ds-input:focus-visible { outline: 2px solid #3a2b1a; outline-offset: 2px; }"
+    },
+    {
+      "name": "底部導覽",
+      "kind": "nav",
+      "refersTo": "bottom-nav",
+      "description": "固定底部導覽，描邊 SVG 圖示加小字標籤。",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" aria-current=\"page\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"3\"/><circle cx=\"9\" cy=\"8\" r=\".6\"/><circle cx=\"15\" cy=\"8\" r=\".6\"/><circle cx=\"12\" cy=\"11.5\" r=\".6\"/><path d=\"M8 21v-4M12 21v-4M16 21v-4\"/></svg>抽選</a><a href=\"#\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 7h10M18 7h2M4 17h4M12 17h8\"/><circle cx=\"16\" cy=\"7\" r=\"2\"/><circle cx=\"10\" cy=\"17\" r=\"2\"/></svg>設定</a></nav>",
+      "css": ".ds-nav { display: flex; justify-content: center; gap: 8px; padding: 6px 16px; background: #fbf6ea; border-top: 1.5px solid #3a2b1a; } .ds-nav a { flex: 0 1 160px; display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 5px 0 3px; font-size: .75rem; color: #6b5233; text-decoration: none; border-radius: 10px; } .ds-nav svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; } .ds-nav a:hover, .ds-nav a[aria-current=page] { color: #3a2b1a; } .ds-nav a[aria-current=page] { font-weight: 700; } .ds-nav a:focus-visible { outline: 2px solid #3a2b1a; outline-offset: 2px; }"
+    },
+    {
+      "name": "彈珠台檯面（靜態示意）",
+      "kind": "custom",
+      "refersTo": "board",
+      "description": "實際由 canvas 繪製；此為冰果室拱形檯面、釘陣與直書格子的靜態示意。",
+      "html": "<div class=\"ds-board\"><div class=\"ds-pins\"></div><ol class=\"ds-slots\"><li>拉麵</li><li class=\"on\">炒飯</li><li>漢堡</li><li>滷肉飯</li></ol></div>",
+      "css": ".ds-board { background: #44716c; border-radius: 44px 44px 10px 10px; box-shadow: 0 0 0 4px #f2e8cc, 0 0 0 6px #3a2b1a; margin: 6px; padding: 24px 14px 10px; } .ds-pins { height: 90px; background-image: radial-gradient(circle, #f2e8cc 2.4px, transparent 3px); background-size: 34px 22px; } .ds-slots { list-style: none; margin: 0; padding: 0; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border-bottom: 1.5px solid #f2e8cc; } .ds-slots li { writing-mode: vertical-rl; text-orientation: upright; font-family: 'Noto Serif TC', serif; font-weight: 700; color: #f7f0dc; border-left: 1.5px solid #f2e8cc; height: 96px; display: flex; align-items: center; justify-content: center; } .ds-slots li:last-child { border-right: 1.5px solid #f2e8cc; } .ds-slots li.on { background: #d98b6a; color: #3a2b1a; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "夜市彈珠台",
+    "overview": "一顆珠子穿過釘陣、落進底部某一格，那一格就是這一餐。整套系統圍繞這個「落格」瞬間建構：檯面佔據畫面中段，底部每個候選一格、格寬固定、格內直書料理名稱；抽中後由結果獨佔整個畫面，料理名稱放到最大。它刻意拒絕這類工具的預設長相（彩虹扇形轉盤擺在白色卡片上）。\n\n兩個主題共用同一副骨架，只換 `css/style.css` 裡的變數與少數裝飾，並依時間自動切換：06:00–17:59 是「老派冰果室」，18:00–05:59 是「夜市霓虹」，設定頁可手動固定其中一個（`js/theme.js`，每分鐘與切回分頁時重新判斷）。冰果室是復古、低彩度的白天：淡芥末黃磁磚牆、孔雀綠檯面、明體招牌字、雙線邊框按鈕、價目牌式的條件標籤，頂端是孔雀綠與米白條紋的波浪遮陽棚。夜市霓虹是靛紫夜空、散景光暈、頂端一串下垂的彩色燈泡，釘子是桃紅、中獎格是會發光的萊姆綠，按鈕是深紫底配桃紅霓虹外框，從不用亮色實底。\n\n密度偏手機單欄：內容欄最寬 480px，桌面上置中，左右空間交給背景（磁磚或散景）延伸。所有裝飾都是 CSS、內嵌 SVG 或 canvas 即時產生，不出貨任何點陣圖。使用者明確避開的方向：太幼稚、太冷、動畫拖慢速度、模板感、廉價感、沉悶色調、亮眼刺目的按鈕；料理 emoji 已依使用者決定全數移除。",
+    "keyCharacteristics": [
+      "彈珠台檯面是唯一的主角，落格就是決定的瞬間",
+      "兩個主題、同一副骨架，依時段自動切換",
+      "抽選序號是畫面上唯一的大數字",
+      "結果畫面由料理名稱獨佔，只留「就吃這個」與「再抽一次」",
+      "下落 1.6 秒內完成、可點擊跳過；減少動態效果時直接落格",
+      "落格時中獎燈閃兩下；按「就吃這個」後七天紀錄的今天蓋上章，讓人看見它記住了",
+      "裝飾全部由程式產生，無點陣圖"
+    ],
+    "rules": [
+      {
+        "name": "落格才發光原則",
+        "body": "中獎色（陶土橘／萊姆綠）只屬於落中的那一格和接受結果的動作（含接受後七天紀錄「今」格短暫褪掉的蓋章底色）；它不當作一般強調色、不放在其他按鈕或標籤上。",
+        "section": "colors"
+      },
+      {
+        "name": "霓虹不實心原則",
+        "body": "夜市的按鈕永遠是深紫底（neon-button）配 1.5px 桃紅內框與柔和外光暈；桃紅不作為大面積實底。",
+        "section": "colors"
+      },
+      {
+        "name": "唯一大數字原則",
+        "body": "抽選序號是首頁唯一的大數字；候選數、天數等其他數字都用小字說明，不放大。",
+        "section": "typography"
+      },
+      {
+        "name": "直書落格原則",
+        "body": "檯面格內的名稱一律直書、一字一行，格寬固定，切換條件時只換文字不換格子。",
+        "section": "typography"
+      },
+      {
+        "name": "價目牌陰影原則",
+        "body": "冰果室的錯位硬陰影是使用者明確保留的復古招牌手法（2026-10-27 回覆「2.保留」），後續修改不得當作預設手法移除。它只屬於招牌、條件標籤、招呼語、「就吃這個」與結果料理名這幾個招牌類元素；不擴散到面板、輸入框或新元件，夜市主題也不使用。",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** 所有顏色、字體、圓角都透過主題變數（`--ground`、`--board`、`--lit`、`--font-display`、`--radius` 等）引用，讓兩個主題自動成立。",
+      "**Do** 把中獎色只留給落中的格子與「就吃這個」。",
+      "**Do** 冰果室容器用 1.5px 深咖啡實線邊框；夜市用桃紅內框與光暈表現強調。",
+      "**Do** 保留冰果室招牌類元素的錯位硬陰影（使用者 2026-10-27 決定保留）。",
+      "**Do** 背景與裝飾用 CSS、內嵌 SVG 或 canvas 產生，並使用固定種子讓每次載入一致。",
+      "**Do** 每個動畫都提供 `prefers-reduced-motion` 的直接結果路徑，抽選過程控制在約 1.6 秒內且可跳過。",
+      "**Do** 圖示用 24px 網格、1.8 線寬的描邊 SVG。",
+      "**Do** 把回饋放在本來就有的時刻（落格、接受、台上空了），並讓它說出實際作用，例如提示訊息寫出幾天內不會再抽到。"
+    ],
+    "donts": [
+      "**Don't** 使用圓形轉盤或彩虹扇形。",
+      "**Don't** 在格內、結果畫面、按鈕或導覽放 emoji（使用者 2026-10-27 決定拿掉）。",
+      "**Don't** 在夜市主題使用亮色實底按鈕，或讓桃紅成為大面積底色。",
+      "**Don't** 把錯位硬陰影擴散到面板、輸入框、新元件，或帶進夜市主題。",
+      "**Don't** 放大抽選序號以外的數字。",
+      "**Don't** 讓抽選動畫超過約 1.6 秒或無法跳過。",
+      "**Don't** 為了慶祝效果延長停頓，或替例行點擊加上慶祝；空狀態不要只叫人「放寬條件」而不給按鈕。",
+      "**Don't** 出貨點陣圖裝飾。"
+    ]
+  }
+}
