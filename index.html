@@ -4,67 +4,92 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SpinEat · 今天吃甚麼</title>
-  <meta name="description" content="選擇困難？轉一下，幫你決定今天吃甚麼。">
+  <meta name="description" content="選擇困難？拉一下，幫你決定今天吃甚麼。">
+  <meta name="theme-color" content="#fff3dc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1f1c17" media="(prefers-color-scheme: dark)">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍱</text></svg>">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <main class="app">
     <header class="app-header">
-      <h1>SpinEat</h1>
+      <h1 class="logo">Spin<span>Eat</span></h1>
       <p class="subtitle">今天吃甚麼？</p>
     </header>
 
     <div class="mode-switch" role="radiogroup" aria-label="抽選來源" id="mode-switch">
-      <button type="button" role="radio" data-mode="food">🍜 料理</button>
-      <button type="button" role="radio" data-mode="store">🏪 我的店家</button>
+      <button type="button" role="radio" data-mode="food">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11h18a9 9 0 0 1-18 0Z"/><path d="M8 7c0-1.5 1-1.5 1-3M12 7c0-1.5 1-1.5 1-3M16 7c0-1.5 1-1.5 1-3"/></svg>
+        料理
+      </button>
+      <button type="button" role="radio" data-mode="store">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v10h16V10"/><path d="M3 4h18l1 6H2l1-6Z"/><path d="M10 20v-5h4v5"/></svg>
+        我的店家
+      </button>
     </div>
 
-    <section class="filters" aria-label="篩選條件">
-      <div class="filter-row">
-        <span class="filter-label">餐別</span>
-        <div class="chips" id="meal-chips" role="radiogroup" aria-label="餐別"></div>
-      </div>
-      <div class="filter-row">
-        <span class="filter-label">預算</span>
-        <div class="chips" id="price-chips" role="group" aria-label="預算"></div>
-      </div>
-      <div class="filter-row">
-        <span class="filter-label" id="type-label">類型</span>
-        <div class="chips" id="type-chips" role="group" aria-labelledby="type-label"></div>
-      </div>
-      <div class="filter-row">
-        <label class="exclude-toggle">
-          <input type="checkbox" id="exclude-recent" checked>
-          排除最近
-          <select id="exclude-days" aria-label="排除天數">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3" selected>3</option>
-            <option value="5">5</option>
-            <option value="7">7</option>
-          </select>
-          天吃過的
-        </label>
-      </div>
-    </section>
-
-    <section class="wheel-area">
-      <div class="wheel-wrap">
-        <div class="pointer" aria-hidden="true"></div>
-        <canvas id="wheel" width="360" height="360" role="img" aria-label="食物轉盤"></canvas>
-        <div class="wheel-empty" id="wheel-empty" hidden>
-          <div>
-            <p id="wheel-empty-text"></p>
-            <a class="btn-secondary btn-sm" href="settings.html" id="wheel-empty-link" hidden>前往設定新增店家</a>
-          </div>
+    <details class="filters">
+      <summary>
+        <span class="filters-label">條件</span>
+        <span class="filters-summary" id="filter-summary"></span>
+        <svg class="icon chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="filters-body">
+        <div class="filter-row">
+          <span class="filter-label">餐別</span>
+          <div class="chips" id="meal-chips" role="radiogroup" aria-label="餐別"></div>
+        </div>
+        <div class="filter-row">
+          <span class="filter-label">預算</span>
+          <div class="chips" id="price-chips" role="group" aria-label="預算"></div>
+        </div>
+        <div class="filter-row">
+          <span class="filter-label" id="type-label">類型</span>
+          <div class="chips" id="type-chips" role="group" aria-labelledby="type-label"></div>
+        </div>
+        <div class="filter-row">
+          <label class="exclude-toggle">
+            <input type="checkbox" id="exclude-recent" checked>
+            排除最近
+            <select id="exclude-days" aria-label="排除天數">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3" selected>3</option>
+              <option value="5">5</option>
+              <option value="7">7</option>
+            </select>
+            天吃過的
+          </label>
         </div>
       </div>
+    </details>
+
+    <section class="machine" aria-label="拉霸機">
+      <div class="machine-top" aria-hidden="true">
+        <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+        <span class="machine-title">JACKPOT</span>
+        <span class="bulb"></span><span class="bulb"></span><span class="bulb"></span>
+      </div>
+      <div class="machine-body">
+        <div class="reel-window" id="reel-window">
+          <ol class="reel-strip" id="reel-strip" aria-hidden="true"></ol>
+          <div class="payline" aria-hidden="true"></div>
+          <div class="reel-empty" id="reel-empty" hidden>
+            <p id="reel-empty-text"></p>
+            <a class="btn btn-secondary btn-sm" href="settings.html" id="reel-empty-link" hidden>前往設定新增店家</a>
+          </div>
+        </div>
+        <button class="lever" id="lever" type="button" tabindex="-1" aria-hidden="true">
+          <span class="lever-knob"></span>
+          <span class="lever-stick"></span>
+        </button>
+      </div>
       <p class="candidate-count" id="candidate-count"></p>
-      <button class="spin-btn" id="spin-btn" type="button">🎲 幫我決定！</button>
+      <button class="spin-btn" id="spin-btn" type="button">拉一下！</button>
     </section>
 
     <section class="result" id="result" hidden aria-live="polite">
+      <p class="result-kicker">今天就吃</p>
       <div class="result-food">
         <span class="result-emoji" id="result-emoji"></span>
         <span class="result-name" id="result-name"></span>
@@ -72,14 +97,14 @@
       <p class="result-meta" id="result-meta"></p>
       <a class="result-map" id="result-map" target="_blank" rel="noopener" hidden></a>
       <div class="result-actions">
-        <button type="button" class="btn-primary" id="accept-btn">就吃這個 ✅</button>
-        <button type="button" class="btn-secondary" id="respin-btn">再抽一次 🔄</button>
+        <button type="button" class="btn btn-primary" id="accept-btn">就吃這個</button>
+        <button type="button" class="btn btn-secondary" id="respin-btn">再抽一次</button>
       </div>
     </section>
 
-    <section class="history" aria-labelledby="history-title">
-      <div class="history-head">
-        <h2 id="history-title">📅 吃過紀錄</h2>
+    <section class="panel history" aria-labelledby="history-title">
+      <div class="panel-head">
+        <h2 id="history-title">吃過紀錄</h2>
         <button type="button" class="btn-text" id="clear-history">清除</button>
       </div>
       <ul class="history-list" id="history-list"></ul>
@@ -87,8 +112,14 @@
   </main>
 
   <nav class="bottom-nav" aria-label="主要頁面">
-    <a href="index.html" aria-current="page">🎡<span>轉盤</span></a>
-    <a href="settings.html">⚙️<span>設定</span></a>
+    <a href="index.html" aria-current="page">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M9 5v14M15 5v14"/></svg>
+      <span>拉霸</span>
+    </a>
+    <a href="settings.html">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+      <span>設定</span>
+    </a>
   </nav>
 
   <div class="toast" id="toast" role="status" hidden></div>
