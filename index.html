@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SpinEat · 今天吃甚麼</title>
+  <meta name="description" content="選擇困難？轉一下，幫你決定今天吃甚麼。">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍱</text></svg>">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <h1>SpinEat</h1>
+      <p class="subtitle">今天吃甚麼？</p>
+    </header>
+
+    <section class="filters" aria-label="篩選條件">
+      <div class="filter-row">
+        <span class="filter-label">餐別</span>
+        <div class="chips" id="meal-chips" role="radiogroup" aria-label="餐別"></div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">預算</span>
+        <div class="chips" id="price-chips" role="group" aria-label="預算"></div>
+      </div>
+      <div class="filter-row">
+        <span class="filter-label">類型</span>
+        <div class="chips" id="type-chips" role="group" aria-label="料理類型"></div>
+      </div>
+      <div class="filter-row">
+        <label class="exclude-toggle">
+          <input type="checkbox" id="exclude-recent" checked>
+          排除最近
+          <select id="exclude-days" aria-label="排除天數">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="5">5</option>
+            <option value="7">7</option>
+          </select>
+          天吃過的
+        </label>
+      </div>
+    </section>
+
+    <section class="wheel-area">
+      <div class="wheel-wrap">
+        <div class="pointer" aria-hidden="true"></div>
+        <canvas id="wheel" width="360" height="360" role="img" aria-label="食物轉盤"></canvas>
+        <div class="wheel-empty" id="wheel-empty" hidden>
+          沒有符合條件的選項<br>試著放寬篩選吧
+        </div>
+      </div>
+      <p class="candidate-count" id="candidate-count"></p>
+      <button class="spin-btn" id="spin-btn" type="button">🎲 幫我決定！</button>
+    </section>
+
+    <section class="result" id="result" hidden aria-live="polite">
+      <div class="result-food">
+        <span class="result-emoji" id="result-emoji"></span>
+        <span class="result-name" id="result-name"></span>
+      </div>
+      <p class="result-meta" id="result-meta"></p>
+      <div class="result-actions">
+        <button type="button" class="btn-primary" id="accept-btn">就吃這個 ✅</button>
+        <button type="button" class="btn-secondary" id="respin-btn">再抽一次 🔄</button>
+      </div>
+    </section>
+
+    <section class="history" aria-labelledby="history-title">
+      <div class="history-head">
+        <h2 id="history-title">📅 吃過紀錄</h2>
+        <button type="button" class="btn-text" id="clear-history">清除</button>
+      </div>
+      <ul class="history-list" id="history-list"></ul>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script src="js/foods.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

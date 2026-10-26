@@ -1,0 +1,251 @@
+:root {
+  --bg: #fff8f0;
+  --surface: #ffffff;
+  --text: #2d2a26;
+  --muted: #7a7168;
+  --border: #eadfd3;
+  --accent: #e8590c;
+  --accent-ink: #ffffff;
+  --accent-soft: #fff0e6;
+  --shadow: 0 6px 20px rgba(120, 70, 20, 0.12);
+  --radius: 16px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1916;
+    --surface: #27231f;
+    --text: #f2ece6;
+    --muted: #a99e93;
+    --border: #3a342e;
+    --accent: #ff7a2e;
+    --accent-ink: #1c1916;
+    --accent-soft: #3a2a1f;
+    --shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  }
+}
+
+* { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.5;
+}
+
+button, select, input { font: inherit; }
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 標題 */
+.app-header { text-align: center; }
+.app-header h1 {
+  margin: 0;
+  font-size: 2.25rem;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+}
+.subtitle { margin: 0; color: var(--muted); font-size: 1.1rem; }
+
+/* 篩選 */
+.filters {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.filter-row { display: flex; align-items: flex-start; gap: 10px; }
+.filter-label {
+  flex: none;
+  width: 2.5em;
+  padding-top: 5px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.chip:hover { border-color: var(--accent); }
+.chip[aria-pressed="true"], .chip[aria-checked="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+.chip:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.exclude-toggle {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.exclude-toggle input { accent-color: var(--accent); width: 18px; height: 18px; }
+.exclude-toggle select {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 2px 6px;
+}
+
+/* 轉盤 */
+.wheel-area { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.wheel-wrap {
+  position: relative;
+  width: min(100%, 360px);
+  aspect-ratio: 1;
+}
+#wheel {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 50%;
+  box-shadow: var(--shadow);
+}
+.pointer {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 26px solid var(--text);
+  z-index: 2;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
+}
+.wheel-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: var(--muted);
+  border-radius: 50%;
+  border: 2px dashed var(--border);
+  background: var(--surface);
+}
+.candidate-count { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
+.spin-btn {
+  border: none;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 14px 40px;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform 0.1s, opacity 0.15s;
+}
+.spin-btn:active { transform: scale(0.97); }
+.spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* 結果 */
+.result {
+  background: var(--accent-soft);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 18px;
+  text-align: center;
+  animation: pop 0.35s ease-out;
+}
+.result-food { display: flex; align-items: center; justify-content: center; gap: 10px; }
+.result-emoji { font-size: 2.5rem; }
+.result-name { font-size: 1.8rem; font-weight: 800; }
+.result-meta { margin: 4px 0 14px; color: var(--muted); font-size: 0.9rem; }
+.result-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.btn-primary, .btn-secondary {
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-primary { border: none; background: var(--accent); color: var(--accent-ink); }
+.btn-secondary { border: 1px solid var(--accent); background: transparent; color: var(--accent); }
+
+@keyframes pop {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* 紀錄 */
+.history {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+.history-head { display: flex; justify-content: space-between; align-items: center; }
+.history h2 { margin: 0; font-size: 1rem; }
+.btn-text {
+  border: none;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 4px 8px;
+}
+.btn-text:hover { color: var(--accent); }
+.history-list { list-style: none; margin: 10px 0 0; padding: 0; }
+.history-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+  font-size: 0.95rem;
+}
+.history-list li:first-child { border-top: none; }
+.history-date { color: var(--muted); font-size: 0.85rem; }
+.history-empty { color: var(--muted); font-size: 0.9rem; }
+.history-del { color: var(--muted); }
+
+/* 提示訊息 */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  background: var(--text);
+  color: var(--bg);
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  box-shadow: var(--shadow);
+  z-index: 10;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .result { animation: none; }
+}
