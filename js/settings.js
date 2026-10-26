@@ -19,6 +19,8 @@
     formTags: $("form-tags"),
     formError: $("form-error"),
     cancelBtn: $("cancel-store-btn"),
+    themeOptions: $("theme-options"),
+    autoHint: $("auto-hint"),
     toast: $("toast"),
   };
 
@@ -39,7 +41,7 @@
 
   function persist() {
     if (!D.saveTags(tags) || !D.saveStores(stores)) {
-      showToast("⚠️ 無法儲存，瀏覽器可能封鎖了本機儲存空間");
+      showToast("無法儲存，瀏覽器可能封鎖了本機儲存空間");
     }
   }
 
@@ -69,7 +71,7 @@
     if (stores.length === 0) {
       const li = document.createElement("li");
       li.className = "empty-note";
-      li.textContent = "還沒有店家，按「＋ 新增店家」加入你常去的店吧！";
+      li.textContent = "還沒有店家，按「新增店家」加入你常去的店吧！";
       el.storeList.replaceChildren(li);
       return;
     }
@@ -93,7 +95,7 @@
           addr.href = D.mapsUrl(s);
           addr.target = "_blank";
           addr.rel = "noopener";
-          addr.textContent = `📍 ${s.address}`;
+          addr.textContent = s.address;
           main.append(addr);
         }
         const badges = document.createElement("div");
@@ -303,6 +305,24 @@
     showToast(`已新增標籤 ${name}`);
   });
 
+  // ---------- 外觀 ----------
+  const THEME_NAMES = { icefruit: "老派冰果室", neon: "夜市霓虹" };
+
+  function renderAppearance() {
+    const { appearance } = D.getSettings();
+    for (const input of el.themeOptions.querySelectorAll("input")) input.checked = input.value === appearance;
+    const { DAY_START, NIGHT_START } = SpinEatTheme;
+    el.autoHint.textContent = `${DAY_START}:00–${NIGHT_START}:00 冰果室，其餘時間夜市霓虹`;
+  }
+
+  el.themeOptions.addEventListener("change", (e) => {
+    const settings = D.getSettings();
+    settings.appearance = e.target.value;
+    if (!D.saveSettings(settings)) return showToast("無法儲存，瀏覽器可能封鎖了本機儲存空間");
+    const theme = SpinEatTheme.apply();
+    showToast(settings.appearance === "auto" ? `已改為依時間自動，現在是${THEME_NAMES[theme]}` : `已固定為${THEME_NAMES[theme]}`);
+  });
+
   // ---------- 備份 ----------
   el.exportBtn.addEventListener("click", () => {
     const blob = new Blob([JSON.stringify(D.exportAll(), null, 2)], { type: "application/json" });
@@ -325,12 +345,15 @@
       stores = D.getStores();
       renderTags();
       renderStores();
+      renderAppearance();
+      SpinEatTheme.apply();
       showToast(`匯入完成：${result.stores} 家店、${result.tags} 個標籤`);
     } catch (err) {
-      showToast(`⚠️ 匯入失敗：${err instanceof SyntaxError ? "檔案不是有效的 JSON" : err.message}`);
+      showToast(`匯入失敗：${err instanceof SyntaxError ? "檔案不是有效的 JSON" : err.message}`);
     }
   });
 
+  renderAppearance();
   renderStores();
   renderTags();
 })();

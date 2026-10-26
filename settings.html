@@ -2,23 +2,57 @@
 <html lang="zh-Hant-TW">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>設定 · SpinEat</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍱</text></svg>">
+  <meta name="theme-color" content="#dcc58a">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2344716c'/><g fill='%23f2e8cc'><circle cx='10' cy='9' r='2'/><circle cx='22' cy='9' r='2'/><circle cx='16' cy='15' r='2'/><circle cx='10' cy='21' r='2'/><circle cx='22' cy='21' r='2'/></g><circle cx='16' cy='25' r='3.2' fill='%23d98b6a'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap">
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/theme.js"></script>
 </head>
 <body>
+  <div class="backdrop" aria-hidden="true"></div>
+  <div class="awning" aria-hidden="true"></div>
+
   <main class="app">
     <header class="app-header">
-      <h1>設定</h1>
-      <p class="subtitle">管理分類標籤與店家</p>
+      <h1 class="greeting">設定</h1>
+      <div class="header-side">
+        <span class="brand">SpinEat</span>
+      </div>
     </header>
+
+    <!-- 外觀 -->
+    <section class="panel" aria-labelledby="appearance-title">
+      <div class="panel-head">
+        <h2 id="appearance-title">外觀</h2>
+      </div>
+      <div class="theme-options" id="theme-options" role="radiogroup" aria-labelledby="appearance-title">
+        <label class="theme-option">
+          <input type="radio" name="appearance" value="auto">
+          <span class="theme-swatch theme-swatch-auto" aria-hidden="true"><i></i><i></i></span>
+          <span class="theme-text"><strong>依時間自動</strong><small id="auto-hint">白天冰果室，晚上夜市霓虹</small></span>
+        </label>
+        <label class="theme-option">
+          <input type="radio" name="appearance" value="icefruit">
+          <span class="theme-swatch theme-swatch-icefruit" aria-hidden="true"><i></i></span>
+          <span class="theme-text"><strong>老派冰果室</strong><small>芥末黃磁磚、孔雀綠檯面</small></span>
+        </label>
+        <label class="theme-option">
+          <input type="radio" name="appearance" value="neon">
+          <span class="theme-swatch theme-swatch-neon" aria-hidden="true"><i></i></span>
+          <span class="theme-text"><strong>夜市霓虹</strong><small>靛紫夜色、桃紅釘子</small></span>
+        </label>
+      </div>
+    </section>
 
     <!-- 店家 -->
     <section class="panel" aria-labelledby="stores-title">
       <div class="panel-head">
-        <h2 id="stores-title">🏪 我的店家</h2>
-        <button type="button" class="btn-primary btn-sm" id="add-store-btn">＋ 新增店家</button>
+        <h2 id="stores-title">我的店家</h2>
+        <button type="button" class="btn-primary btn-sm" id="add-store-btn"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>新增店家</button>
       </div>
       <ul class="store-list" id="store-list"></ul>
     </section>
@@ -26,7 +60,7 @@
     <!-- 標籤 -->
     <section class="panel" aria-labelledby="tags-title">
       <div class="panel-head">
-        <h2 id="tags-title">🏷️ 分類標籤</h2>
+        <h2 id="tags-title">分類標籤</h2>
       </div>
       <form class="inline-form" id="tag-form">
         <label class="visually-hidden" for="tag-input">新標籤名稱</label>
@@ -39,13 +73,13 @@
     <!-- 備份 -->
     <section class="panel" aria-labelledby="backup-title">
       <div class="panel-head">
-        <h2 id="backup-title">💾 資料備份</h2>
+        <h2 id="backup-title">資料備份</h2>
       </div>
       <p class="panel-note">資料只存在這個瀏覽器裡，清除瀏覽資料就會消失。建議定期匯出備份，也可以用來把資料搬到另一台裝置。</p>
       <div class="backup-actions">
-        <button type="button" class="btn-secondary btn-sm" id="export-btn">⬇️ 匯出 JSON</button>
+        <button type="button" class="btn-secondary btn-sm" id="export-btn">匯出 JSON</button>
         <label class="btn-secondary btn-sm file-btn">
-          ⬆️ 匯入 JSON
+          匯入 JSON
           <input type="file" id="import-input" accept="application/json,.json">
         </label>
       </div>
@@ -84,7 +118,7 @@
 
       <label class="switch-row">
         <input type="checkbox" name="enabled" checked>
-        <span>啟用（關閉後不會出現在轉盤上）</span>
+        <span>啟用（關閉後不會出現在彈珠台上）</span>
       </label>
 
       <p class="form-error" id="form-error" role="alert" hidden></p>
@@ -97,8 +131,14 @@
   </dialog>
 
   <nav class="bottom-nav" aria-label="主要頁面">
-    <a href="index.html">🎡<span>轉盤</span></a>
-    <a href="settings.html" aria-current="page">⚙️<span>設定</span></a>
+    <a href="index.html">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="3"/><circle cx="9" cy="8" r=".6"/><circle cx="15" cy="8" r=".6"/><circle cx="12" cy="11.5" r=".6"/><path d="M8 21v-4M12 21v-4M16 21v-4"/></svg>
+      <span>抽選</span>
+    </a>
+    <a href="settings.html" aria-current="page">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+      <span>設定</span>
+    </a>
   </nav>
 
   <div class="toast" id="toast" role="status" hidden></div>
