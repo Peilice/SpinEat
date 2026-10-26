@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- 孔雀綠磁磚底 -->
+  <rect width="32" height="32" rx="7" fill="#44716c"/>
+  <!-- 問號：今天吃甚麼？像熱氣從碗裡冒出 -->
+  <path d="M12.2 7.6a3.8 3.8 0 1 1 5.6 3.4c-1.2.6-1.8 1.3-1.8 2.5v.3" fill="none" stroke="#f2e8cc" stroke-width="2.6" stroke-linecap="round"/>
+  <circle cx="16" cy="16.4" r="1.5" fill="#f2e8cc"/>
+  <!-- 碗：吃飯 -->
+  <path d="M12.5 25.5h7v2.5h-7z" fill="#d98b6a" stroke="#3a2b1a" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M4.5 17.5h23c0 5-4.8 8.5-11.5 8.5S4.5 22.5 4.5 17.5z" fill="#d98b6a" stroke="#3a2b1a" stroke-width="1.5" stroke-linejoin="round"/>
+</svg>
