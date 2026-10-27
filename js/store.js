@@ -11,10 +11,10 @@ const SpinEatData = (() => {
   };
   const EXPORT_VERSION = 1;
   const DEFAULT_TAGS = ["中式", "小吃", "麵食", "日式", "韓式", "西式", "速食", "南洋", "火鍋", "輕食"];
-  // appearance：auto（依時間）／neon／temple；draws：累計抽選次數，用來顯示序號
+  // appearance：auto（依時間）／neon／temple
   // motion：system（系統要求減少動態效果時直接出結果）／always（一律播放抽選動畫）
   // 抽法跟著主題，不另外設定
-  const DEFAULT_SETTINGS = { excludeOn: true, excludeDays: 3, mode: "food", appearance: "auto", motion: "system", draws: 0 };
+  const DEFAULT_SETTINGS = { excludeOn: true, excludeDays: 3, mode: "food", appearance: "auto", motion: "system" };
   const PRICE_LABELS = { 1: "$", 2: "$$", 3: "$$$" };
 
   // localStorage 在無痕模式等情況可能無法使用，失敗時就退回預設值

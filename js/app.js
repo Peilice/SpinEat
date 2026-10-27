@@ -54,7 +54,6 @@
   // ---------- DOM ----------
   const $ = (id) => document.getElementById(id);
   const el = {
-    serial: $("serial"),
     greeting: $("greeting"),
     modeSwitch: $("mode-switch"),
     filters: $("filters"),
@@ -79,7 +78,7 @@
     historyList: $("history-list"),
     clearHistory: $("clear-history"),
     result: $("result"),
-    resultSerial: $("result-serial"),
+    resultPlace: $("result-place"),
     resultLane: $("result-lane"),
     resultName: $("result-name"),
     resultMeta: $("result-meta"),
@@ -291,12 +290,6 @@
     el.greeting.replaceChildren(GREETINGS[meal], document.createElement("br"), question);
   }
 
-  const formatSerial = (n) => String(n).padStart(4, "0");
-
-  function renderSerial() {
-    el.serial.textContent = formatSerial((settings.draws || 0) + 1);
-  }
-
   // cell：戳戳樂時被點的那一格；按按鈕抽時不帶
   function spin(cell = null) {
     if (state.spinning || state.candidates.length === 0) return;
@@ -304,8 +297,6 @@
     setControlsDisabled(true);
 
     const winner = state.candidates[Math.floor(Math.random() * state.candidates.length)];
-    settings.draws = (settings.draws || 0) + 1;
-    D.saveSettings(settings);
 
     const finished = (place) => {
       state.spinning = false;
@@ -366,13 +357,7 @@
   // place：{ label: 戳開第幾格或第幾籤, map: 小地圖，見 renderMap }
   function showResult(item, place) {
     state.current = item;
-    const num = document.createElement("span");
-    num.className = "serial-num";
-    num.textContent = formatSerial(settings.draws);
-    const slot = document.createElement("span");
-    slot.className = "result-slot";
-    slot.textContent = place.label;
-    el.resultSerial.replaceChildren("第", num, "抽", slot);
+    el.resultPlace.textContent = place.label;
     renderMap(place.map);
     el.resultName.textContent = item.name;
     const mealLabel = MEALS.find((m) => m.id === state.meal).label;
@@ -624,7 +609,6 @@
     const focusIndex = focusGroup ? [...focusGroup.children].indexOf(focused) : -1;
     renderFilters();
     if (focusGroup) focusGroup.children[focusIndex]?.focus();
-    renderSerial();
     renderWeek();
     renderHistory();
 

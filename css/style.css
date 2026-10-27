@@ -225,25 +225,6 @@ a { color: inherit; text-underline-offset: 3px; }
   gap: 6px;
 }
 
-/* 抽選序號：畫面上唯一的大數字 */
-.serial {
-  margin: 0;
-  display: flex;
-  align-items: baseline;
-  gap: 3px;
-  color: var(--display);
-  font-family: var(--font-display);
-  font-weight: 900;
-}
-.serial-num {
-  font-size: 1.75rem;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em;
-}
-.serial-unit { font-size: var(--fs-small); color: var(--muted); }
-[data-theme="neon"] .serial { color: var(--glow); }
-
 .brand {
   margin-top: 2px;
   font-family: var(--font-display);
@@ -810,18 +791,7 @@ a { color: inherit; text-underline-offset: 3px; }
   padding: calc(28px + env(safe-area-inset-top)) 24px calc(28px + env(safe-area-inset-bottom));
 }
 .result-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-.result-serial {
-  margin: 0;
-  display: flex;
-  align-items: baseline;
-  gap: 3px;
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: var(--fs-small);
-  color: var(--label);
-}
-.result-serial .serial-num { font-size: 1.75rem; line-height: 1; }
-.result-slot { margin-left: 10px; font-family: var(--font-body); font-weight: 400; color: var(--label-muted); }
+.result-place { margin: 0; font-size: var(--fs-small); color: var(--label-muted); }
 .result-close { color: var(--label); font-weight: 700; }
 .result-close:hover { color: var(--label); }
 
