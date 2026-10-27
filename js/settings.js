@@ -33,6 +33,8 @@
     cancelBtn: $("cancel-store-btn"),
     themeOptions: $("theme-options"),
     autoHint: $("auto-hint"),
+    motionOptions: $("motion-options"),
+    motionHint: $("motion-hint"),
     toast: $("toast"),
   };
 
@@ -549,12 +551,29 @@
   // ---------- 外觀 ----------
   const THEME_NAMES = { icefruit: "老派冰果室", neon: "夜市霓虹" };
 
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
   function renderAppearance() {
-    const { appearance } = D.getSettings();
+    const { appearance, motion } = D.getSettings();
     for (const input of el.themeOptions.querySelectorAll("input")) input.checked = input.value === appearance;
     const { DAY_START, NIGHT_START } = SpinEatTheme;
     el.autoHint.textContent = `${DAY_START}:00–${NIGHT_START}:00 冰果室，其餘時間夜市霓虹`;
+    for (const input of el.motionOptions.querySelectorAll("input")) input.checked = input.value === (motion === "always" ? "always" : "system");
+    // 直接說出這台裝置現在的狀態，才知道為什麼沒有動畫
+    el.motionHint.textContent = reduceMotion.matches
+      ? "這台裝置目前開著「減少動態效果」，所以會直接落格"
+      : "這台裝置目前沒有要求減少動態效果，會正常播放";
   }
+
+  reduceMotion.addEventListener("change", renderAppearance);
+
+  el.motionOptions.addEventListener("change", (e) => {
+    const settings = D.getSettings();
+    settings.motion = e.target.value;
+    if (!D.saveSettings(settings)) return showToast("無法儲存，瀏覽器可能封鎖了本機儲存空間");
+    SpinEatTheme.apply();
+    showToast(settings.motion === "always" ? "抽選動畫改為一律播放" : "抽選動畫改為跟隨系統");
+  });
 
   el.themeOptions.addEventListener("change", (e) => {
     const settings = D.getSettings();

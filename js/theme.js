@@ -8,13 +8,17 @@ const SpinEatTheme = (() => {
   const THEMES = ["icefruit", "neon"];
   const THEME_COLOR = { icefruit: "#dcc58a", neon: "#1b1546" };
 
-  function preference() {
+  function readSettings() {
     try {
-      const settings = JSON.parse(localStorage.getItem("spineat.settings") || "{}");
-      return THEMES.includes(settings.appearance) ? settings.appearance : "auto";
+      return JSON.parse(localStorage.getItem("spineat.settings") || "{}");
     } catch {
-      return "auto";
+      return {};
     }
+  }
+
+  function preference() {
+    const { appearance } = readSettings();
+    return THEMES.includes(appearance) ? appearance : "auto";
   }
 
   function resolve(pref = preference(), now = new Date()) {
@@ -105,6 +109,8 @@ const SpinEatTheme = (() => {
     const root = document.documentElement;
     const changed = root.dataset.theme !== theme;
     root.dataset.theme = theme;
+    // 「一律播放」時，CSS 裡依減少動態效果關掉的動畫也照常播放
+    root.dataset.motion = readSettings().motion === "always" ? "always" : "system";
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.content = THEME_COLOR[theme];
     if (document.body) renderDecor(theme);

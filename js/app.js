@@ -31,6 +31,8 @@
 
   // ---------- 狀態 ----------
   const settings = D.getSettings();
+  // 系統要求減少動態效果、而且設定頁沒選「一律播放」時，抽選直接落格
+  const calm = () => reduceMotion.matches && settings.motion !== "always";
   const state = {
     meal: defaultMealByTime(),
     prices: new Set(), // 空集合代表不限
@@ -604,7 +606,7 @@
 
   // dx、dy 是這一下大約會晃出去的距離（px）
   function kick(dx, dy) {
-    if (reduceMotion.matches) return;
+    if (calm()) return;
     jolt.vx += dx * JOLT_W;
     jolt.vy += dy * JOLT_W;
     if (jolt.raf) return;
@@ -644,7 +646,7 @@
   let lastSlap = 0;
   function slap(x, y) {
     const now = performance.now();
-    if (reduceMotion.matches || now - lastSlap < 140) return;
+    if (calm() || now - lastSlap < 140) return;
     lastSlap = now;
     if (board.nudge) return board.nudge(x, y);
     if (state.spinning || state.slots.length === 0) return;
@@ -774,7 +776,7 @@
       showResult(winner, target);
     };
 
-    if (reduceMotion.matches) {
+    if (calm()) {
       board.ball = null;
       state.lit = target;
       draw();

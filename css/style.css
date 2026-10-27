@@ -768,6 +768,9 @@ a { color: inherit; text-underline-offset: 3px; }
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 .theme-option:has(input:focus-visible) .theme-swatch { outline: 2px solid var(--focus); outline-offset: 4px; }
+/* 抽選動畫：同樣的選項列，沒有色票，焦點框改畫在文字上 */
+.motion-head { margin: 18px 0 10px; padding-top: 14px; border-top: 1px solid var(--surface-line); font-family: var(--font-display); font-size: 1rem; }
+.motion-options .theme-option:has(input:focus-visible) .theme-text { outline: 2px solid var(--focus); outline-offset: 4px; border-radius: 2px; }
 .theme-text { display: flex; flex-direction: column; }
 .theme-text strong { font-size: 0.95rem; }
 .theme-text small { font-size: 0.8rem; color: var(--surface-muted); text-wrap: balance; }
@@ -918,10 +921,11 @@ input[type="text"]::placeholder { color: var(--surface-muted); }
 /* ==========================================================
    減少動態效果
    ========================================================== */
+/* 抽選相關的動畫在設定頁選了「一律播放」（data-motion="always"）時照常播放 */
 @media (prefers-reduced-motion: reduce) {
-  .result.is-in .result-inner,
-  .result.is-in .result-name { animation: none; }
+  :root:not([data-motion="always"]) .result.is-in .result-inner,
+  :root:not([data-motion="always"]) .result.is-in .result-name { animation: none; }
   .chevron { transition: none; }
   /* 不蓋章，只留顏色退掉，仍看得出今天剛記下 */
-  .day.is-stamped .day-food { animation: none; }
+  :root:not([data-motion="always"]) .day.is-stamped .day-food { animation: none; }
 }
