@@ -79,6 +79,7 @@
     clearHistory: $("clear-history"),
     result: $("result"),
     resultPlace: $("result-place"),
+    resultDecor: $("result-decor"),
     resultLane: $("result-lane"),
     resultName: $("result-name"),
     resultMeta: $("result-meta"),
@@ -354,14 +355,36 @@
     );
   }
 
+  // 結果畫面蓋住了首頁的橫樑燈籠／燈泡串，直接借首頁已畫好的那一份；夜市再借背景的光暈
+  function renderDecor() {
+    const eave = document.querySelector(".awning");
+    const glow = document.querySelector(".backdrop");
+    el.resultDecor.querySelector(".result-eave").innerHTML = eave ? eave.innerHTML : "";
+    el.resultDecor.querySelector(".result-glow").innerHTML = glow && drawKind() === "poke" ? glow.innerHTML : "";
+  }
+
   // place：{ label: 戳開第幾格或第幾籤, map: 小地圖，見 renderMap }
   function showResult(item, place) {
     state.current = item;
     el.resultPlace.textContent = place.label;
     renderMap(place.map);
+    renderDecor();
     el.resultName.textContent = item.name;
     const mealLabel = MEALS.find((m) => m.id === state.meal).label;
-    el.resultMeta.textContent = [item.typeText, D.PRICE_LABELS[item.price], mealLabel].filter(Boolean).join("・");
+    // 籤詩、紙條上的小表格：類型／預算／餐別，沒有值的那欄不畫
+    el.resultMeta.replaceChildren(
+      ...[["類型", item.typeText], ["預算", D.PRICE_LABELS[item.price]], ["餐別", mealLabel]]
+        .filter(([, v]) => v)
+        .map(([k, v]) => {
+          const cell = document.createElement("div");
+          const dt = document.createElement("dt");
+          const dd = document.createElement("dd");
+          dt.textContent = k;
+          dd.textContent = v;
+          cell.append(dt, dd);
+          return cell;
+        })
+    );
 
     const avoided = avoidedNames();
     el.resultWhy.textContent =

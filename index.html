@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@700;900&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=20261027k">
-  <script src="js/theme.js?v=20261027k"></script>
+  <link rel="stylesheet" href="css/style.css?v=20261028a">
+  <script src="js/theme.js?v=20261028a"></script>
 </head>
 <body>
   <div class="backdrop" aria-hidden="true"></div>
@@ -119,15 +119,20 @@
   </main>
 
   <dialog class="result" id="result" aria-labelledby="result-name">
+    <div class="result-decor" id="result-decor" aria-hidden="true"><div class="result-glow"></div><div class="result-eave"></div></div>
     <div class="result-inner">
       <div class="result-top">
-        <p class="result-place" id="result-place"></p>
         <button type="button" class="btn-text result-close" id="close-result">返回</button>
       </div>
-      <ol class="lane" id="result-lane" aria-hidden="true"></ol>
       <div class="result-body">
-        <h2 class="result-name" id="result-name"></h2>
-        <p class="result-meta" id="result-meta"></p>
+        <div class="result-stage">
+          <ol class="lane" id="result-lane" aria-hidden="true"></ol>
+          <div class="result-slip">
+            <p class="slip-head" id="result-place"></p>
+            <h2 class="result-name" id="result-name"></h2>
+            <dl class="result-meta" id="result-meta"></dl>
+          </div>
+        </div>
         <p class="result-why" id="result-why"></p>
         <a class="result-map" id="result-map" target="_blank" rel="noopener" hidden>
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
@@ -154,10 +159,10 @@
 
   <div class="toast" id="toast" role="status" hidden></div>
 
-  <script src="js/foods.js?v=20261027k"></script>
-  <script src="js/store.js?v=20261027k"></script>
-  <script src="js/fortune.js?v=20261027k"></script>
-  <script src="js/poke.js?v=20261027k"></script>
-  <script src="js/app.js?v=20261027k"></script>
+  <script src="js/foods.js?v=20261028a"></script>
+  <script src="js/store.js?v=20261028a"></script>
+  <script src="js/fortune.js?v=20261028a"></script>
+  <script src="js/poke.js?v=20261028a"></script>
+  <script src="js/app.js?v=20261028a"></script>
 </body>
 </html>

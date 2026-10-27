@@ -782,34 +782,116 @@ a { color: inherit; text-underline-offset: 3px; }
   overflow-y: auto;
 }
 .result::backdrop { background: var(--board); }
+/* 頂端借首頁的橫樑燈籠／燈泡串，夜市再鋪一層光暈；廟口四周多一道神龕金線 */
+.result-decor { position: absolute; inset: 0 0 auto; pointer-events: none; }
+.result-glow { position: fixed; inset: 0; }
+.result-glow svg { display: block; width: 100%; height: 100%; }
+.result-eave { position: absolute; top: 0; left: 0; right: 0; }
+.result-eave svg { display: block; width: 100%; height: auto; }
+[data-theme="temple"] .result-eave { filter: drop-shadow(0 3px 4px rgba(46, 21, 11, 0.4)); }
+[data-theme="temple"] .result-decor::before {
+  content: "";
+  position: fixed;
+  inset: 10px;
+  border: 1px solid rgba(231, 191, 95, 0.4);
+  border-radius: 6px;
+}
+
 .result-inner {
+  position: relative;
   max-width: 480px;
   min-height: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  padding: calc(28px + env(safe-area-inset-top)) 24px calc(28px + env(safe-area-inset-bottom));
+  padding: calc(56px + env(safe-area-inset-top)) 24px calc(28px + env(safe-area-inset-bottom));
 }
-.result-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-.result-place { margin: 0; font-size: var(--fs-small); color: var(--label-muted); }
+[data-theme="temple"] .result-inner { padding-top: calc(84px + env(safe-area-inset-top)); }
+.result-top { display: flex; justify-content: flex-end; }
 .result-close { color: var(--label); font-weight: 700; }
 .result-close:hover { color: var(--label); }
 
-.lane { list-style: none; margin: 16px 0 0; padding: 0; }
-/* 戳戳樂：整張紙板縮小，戳過的洞是暗的，這次戳中的那格亮起 */
-.lane-sheet { display: grid; grid-template-columns: repeat(6, 30px); gap: 10px; }
-.lane-sheet li { aspect-ratio: 1; border-radius: 50%; box-shadow: inset 0 0 0 1.5px rgba(255, 92, 154, 0.55); }
-.lane-sheet li.poked { background: rgba(5, 2, 20, 0.45); box-shadow: none; }
-.lane-sheet li.lit { background: var(--lit); box-shadow: none; }
-[data-theme="neon"] .lane-sheet li.lit { box-shadow: 0 0 16px var(--lit); }
-/* 求籤：抽到的那一支籤，斜斜立在上方 */
+.result-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 8px;
+}
+.result-stage { position: relative; }
+
+/* 抽到的那一張：廟口是籤詩，夜市是戳出來的中獎紙條 */
+.result-slip { position: relative; text-align: center; }
+.slip-head { margin: 0; font-family: var(--font-display); font-weight: 900; }
+.result-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2.75rem, 14vw, 4.5rem);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+.result-meta {
+  margin: 20px 0 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+}
+.result-meta div { padding: 10px 4px 0; }
+.result-meta div + div { border-left: 1px solid var(--rule); }
+.result-meta dt { font-size: var(--fs-meta); font-weight: 700; letter-spacing: 0.3em; text-indent: 0.3em; }
+.result-meta dd { margin: 2px 0 0; font-family: var(--font-display); font-size: var(--fs-body); font-weight: 900; }
+
+.lane { list-style: none; margin: 0; padding: 0; }
+
+/* ---------- 廟口：一張籤詩，那支籤斜靠在後面 ---------- */
+[data-theme="temple"] .result { background: radial-gradient(120% 70% at 50% 0%, #a12a1b, var(--board) 65%); }
+[data-theme="temple"] .result-stage { padding-top: 104px; }
+[data-theme="temple"] .result-slip {
+  --rule: rgba(150, 36, 21, 0.3);
+  padding: 10px 10px 26px;
+  background: radial-gradient(130% 80% at 50% 0%, color-mix(in srgb, var(--stick) 55%, #fff), var(--stick) 70%);
+  color: var(--stick-ink);
+  border-radius: 4px;
+  box-shadow: 0 0 0 1.5px var(--gold), 0 20px 40px rgba(46, 21, 11, 0.5);
+}
+/* 籤詩的朱紅雙線框，從橫帶下緣開始 */
+[data-theme="temple"] .result-slip::before {
+  content: "";
+  position: absolute;
+  inset: 56px 10px 10px;
+  border: 3px double var(--display);
+  border-top: none;
+  border-radius: 0 0 2px 2px;
+  pointer-events: none;
+}
+/* 頂端的朱紅橫帶，金字寫第幾籤，跟供桌上的匾額同一種語言 */
+[data-theme="temple"] .slip-head {
+  height: 46px;
+  line-height: 46px;
+  border-radius: 2px;
+  background: var(--board);
+  color: var(--btn-ink);
+  font-size: var(--fs-title);
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  box-shadow: inset 0 0 0 1.5px var(--gold), inset 0 0 0 3px var(--board), inset 0 0 0 4px rgba(231, 191, 95, 0.6);
+}
+[data-theme="temple"] .result-name { margin: 30px 16px 0; color: var(--display); }
+[data-theme="temple"] .result-meta { margin: 22px 18px 0; border-top: 1px solid var(--rule); }
+[data-theme="temple"] .result-meta dt { color: var(--display); }
+
+/* 抽到的那支籤：斜靠在籤詩右上角後面，露出籤頭和籤號 */
+[data-theme="temple"] .lane-qian { position: absolute; top: 0; right: 26px; margin: 0; }
 .lane-qian li {
   width: 42px;
-  height: 176px;
-  margin: 6px 0 0 6px;
+  height: 150px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding-top: 12px;
   writing-mode: vertical-rl;
   text-orientation: upright;
   background: var(--stick);
@@ -819,29 +901,65 @@ a { color: inherit; text-underline-offset: 3px; }
   box-shadow: 0 0 0 1.5px var(--gold), 0 12px 22px rgba(46, 21, 11, 0.45);
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: var(--fs-title);
+  font-size: var(--fs-body);
   letter-spacing: 0.12em;
-  rotate: -4deg;
+  rotate: 9deg;
 }
 
-.result-body { margin-top: auto; padding-top: 40px; }
-.result-name {
+/* ---------- 夜市：縮小的紙板，中獎紙條從洞裡彈出來壓在下緣 ---------- */
+[data-theme="neon"] .result-stage { display: flex; flex-direction: column; align-items: center; }
+/* 戳戳樂：整張紙板縮小，戳過的洞是暗的，這次戳中的那格亮起 */
+.lane-sheet {
   margin: 0;
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: clamp(3rem, 17vw, 5.25rem);
-  line-height: 1.08;
-  letter-spacing: 0.02em;
-  overflow-wrap: anywhere;
-  text-wrap: balance;
+  padding: 16px 18px 40px;
+  display: grid;
+  grid-template-columns: repeat(6, 28px);
+  gap: 9px;
+  border-radius: 18px;
+  background: rgba(5, 2, 20, 0.22);
+  box-shadow: 0 0 0 1px rgba(255, 92, 154, 0.3);
 }
-[data-theme="temple"] .result { background: radial-gradient(120% 70% at 50% 0%, #a12a1b, var(--board) 65%); }
-[data-theme="temple"] .result-name { color: #f6d98a; text-shadow: 0 2px 0 #5e160d, 0 8px 24px rgba(46, 21, 11, 0.45); }
-[data-theme="neon"] .result-name { color: #fff; text-shadow: 0 0 28px rgba(255, 92, 154, 0.45); }
-.result-meta { margin: 14px 0 0; font-size: var(--fs-body); font-weight: 700; }
-.result-why { margin: 4px 0 0; font-size: var(--fs-small); color: var(--label-muted); }
+.lane-sheet li { aspect-ratio: 1; border-radius: 50%; box-shadow: inset 0 0 0 1.5px rgba(255, 92, 154, 0.55); }
+.lane-sheet li.poked { background: rgba(5, 2, 20, 0.45); box-shadow: none; }
+.lane-sheet li.lit { background: var(--lit); box-shadow: 0 0 16px var(--lit); }
+
+[data-theme="neon"] .result-slip {
+  --rule: rgba(27, 21, 70, 0.3);
+  isolation: isolate;
+  width: min(100%, 340px);
+  margin-top: -28px;
+  padding: 18px 20px 20px;
+  color: var(--lit-ink);
+  rotate: -2.5deg;
+  transform-origin: 50% 0;
+  filter: drop-shadow(0 0 22px rgba(216, 255, 60, 0.35)) drop-shadow(0 14px 16px rgba(0, 0, 0, 0.45));
+}
+/* 紙條本體另外畫，上緣咬出一排撕痕；陰影掛在外層才不會被遮罩切掉 */
+[data-theme="neon"] .result-slip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 0 0 6px 6px;
+  background: var(--lit);
+  -webkit-mask: radial-gradient(circle at 7px 0, #0000 4.5px, #000 5px) 0 0 / 14px 100% repeat-x;
+  mask: radial-gradient(circle at 7px 0, #0000 4.5px, #000 5px) 0 0 / 14px 100% repeat-x;
+}
+[data-theme="neon"] .slip-head {
+  padding-bottom: 10px;
+  border-bottom: 1.5px dashed var(--rule);
+  font-size: var(--fs-small);
+  letter-spacing: 0.2em;
+}
+[data-theme="neon"] .result-name { margin-top: 16px; }
+[data-theme="neon"] .result-meta { border-top: 1.5px dashed var(--rule); }
+[data-theme="neon"] .result-meta div + div { border-left-style: dashed; }
+[data-theme="neon"] .result-meta dt { color: rgba(27, 21, 70, 0.75); }
+
+.result-why { margin: 22px 0 0; font-size: var(--fs-small); color: var(--label-muted); text-align: center; }
 .result-map {
-  margin-top: 14px;
+  align-self: center;
+  margin-top: 10px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -849,7 +967,7 @@ a { color: inherit; text-underline-offset: 3px; }
   overflow-wrap: anywhere;
 }
 
-.result-actions { display: grid; gap: 10px; margin-top: 28px; }
+.result-actions { display: grid; gap: 10px; margin-top: 24px; }
 .result-actions button { height: 56px; font-size: var(--fs-title); letter-spacing: 0.08em; font-family: var(--font-display); font-weight: 900; }
 [data-theme="temple"] .result #accept-btn {
   background: var(--lit);
@@ -860,11 +978,18 @@ a { color: inherit; text-underline-offset: 3px; }
 [data-theme="neon"] .result #accept-btn { box-shadow: inset 0 0 0 1.5px var(--glow), 0 0 18px rgba(255, 92, 154, 0.3); }
 [data-theme="neon"] .result #respin-btn { border-color: rgba(244, 239, 255, 0.35); }
 
-/* 抽中後，料理名稱「掉」進來 */
+/* 進場：籤詩由上往下展開、籤隨後靠上去；夜市的紙條從紙板裡彈出來 */
 .result.is-in .result-inner { animation: fade-in 0.25s ease-out both; }
-.result.is-in .result-name { animation: drop-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+[data-theme="temple"] .result.is-in .result-slip { animation: unroll 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both; }
+[data-theme="temple"] .result.is-in .lane-qian li { animation: lean-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both; }
+[data-theme="neon"] .result.is-in .result-slip { animation: slip-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.12s both; }
 @keyframes fade-in { from { opacity: 0; } }
-@keyframes drop-in { from { transform: translateY(-56px); opacity: 0; } }
+@keyframes unroll {
+  from { clip-path: inset(-40px -40px 100% -40px); }
+  to { clip-path: inset(-40px -40px -60px -40px); }
+}
+@keyframes lean-in { from { translate: 0 40px; rotate: 0deg; opacity: 0; } }
+@keyframes slip-pop { from { translate: 0 -36px; scale: 0.5; opacity: 0; } }
 
 /* ==========================================================
    底部導覽
@@ -1123,7 +1248,8 @@ input[type="text"]::placeholder { color: var(--surface-muted); }
 /* 抽選相關的動畫在設定頁選了「一律播放」（data-motion="always"）時照常播放 */
 @media (prefers-reduced-motion: reduce) {
   :root:not([data-motion="always"]) .result.is-in .result-inner,
-  :root:not([data-motion="always"]) .result.is-in .result-name { animation: none; }
+  :root:not([data-motion="always"]) .result.is-in .result-slip,
+  :root:not([data-motion="always"]) .result.is-in .lane-qian li { animation: none; }
   .chevron { transition: none; }
   /* 不蓋章，只留顏色退掉，仍看得出今天剛記下 */
   :root:not([data-motion="always"]) .day.is-stamped .day-food { animation: none; }

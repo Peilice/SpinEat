@@ -509,9 +509,9 @@
         "purpose": "結果畫面淡入。"
       },
       {
-        "name": "result-drop-in",
-        "value": "0.5s cubic-bezier(0.16, 1, 0.3, 1), translateY(-56px)",
-        "purpose": "料理名稱「掉」進結果畫面。"
+        "name": "result-slip-in",
+        "value": "廟口 0.6s cubic-bezier(0.16, 1, 0.3, 1) clip-path 展開；夜市 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 彈出",
+        "purpose": "籤詩由上往下展開，中獎紙條從紙板裡彈出來。"
       },
       {
         "name": "state-color",
