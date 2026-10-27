@@ -1,15 +1,14 @@
-// 主題：依時間自動切換（早上廟口、白天冰果室、晚上夜市霓虹），或在設定頁固定其中一個
-// 每個主題配一種抽法：廟口求籤、冰果室彈珠台、夜市戳戳樂
+// 主題：依時間自動切換（白天廟口、晚上夜市霓虹），或在設定頁固定其中一個
+// 每個主題配一種抽法：廟口求籤、夜市戳戳樂
 // 放在 <head> 同步載入，避免頁面先閃過另一個主題
 const SpinEatTheme = (() => {
   "use strict";
 
-  const MORNING_START = 5; // 05:00 起是早上，廟口
-  const DAY_START = 10; // 10:00 起是白天
-  const NIGHT_START = 18; // 18:00 起是晚上
-  const THEMES = ["icefruit", "neon", "temple"];
-  const THEME_COLOR = { icefruit: "#dcc58a", neon: "#1b1546", temple: "#8c2216" };
-  const DRAWS = { icefruit: "pinball", neon: "poke", temple: "fortune" };
+  const DAY_START = 5; // 05:00 起是白天，廟口
+  const NIGHT_START = 18; // 18:00 起是晚上，夜市
+  const THEMES = ["neon", "temple"];
+  const THEME_COLOR = { neon: "#1b1546", temple: "#8c2216" };
+  const DRAWS = { neon: "poke", temple: "fortune" };
 
   function readSettings() {
     try {
@@ -27,26 +26,13 @@ const SpinEatTheme = (() => {
   function resolve(pref = preference(), now = new Date()) {
     if (THEMES.includes(pref)) return pref;
     const h = now.getHours();
-    if (h >= MORNING_START && h < DAY_START) return "temple";
-    return h >= DAY_START && h < NIGHT_START ? "icefruit" : "neon";
+    return h >= DAY_START && h < NIGHT_START ? "temple" : "neon";
   }
 
   // ---------- 背景圖樣 ----------
-  // 固定種子的亂數，讓每次載入的磁磚和光暈位置都一樣
+  // 固定種子的亂數，讓每次載入的石板和光暈位置都一樣
   function seeded(seed) {
     return () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
-  }
-
-  function icefruitBackdrop() {
-    const rnd = seeded(7);
-    let tiles = "";
-    for (let k = 0; k < 60; k++) {
-      const x = Math.floor(rnd() * 30) * 28;
-      const y = Math.floor(rnd() * 40) * 28;
-      const fill = rnd() < 0.55 ? "var(--tile-a)" : "var(--tile-b)";
-      tiles += `<rect x="${x + 1}" y="${y + 1}" width="26" height="26" fill="${fill}" opacity="${rnd() < 0.5 ? 0.32 : 0.2}"/>`;
-    }
-    return `<svg width="840" height="1120" aria-hidden="true">${tiles}</svg>`;
   }
 
   function neonBackdrop() {
@@ -134,17 +120,17 @@ const SpinEatTheme = (() => {
     const key = `${theme}:${width}`;
     if (el.dataset.key === key) return;
     el.dataset.key = key;
-    el.innerHTML = theme === "neon" ? bulbString(width) : theme === "temple" ? templeEave(width) : "";
+    el.innerHTML = theme === "neon" ? bulbString(width) : templeEave(width);
   }
 
   function renderBackdrop(theme) {
     const el = document.querySelector(".backdrop");
     if (!el) return;
     // 夜市的散景和廟口的石板依視口尺寸產生，尺寸改變時要重畫
-    const key = theme === "icefruit" ? theme : `${theme}:${window.innerWidth}x${window.innerHeight}`;
+    const key = `${theme}:${window.innerWidth}x${window.innerHeight}`;
     if (el.dataset.key === key) return;
     el.dataset.key = key;
-    el.innerHTML = theme === "neon" ? neonBackdrop() : theme === "temple" ? templeBackdrop() : icefruitBackdrop();
+    el.innerHTML = theme === "neon" ? neonBackdrop() : templeBackdrop();
   }
 
   function renderDecor(theme) {
@@ -170,14 +156,14 @@ const SpinEatTheme = (() => {
   apply();
   document.addEventListener("DOMContentLoaded", () => renderDecor(document.documentElement.dataset.theme));
   window.addEventListener("resize", () => renderDecor(document.documentElement.dataset.theme));
-  // 自動模式下，跨過 6 點或 18 點時要跟著換
+  // 自動模式下，跨過 5 點或 18 點時要跟著換
   setInterval(apply, 60 * 1000);
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) apply();
   });
 
   // 現在的主題用哪一種抽法
-  const draw = () => DRAWS[document.documentElement.dataset.theme] || "pinball";
+  const draw = () => DRAWS[document.documentElement.dataset.theme] || "fortune";
 
-  return { MORNING_START, DAY_START, NIGHT_START, apply, resolve, draw };
+  return { DAY_START, NIGHT_START, apply, resolve, draw };
 })();

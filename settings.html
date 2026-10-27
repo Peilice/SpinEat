@@ -4,15 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>設定 · SpinEat</title>
-  <meta name="theme-color" content="#dcc58a">
+  <meta name="theme-color" content="#8c2216">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <meta name="apple-mobile-web-app-title" content="今天吃甚麼">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@700;900&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=20261027j">
-  <script src="js/theme.js?v=20261027j"></script>
+  <link rel="stylesheet" href="css/style.css?v=20261027k">
+  <script src="js/theme.js?v=20261027k"></script>
 </head>
 <body>
   <div class="backdrop" aria-hidden="true"></div>
@@ -35,22 +35,17 @@
         <label class="theme-option">
           <input type="radio" name="appearance" value="auto">
           <span class="theme-swatch theme-swatch-auto" aria-hidden="true"><i></i><i></i></span>
-          <span class="theme-text"><strong>依時間自動</strong><small id="auto-hint">早上廟口，白天冰果室，晚上夜市霓虹</small></span>
-        </label>
-        <label class="theme-option">
-          <input type="radio" name="appearance" value="icefruit">
-          <span class="theme-swatch theme-swatch-icefruit" aria-hidden="true"><i></i></span>
-          <span class="theme-text"><strong>老派冰果室</strong><small>彈珠台・芥末黃磁磚、孔雀綠檯面</small></span>
+          <span class="theme-text"><strong>依時間自動</strong><small id="auto-hint">白天廟口，晚上夜市霓虹</small></span>
         </label>
         <label class="theme-option">
           <input type="radio" name="appearance" value="neon">
           <span class="theme-swatch theme-swatch-neon" aria-hidden="true"><i></i></span>
-          <span class="theme-text"><strong>夜市霓虹</strong><small>戳戳樂・靛紫夜色、桃紅霓虹</small></span>
+          <span class="theme-text"><strong>夜市霓虹</strong><small>戳戳樂</small></span>
         </label>
         <label class="theme-option">
           <input type="radio" name="appearance" value="temple">
           <span class="theme-swatch theme-swatch-temple" aria-hidden="true"><i></i></span>
-          <span class="theme-text"><strong>廟口朱紅</strong><small>求籤・朱紅供桌、金字匾額</small></span>
+          <span class="theme-text"><strong>廟口朱紅</strong><small>求籤</small></span>
         </label>
       </div>
       <h3 class="motion-head" id="motion-title">抽選動畫</h3>
@@ -61,7 +56,7 @@
         </label>
         <label class="theme-option">
           <input type="radio" name="motion" value="always">
-          <span class="theme-text"><strong>一律播放</strong><small>珠子下落、戳破紙板、搖籤筒都照常播放</small></span>
+          <span class="theme-text"><strong>一律播放</strong><small>戳破紙板、搖籤筒都照常播放</small></span>
         </label>
       </div>
     </section>
@@ -150,7 +145,7 @@
 
       <label class="switch-row">
         <input type="checkbox" name="enabled" checked>
-        <span>啟用（關閉後不會出現在彈珠台上）</span>
+        <span>啟用（關閉後不會被抽到）</span>
       </label>
 
       <p class="form-error" id="form-error" role="alert" hidden></p>
@@ -191,7 +186,7 @@
 
       <label class="switch-row">
         <input type="checkbox" name="enabled" checked>
-        <span>啟用（關閉後不會出現在彈珠台上）</span>
+        <span>啟用（關閉後不會被抽到）</span>
       </label>
 
       <p class="form-error" id="food-form-error" role="alert" hidden></p>
@@ -216,8 +211,8 @@
 
   <div class="toast" id="toast" role="status" hidden></div>
 
-  <script src="js/foods.js?v=20261027j"></script>
-  <script src="js/store.js?v=20261027j"></script>
-  <script src="js/settings.js?v=20261027j"></script>
+  <script src="js/foods.js?v=20261027k"></script>
+  <script src="js/store.js?v=20261027k"></script>
+  <script src="js/settings.js?v=20261027k"></script>
 </body>
 </html>

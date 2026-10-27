@@ -290,7 +290,7 @@
     const priceInput = el.foodFormPrice.querySelector("input:checked");
 
     if (!name) return showFoodFormError("請輸入料理名稱", fe.name);
-    // 同名料理在彈珠台和紀錄上分不出來，所以名稱不能重複
+    // 同名料理在抽選結果和紀錄上分不出來，所以名稱不能重複
     if (foods.some((f) => f.id !== editingFoodId && f.name === name)) {
       return showFoodFormError(`清單裡已經有「${name}」了`, fe.name);
     }
@@ -549,20 +549,20 @@
   });
 
   // ---------- 外觀 ----------
-  const THEME_NAMES = { icefruit: "老派冰果室", neon: "夜市霓虹", temple: "廟口朱紅" };
+  const THEME_NAMES = { neon: "夜市霓虹", temple: "廟口朱紅" };
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   function renderAppearance() {
     const { appearance, motion } = D.getSettings();
     for (const input of el.themeOptions.querySelectorAll("input")) input.checked = input.value === appearance;
-    const { MORNING_START, DAY_START, NIGHT_START } = SpinEatTheme;
+    const { DAY_START, NIGHT_START } = SpinEatTheme;
     const hh = (h) => `${String(h).padStart(2, "0")}:00`;
-    // 每一段不拆行，避免「冰果室」被折成兩半
-    const parts = [[MORNING_START, "廟口"], [DAY_START, "冰果室"], [NIGHT_START, "夜市霓虹"]].map(([h, name], i) => {
+    // 每一段不拆行，避免「夜市霓虹」被折成兩半
+    const parts = [[DAY_START, "廟口"], [NIGHT_START, "夜市霓虹"]].map(([h, name], i) => {
       const span = document.createElement("span");
       span.className = "nowrap";
-      span.textContent = `${hh(h)} ${name}${i < 2 ? "，" : ""}`;
+      span.textContent = `${hh(h)} ${name}${i < 1 ? "，" : ""}`;
       return span;
     });
     el.autoHint.replaceChildren(...parts);
