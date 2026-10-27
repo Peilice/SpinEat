@@ -63,6 +63,7 @@
     excludeRecent: $("exclude-recent"),
     excludeDays: $("exclude-days"),
     canvas: $("board"),
+    boardWrap: document.querySelector(".board-wrap"),
     boardEmpty: $("board-empty"),
     boardEmptyText: $("board-empty-text"),
     boardEmptyLink: $("board-empty-link"),
@@ -310,9 +311,13 @@
     ball: null,
     raf: 0,
     finish: null, // 下落中時，呼叫它可以直接落格
+    nudge: null, // 下落中時，呼叫它可以拍台推珠子一把
     litAt: -Infinity, // 落格的時間，中獎燈從這時開始閃
+    idleRaf: 0,
   };
   const FLASH_MS = 320; // 中獎燈閃兩下的長度，落在落格後的停頓裡
+  const GLOW_MS = 260; // 釘子被碰到後亮著的時間
+  const WOBBLE_MS = 360; // 釘子被碰到後抖動的時間
 
   function readColors() {
     const css = getComputedStyle(document.documentElement);
@@ -325,6 +330,8 @@
       litInk: v("--lit-ink"),
       ballHi: v("--ball-hi"),
       ballLo: v("--ball-lo"),
+      ballShadow: v("--ball-shadow"),
+      ballTrail: v("--ball-trail"),
       font: v("--font-board"),
       litGlow: parseFloat(v("--lit-glow")) || 0,
     };
@@ -354,7 +361,7 @@
       for (let c = 0; c <= cols; c++) {
         const x = pad + c * gapX + off;
         if (x < pad + 4 * u || x > w - pad - 4 * u) continue;
-        pins.push({ x, y: top + r * gapY, hit: -1e9 });
+        pins.push({ x, y: top + r * gapY, hit: -1e9, wob: { t0: -1e9, dx: 0, dy: 0, a: 0 } });
       }
     }
     Object.assign(board, { w, h, u, pad, slotTop, base: h - 10 * u, pins });
@@ -365,6 +372,32 @@
     return (board.w - board.pad * 2) / Math.max(1, state.slots.length);
   }
 
+  // 漸層要漸到「同色、全透明」，用 transparent 會漸出一圈灰邊
+  const clearOf = (rgba) => rgba.replace(/,\s*[\d.]+\)\s*$/, ", 0)");
+
+  // 釘子像釘在木板上：被碰到時沿著受力方向快速抖幾下，很快就停
+  function wobbleOffset(p, now) {
+    const t = now - p.wob.t0;
+    if (t < 0 || t >= WOBBLE_MS) return 0;
+    return p.wob.a * Math.exp(-t / 85) * Math.sin((t / 70) * Math.PI * 2);
+  }
+
+  function pinsBusy(now) {
+    return board.pins.some((p) => now - p.hit < GLOW_MS || now - p.wob.t0 < WOBBLE_MS);
+  }
+
+  // 拍台：手指附近的釘子被震得往外抖，越近抖得越大
+  function wobbleAround(x, y, now) {
+    const reach = 70 * board.u;
+    for (const p of board.pins) {
+      const dx = p.x - x;
+      const dy = p.y - y;
+      const d = Math.hypot(dx, dy);
+      if (d >= reach) continue;
+      p.wob = { t0: now, dx: d ? dx / d : 0, dy: d ? dy / d : 1, a: 2.2 * board.u * (1 - d / reach) };
+    }
+  }
+
   function draw(now = performance.now()) {
     const { w, h, u, pad, slotTop, base, pins, colors } = board;
     if (!w) return;
@@ -372,21 +405,24 @@
     const n = state.slots.length;
     if (n === 0) return;
 
-    // 釘子：被碰到時亮一下
+    // 釘子：被碰到時亮一下、抖一下
     for (const p of pins) {
-      const t = Math.max(0, 1 - (now - p.hit) / 260);
+      const t = Math.min(1, Math.max(0, 1 - (now - p.hit) / GLOW_MS));
       const r = (2.4 + t * 1.6) * u;
+      const s = wobbleOffset(p, now);
+      const x = p.x + p.wob.dx * s;
+      const y = p.y + p.wob.dy * s;
       if (t > 0) {
         ctx.globalAlpha = t * 0.45;
         ctx.fillStyle = colors.pinHi;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, r + 5 * u, 0, Math.PI * 2);
+        ctx.arc(x, y, r + 5 * u, 0, Math.PI * 2);
         ctx.fill();
         ctx.globalAlpha = 1;
       }
       ctx.fillStyle = t > 0 ? colors.pinHi : colors.pin;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+      ctx.arc(x, y, r, 0, Math.PI * 2);
       ctx.fill();
     }
 
@@ -440,9 +476,32 @@
       }
     }
 
-    // 珠子
+    // 珠子：速度快時拖出一道殘影，檯面上有一小塊接觸影子
     const ball = board.ball;
     if (ball) {
+      const tail = ball.tail;
+      if (tail && Math.hypot(ball.x - tail.x, ball.y - tail.y) > ball.r * 0.8) {
+        const tg = ctx.createLinearGradient(tail.x, tail.y, ball.x, ball.y);
+        tg.addColorStop(0, clearOf(colors.ballTrail));
+        tg.addColorStop(1, colors.ballTrail);
+        ctx.strokeStyle = tg;
+        ctx.lineWidth = ball.r * 1.5;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(tail.x, tail.y);
+        ctx.lineTo(ball.x, ball.y);
+        ctx.stroke();
+      }
+      const sx = ball.x + ball.r * 0.35;
+      const sy = ball.y + ball.r * 0.55;
+      const sg = ctx.createRadialGradient(sx, sy, ball.r * 0.3, sx, sy, ball.r * 1.45);
+      sg.addColorStop(0, colors.ballShadow);
+      sg.addColorStop(1, clearOf(colors.ballShadow));
+      ctx.fillStyle = sg;
+      ctx.beginPath();
+      ctx.arc(sx, sy, ball.r * 1.45, 0, Math.PI * 2);
+      ctx.fill();
+
       const g = ctx.createRadialGradient(ball.x - ball.r * 0.4, ball.y - ball.r * 0.4, 1, ball.x, ball.y, ball.r);
       g.addColorStop(0, colors.ballHi);
       g.addColorStop(1, colors.ballLo);
@@ -459,18 +518,21 @@
   const MAX_FRAMES = 96; // 只採用 1.6 秒內落格的軌跡
   const MAX_TRIES = 600;
 
-  function simulate() {
+  // 從 start（沒給就從頂端隨機放珠）模擬最多 frames 格，回傳每一格的位置與速度
+  function simulate(start, frames) {
     const { w, u, pad, slotTop, base, pins } = board;
     const n = state.slots.length;
     const sw = slotWidth();
     const r = 6 * u;
     const hitR = r + 2.6 * u;
     const gravity = 0.12 * u;
-    const b = { x: w / 2 + (Math.random() - 0.5) * w * 0.5, y: 8 * u, vx: (Math.random() - 0.5) * 1.2 * u, vy: 0 };
+    const b = start
+      ? { x: start.x, y: start.y, vx: start.vx, vy: start.vy }
+      : { x: w / 2 + (Math.random() - 0.5) * w * 0.5, y: 8 * u, vx: (Math.random() - 0.5) * 1.2 * u, vy: 0 };
     const path = [];
     const hits = []; // [畫格, 釘子編號]
-    let slot = -1;
-    for (let f = 0; f < MAX_FRAMES; f++) {
+    let slot = start ? start.slot : -1;
+    for (let f = 0; f < frames; f++) {
       for (let s = 0; s < 2; s++) {
         b.vy += gravity;
         b.x += b.vx;
@@ -516,38 +578,99 @@
             b.vx = -Math.abs(b.vx) * 0.4;
           }
           if (b.y >= base - r) {
-            path.push({ x: b.x, y: base - r });
+            path.push({ x: b.x, y: base - r, vx: b.vx, vy: b.vy, slot });
             return { path, hits, slot, r };
           }
         }
       }
-      path.push({ x: b.x, y: b.y });
+      path.push({ x: b.x, y: b.y, vx: b.vx, vy: b.vy, slot });
     }
     return null; // 太慢，不採用
   }
 
-  function planDrop(target) {
-    for (let i = 0; i < MAX_TRIES; i++) {
-      const run = simulate();
-      if (run && run.slot === target) return run;
+  function planDrop(target, start = () => null, frames = MAX_FRAMES, tries = MAX_TRIES, accept = () => true) {
+    for (let i = 0; i < tries; i++) {
+      const run = simulate(start(), frames);
+      if (run && run.slot === target && accept(run)) return run;
     }
     return null;
   }
 
+  // ---------- 檯面的實體感：整塊檯面掛在一個阻尼彈簧上 ----------
+  const jolt = { x: 0, y: 0, vx: 0, vy: 0, raf: 0, last: 0 };
+  const JOLT_W = 2 * Math.PI * 11; // 約 11Hz，像一台沉的木頭機台，不像果凍
+  const JOLT_DAMP = 0.3;
+
+  // dx、dy 是這一下大約會晃出去的距離（px）
+  function kick(dx, dy) {
+    if (reduceMotion.matches) return;
+    jolt.vx += dx * JOLT_W;
+    jolt.vy += dy * JOLT_W;
+    if (jolt.raf) return;
+    jolt.last = performance.now();
+    jolt.raf = requestAnimationFrame(function tick(now) {
+      // 分成小步積分，掉幀時彈簧也不會爆掉
+      let dt = Math.min(0.05, (now - jolt.last) / 1000);
+      jolt.last = now;
+      while (dt > 0) {
+        const h = Math.min(dt, 1 / 240);
+        for (const k of ["x", "y"]) {
+          const v = "v" + k;
+          jolt[v] += (-JOLT_W * JOLT_W * jolt[k] - 2 * JOLT_DAMP * JOLT_W * jolt[v]) * h;
+          jolt[k] += jolt[v] * h;
+        }
+        dt -= h;
+      }
+      if (Math.hypot(jolt.x, jolt.y) < 0.05 && Math.hypot(jolt.vx, jolt.vy) < 2) {
+        Object.assign(jolt, { x: 0, y: 0, vx: 0, vy: 0, raf: 0 });
+        el.boardWrap.style.transform = "";
+        return;
+      }
+      el.boardWrap.style.transform = `translate(${jolt.x.toFixed(2)}px, ${jolt.y.toFixed(2)}px)`;
+      jolt.raf = requestAnimationFrame(tick);
+    });
+  }
+
+  // 沒在下落時拍台，只有釘子抖一下、檯面晃一下
+  function settlePins() {
+    if (board.idleRaf) return;
+    board.idleRaf = requestAnimationFrame(function tick(now) {
+      draw(now);
+      board.idleRaf = pinsBusy(now) ? requestAnimationFrame(tick) : 0;
+    });
+  }
+
+  let lastSlap = 0;
+  function slap(x, y) {
+    const now = performance.now();
+    if (reduceMotion.matches || now - lastSlap < 140) return;
+    lastSlap = now;
+    if (board.nudge) return board.nudge(x, y);
+    if (state.spinning || state.slots.length === 0) return;
+    wobbleAround(x, y, now);
+    kick(Math.sign(board.w / 2 - x) * 1.5, 1);
+    settlePins();
+  }
+
   function drop(target, onLand) {
-    const run = planDrop(target);
+    let run = planDrop(target);
     const t0 = performance.now();
     let done = false;
     let hitCursor = 0;
+    let shown = 0; // 目前畫到第幾格
 
     function land() {
       if (done) return;
       done = true;
       cancelAnimationFrame(board.raf);
       board.finish = null;
+      board.nudge = null;
+      window.removeEventListener("devicemotion", onMotion);
       if (run) {
         const end = run.path[run.path.length - 1];
         board.ball = { x: end.x, y: end.y, r: run.r };
+        // 珠子砸到格底，整台跟著往下沉一下；落得越快沉得越多
+        kick(0, Math.min(3, 0.6 + (end.vy / board.u) * 0.5));
       }
       state.lit = target;
       board.litAt = performance.now();
@@ -556,7 +679,7 @@
       // 讓最後被碰到的釘子光暈自然消退，中獎燈閃完
       (function fade(now) {
         draw(now);
-        if (now - board.litAt < FLASH_MS || board.pins.some((p) => now - p.hit < 260)) {
+        if (now - board.litAt < FLASH_MS || pinsBusy(now)) {
           board.raf = requestAnimationFrame(fade);
         }
       })(performance.now());
@@ -566,15 +689,66 @@
     // 極少數情況找不到軌跡，就直接落格
     if (!run) return land();
 
+    // 拍台：從手指那一側把珠子往另一邊推，再從珠子現在的位置和速度重新找一條
+    // 仍然落進同一格、而且不超過原本時間上限的軌跡；找不到就只有檯面晃，珠子照原路走
+    function nudge(tx, ty) {
+      const now = performance.now();
+      const { u } = board;
+      const cur = run.path[shown];
+      const dir = Math.sign(cur.x - tx) || (Math.random() < 0.5 ? -1 : 1);
+      wobbleAround(tx, ty, now);
+      kick(dir * 3.5, 1.5);
+      if (navigator.vibrate) navigator.vibrate(10);
+      const left = MAX_FRAMES - shown - 1;
+      if (cur.slot >= 0 || left < 8) return;
+      const jitter = () => 0.75 + Math.random() * 0.5;
+      for (const force of [1, 0.55, 0.25]) {
+        const next = planDrop(
+          target,
+          () => ({ ...cur, vx: cur.vx + dir * 1.7 * u * force * jitter(), vy: cur.vy - 1.2 * u * force * jitter() }),
+          left,
+          120,
+          // 推了就要看得出被推：前幾格得真的往那一邊跑，不能馬上被釘子彈回來
+          (r) => (r.path[Math.min(5, r.path.length - 1)].x - cur.x) * dir > 4 * u * force
+        );
+        if (!next) continue;
+        const kept = run.hits.filter(([f]) => f <= shown);
+        run = {
+          ...run,
+          path: run.path.slice(0, shown + 1).concat(next.path),
+          hits: kept.concat(next.hits.map(([f, idx]) => [f + shown + 1, idx])),
+        };
+        hitCursor = kept.length;
+        return;
+      }
+    }
+    board.nudge = nudge;
+
+    // 支援的手機（不需要額外授權的）也可以直接搖手機拍台
+    function onMotion(e) {
+      const ax = e.acceleration && e.acceleration.x;
+      if (!ax || Math.abs(ax) < 12) return;
+      const cur = run.path[shown];
+      // 手機往右甩，珠子因為慣性相對往左跑，等於從右側拍台
+      slap(cur.x + Math.sign(ax) * 30 * board.u, cur.y);
+    }
+    window.addEventListener("devicemotion", onMotion);
+
     function step(now) {
       // rAF 給的時間戳可能比 t0 還早一點，不能讓 f 變成負的
       const f = Math.max(0, Math.floor((now - t0) / FRAME_MS));
       if (f >= run.path.length - 1) return land();
       while (hitCursor < run.hits.length && run.hits[hitCursor][0] <= f) {
-        board.pins[run.hits[hitCursor][1]].hit = now;
+        const [hf, idx] = run.hits[hitCursor];
+        const p = board.pins[idx];
+        const v = run.path[hf];
+        const speed = Math.hypot(v.vx, v.vy) || 1;
+        p.hit = now;
+        p.wob = { t0: now, dx: v.vx / speed, dy: v.vy / speed, a: 1.4 * board.u };
         hitCursor++;
       }
-      board.ball = { ...run.path[f], r: run.r };
+      shown = f;
+      board.ball = { ...run.path[f], r: run.r, tail: run.path[Math.max(0, f - 4)] };
       draw(now);
       board.raf = requestAnimationFrame(step);
     }
@@ -606,10 +780,11 @@
       setTimeout(finished, 200);
       return;
     }
+    el.count.textContent = "拍一下檯面可以推珠子・再按一次按鈕直接落格";
     drop(target, () => setTimeout(finished, LAND_PAUSE_MS));
   }
 
-  // 下落中再按一次按鈕或點檯面，就直接落格
+  // 下落中再按一次按鈕，就直接落格
   function skipDrop() {
     if (board.finish) board.finish();
   }
@@ -911,7 +1086,11 @@
     if (btn) setMode(btn.dataset.mode);
   });
   el.spinBtn.addEventListener("click", () => (state.spinning ? skipDrop() : spin()));
-  el.canvas.addEventListener("click", skipDrop);
+  // 拍台用 pointerdown，手指一碰到就有反應，不用等放開
+  el.canvas.addEventListener("pointerdown", (e) => {
+    const rect = el.canvas.getBoundingClientRect();
+    slap(e.clientX - rect.left, e.clientY - rect.top);
+  });
   el.boardEmptyAction.addEventListener("click", () => {
     if (!emptyFixRun) return;
     emptyFixRun();
