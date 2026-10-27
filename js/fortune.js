@@ -43,9 +43,12 @@ const SpinEatFortune = (() => {
         const x = n === 1 ? 60 : 34 + (i * 52) / (n - 1);
         const angle = (i - (n - 1) / 2) * 0.9 + ((i % 3) - 1) * 0.8;
         const top = 10 + ((i * 7) % 5) * 4;
-        s += `<g class="tube-stick" transform="rotate(${angle.toFixed(1)} 60 210)">` +
-          `<rect class="stick-body" x="${x - 3}" y="${top}" width="6" height="${150 - top}" rx="2"/>` +
-          `<rect class="stick-tip" x="${x - 3}" y="${top}" width="6" height="12" rx="2"/></g>`;
+        // 竹片，籤頭一截朱漆雕成跟出籤那支一樣的葫蘆輪廓（縮小版）
+      const head = [[2, 3], [1.4, 5], [3.4, 8], [1.8, 10.5], [3.6, 14], [3, 16], [3, 20]];
+      const side = (sign) => head.map(([w, y]) => `${(x + sign * w).toFixed(1)} ${top + y}`);
+      s += `<g class="tube-stick" transform="rotate(${angle.toFixed(1)} 60 210)">` +
+          `<rect class="stick-body" x="${x - 3}" y="${top + 18}" width="6" height="${132 - top}"/>` +
+          `<path class="stick-tip" d="M${x} ${top}L${side(1).join("L")}L${side(-1).reverse().join("L")}Z"/></g>`;
       }
       sticks.innerHTML = s;
     }
@@ -84,6 +87,7 @@ const SpinEatFortune = (() => {
       if (pool.length) pool[Math.floor(Math.random() * pool.length)].style.opacity = "0";
       qianNo.textContent = `第${numeral(no)}籤`;
       qianName.textContent = item.name;
+      qianName.classList.toggle("is-long", [...item.name].length > 4);
       qian.hidden = false;
       if (!calm && navigator.vibrate) navigator.vibrate(15);
       await play(

@@ -37,9 +37,26 @@
   --tube: #4a2414; /* 求籤：籤筒、籤、籤頭朱漆 */
   --tube-rim: #2e150b;
   --tube-band: #e7bf5f;
-  --stick: #f1e0b4;
+  --stick: #ecd49c; /* 竹片本色 */
   --stick-ink: #3d1f12;
-  --lacquer: #d4402c;
+  --stick-no: #8c2216; /* 籤號用朱墨 */
+  --bamboo-tone: #dcb97f; /* 竹籤本色，比籤紙深一點、偏褐 */
+  --lacquer: #b52a1c;
+  /* 籤頭雕成葫蘆般的輪廓：尖頂，往下細頸與鼓起交替，最後一個肩接上竹身（40×80） */
+  --qian-head: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 80' preserveAspectRatio='none'%3E%3Cpath d='M20 0C24 2 28 5 28 8C28 11 25 12 25 14C25 17 34 19 34 24C34 28 27 29 27 32C27 36 39 39 39 44C39 49 30 50 30 54C30 58 38 59 38 64L38 80L2 80L2 64C2 59 10 58 10 54C10 50 1 49 1 44C1 39 13 36 13 32C13 29 6 28 6 24C6 19 15 17 15 14C15 12 12 11 12 8C12 5 16 2 20 0Z'/%3E%3C/svg%3E");
+  /* 竹身：兩側是竹片圓弧的暗邊、中間一道反光、細細的直纖維 */
+  --bamboo:
+    linear-gradient(90deg, rgba(110, 72, 28, 0.45), transparent 22%, rgba(255, 246, 222, 0.42) 42%, transparent 62%, rgba(110, 72, 28, 0.5)),
+    repeating-linear-gradient(90deg, transparent 0 3px, rgba(130, 88, 38, 0.1) 3px 4px, transparent 4px 7px),
+    linear-gradient(180deg, color-mix(in srgb, var(--bamboo-tone) 88%, #fff), var(--bamboo-tone) 40%, color-mix(in srgb, var(--bamboo-tone) 86%, #6e4a1c));
+  /* 籤頭朱漆：每個細頸壓暗、鼓起受光，看得出雕出來的起伏；漆在肩下多塗一截，收邊一道暗線 */
+  --lacquer-face:
+    linear-gradient(180deg,
+      rgba(255, 190, 160, 0.3) 6.6%, rgba(50, 6, 3, 0.5) 15.4%, rgba(255, 190, 160, 0.22) 25.3%,
+      rgba(50, 6, 3, 0.5) 35.2%, rgba(255, 190, 160, 0.25) 47.3%, rgba(50, 6, 3, 0.5) 59.3%,
+      rgba(255, 190, 160, 0.2) 69.2%, transparent 79%, transparent calc(100% - 1px), rgba(50, 6, 3, 0.55) calc(100% - 1px)),
+    linear-gradient(90deg, rgba(50, 6, 3, 0.45), transparent 26%, rgba(255, 196, 170, 0.38) 42%, transparent 62%, rgba(50, 6, 3, 0.5)),
+    var(--lacquer);
   --font-display: "Noto Serif TC", "Noto Sans TC", "PingFang TC", serif;
   --track: 0.02em;
   --radius: 10px;
@@ -445,26 +462,28 @@ a { color: inherit; text-underline-offset: 3px; }
 .tube-body { fill: var(--tube); }
 .tube-band { fill: var(--tube-band); opacity: 0.85; }
 .tube-word { fill: var(--tube-band); font-family: var(--font-display); font-weight: 900; font-size: 30px; }
-.stick-body { fill: var(--stick); }
-.stick-tip { fill: var(--lacquer); }
+.stick-body { fill: var(--bamboo-tone); stroke: rgba(110, 72, 28, 0.45); stroke-width: 0.8; }
+.stick-tip { fill: var(--lacquer); stroke: rgba(50, 6, 3, 0.45); stroke-width: 0.6; }
 
 /* 籤落下的位置；還沒抽時是供桌上刻出的一道淺槽加提示 */
 .qian-slot,
 .qian {
   position: absolute;
   right: 17%;
-  top: 14%;
-  width: 54px;
-  height: 72%;
+  top: 8%;
+  width: var(--qw);
+  height: 84%;
   margin: 0;
+  --qw: 40px; /* 籤寬與籤頭高，窄版供桌上一起縮小 */
+  --qh: 80px;
   writing-mode: vertical-rl;
   text-orientation: upright;
-  border-radius: 4px;
   font-family: var(--font-display);
 }
 .qian-slot {
   display: grid;
   place-items: center;
+  border-radius: 20px 20px 3px 3px / 13px 13px 3px 3px;
   background: rgba(46, 21, 11, 0.22);
   box-shadow: inset 0 2px 6px rgba(46, 21, 11, 0.45), 0 1px 0 rgba(231, 191, 95, 0.35);
   color: var(--label-muted);
@@ -472,19 +491,66 @@ a { color: inherit; text-underline-offset: 3px; }
   font-weight: 700;
   letter-spacing: 0.2em;
 }
+/* 籤落下來後刻槽就藏起來，免得從籤頭雕出的缺口裡露出來 */
+.temple:has(.qian:not([hidden])) .qian-slot { visibility: hidden; }
+/* 料理名寫在籤頭下面，籤號落在籤尾 */
 .qian {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 0 10px;
-  background: var(--stick);
+  justify-content: space-between;
+  padding: calc(var(--qh) + 22px) 0 12px;
+  overflow: hidden;
+  white-space: nowrap;
   color: var(--stick-ink);
-  border-top: 16px solid var(--lacquer);
   font-weight: 900;
+  filter: drop-shadow(2px 8px 6px rgba(46, 21, 11, 0.45));
 }
-.qian { box-shadow: 0 0 0 1.5px var(--gold), 0 10px 18px rgba(46, 21, 11, 0.4); }
-.qian-no { font-size: var(--fs-meta); letter-spacing: 0.1em; }
+/* 籤的輪廓用遮罩剪出來：::before 是整支竹身，::after 是籤頭朱漆；陰影交給外層的 drop-shadow */
+.qian::before,
+.qian::after,
+.lane-qian li::before,
+.lane-qian li::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.qian::before,
+.lane-qian li::before {
+  background: var(--bamboo);
+  -webkit-mask-image: var(--qian-head), linear-gradient(#000 0 0);
+  mask-image: var(--qian-head), linear-gradient(#000 0 0);
+  -webkit-mask-position: 0 0, calc(var(--qw) * 0.05) calc(var(--qh) - 1px);
+  mask-position: 0 0, calc(var(--qw) * 0.05) calc(var(--qh) - 1px);
+  -webkit-mask-size: var(--qw) var(--qh), calc(var(--qw) * 0.9) calc(100% - var(--qh) + 1px);
+  mask-size: var(--qw) var(--qh), calc(var(--qw) * 0.9) calc(100% - var(--qh) + 1px);
+}
+.qian::after,
+.lane-qian li::after {
+  bottom: auto;
+  height: calc(var(--qh) + 11px);
+  background: var(--lacquer-face);
+  -webkit-mask-image: var(--qian-head), linear-gradient(#000 0 0);
+  mask-image: var(--qian-head), linear-gradient(#000 0 0);
+  -webkit-mask-position: 0 0, calc(var(--qw) * 0.05) calc(var(--qh) - 1px);
+  mask-position: 0 0, calc(var(--qw) * 0.05) calc(var(--qh) - 1px);
+  -webkit-mask-size: var(--qw) var(--qh), calc(var(--qw) * 0.9) 12px;
+  mask-size: var(--qw) var(--qh), calc(var(--qw) * 0.9) 12px;
+}
+.qian-no { order: 1; color: var(--stick-no); font-size: var(--fs-meta); letter-spacing: 0.14em; }
 .qian-name { font-size: var(--fs-dialog); letter-spacing: 0.08em; font-feature-settings: "palt"; }
+.qian-name.is-long { font-size: var(--fs-body); letter-spacing: 0.02em; }
+/* 手機上供桌矮，籤跟著縮小，字也降一級，才放得下料理名和籤號 */
+.temple { container-type: inline-size; }
+@container (max-width: 380px) {
+  .qian-slot, .qian { --qw: 34px; --qh: 66px; }
+  .qian { padding-top: calc(var(--qh) + 14px); }
+  .qian-no { letter-spacing: 0.04em; }
+  .qian-name { font-size: var(--fs-body); letter-spacing: 0.02em; }
+  .qian-name.is-long { font-size: var(--fs-small); letter-spacing: 0; }
+}
 
 /* ==========================================================
    戳戳樂（夜市主題的抽法）
@@ -943,19 +1009,20 @@ a { color: inherit; text-underline-offset: 3px; }
 /* 抽到的那支籤：斜靠在籤詩右上角後面，露出籤頭和籤號 */
 [data-theme="temple"] .lane-qian { position: absolute; top: 0; right: 26px; margin: 0; }
 .lane-qian li {
-  width: 42px;
-  height: 150px;
+  --qw: 40px;
+  --qh: 80px;
+  position: relative;
+  width: 40px;
+  height: 190px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: 12px;
+  padding-top: 98px;
+  overflow: hidden;
   writing-mode: vertical-rl;
   text-orientation: upright;
-  background: var(--stick);
-  color: var(--stick-ink);
-  border-top: 16px solid var(--lacquer);
-  border-radius: 4px;
-  box-shadow: 0 0 0 1.5px var(--gold), 0 12px 22px rgba(46, 21, 11, 0.45);
+  color: var(--stick-no);
+  filter: drop-shadow(2px 9px 7px rgba(46, 21, 11, 0.45));
   font-family: var(--font-display);
   font-weight: 900;
   font-size: var(--fs-body);
