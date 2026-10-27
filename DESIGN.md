@@ -52,18 +52,33 @@ typography:
     letterSpacing: "0.12em"
   title:
     fontFamily: "Noto Serif TC, Noto Sans TC, serif"
-    fontSize: "1.05rem"
+    fontSize: "1.125rem"
     fontWeight: 700
   body:
-    fontFamily: "Noto Sans TC, system-ui, -apple-system, Segoe UI, Microsoft JhengHei, sans-serif"
+    fontFamily: "Noto Sans TC, PingFang TC, Microsoft JhengHei, system-ui, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
-    lineHeight: 1.5
+    lineHeight: 1.6
+    letterSpacing: "0.02em"
+  small:
+    fontFamily: "Noto Sans TC, PingFang TC, Microsoft JhengHei, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 400
+    lineHeight: 1.6
   label:
-    fontFamily: "Noto Sans TC, system-ui, sans-serif"
-    fontSize: "0.8rem"
+    fontFamily: "Noto Serif TC, Noto Sans TC, serif"
+    fontSize: "0.875rem"
     fontWeight: 700
     lineHeight: 1.5
+  meta:
+    fontFamily: "Noto Sans TC, PingFang TC, Microsoft JhengHei, system-ui, sans-serif"
+    fontSize: "0.75rem"
+    fontWeight: 400
+    lineHeight: 1.3
+  dialog:
+    fontFamily: "Noto Serif TC, Noto Sans TC, serif"
+    fontSize: "1.25rem"
+    fontWeight: 700
 rounded:
   tag: "6px"
   field: "8px"
@@ -192,25 +207,34 @@ components:
 ## Typography
 
 **Display Font:** Noto Serif TC 900（冰果室）／Noto Sans TC 900（夜市），後備 serif／system-ui
-**Body Font:** Noto Sans TC（後備 system-ui、-apple-system、Segoe UI、Microsoft JhengHei）
-**Board Font:** 冰果室 Noto Serif TC、夜市 Noto Sans TC，canvas 讀 `--font-board`，700 字重
+**Body Font:** Noto Sans TC（後備 PingFang TC、Microsoft JhengHei、system-ui）
+**Board Font:** 冰果室 Noto Serif TC、夜市 Noto Sans TC，canvas 讀 `--font-board`，700 字重；字型分片載入，每次 `loadingdone` 都重畫檯面
 
 **Character:** 冰果室的明體粗字像老店招牌與價目牌；夜市換成黑體粗字，搭配霓虹光暈。字體透過 `--font-display` 與 `--font-board` 依主題切換，元件不需各自判斷。
+
+**載入：** Google Fonts 只載 Noto Sans TC 400／700／900 與 Noto Serif TC 700／900，`display=swap`。明體沒有 400，凡是用 `--font-display` 的元件只能在 700 與 900 之間做粗細對比（例如分頁：未選中 700、選中 900）。
+
+### 字級階梯
+五個變數，兩個主題共用，新元件一律引用、不寫字面值：`--fs-meta` 0.75rem、`--fs-small` 0.875rem、`--fs-body` 1rem、`--fs-title` 1.125rem、`--fs-dialog` 1.25rem。相鄰兩階至少差 2px；要再分層級時換顏色（`--muted`）或粗細，不另開字級。以下 Result、Display、Serial、Action 是階梯外的招牌角色，各自只用在指定位置。
 
 ### Hierarchy
 - **Result**（900, clamp(3rem, 17vw, 5.25rem), 1.08）：結果畫面的料理名稱，全系統最大的字，只出現在這裡。
 - **Display**（900, clamp(1.5rem, 6.4vw, 1.75rem), 1.25, 0.02em）：首頁兩行招呼語、設定頁標題，`text-wrap: balance`。
-- **Serial**（900, 1.75rem, 1, 等寬數字）：抽選序號「第 0004 抽」，單位字縮到 0.8rem。
-- **Action**（900, 1.2rem, 字距 0.12em；冰果室 0.2em）：「幫我決定！」主按鈕；結果畫面兩顆按鈕用 1.05rem、0.08em。
-- **Title**（700, 1.05rem）：面板標題；對話框標題 1.2rem，分頁 0.95rem。
-- **Body**（400, 1rem, 1.5）：一般內容；清單列 0.9rem。
-- **Label**（700, 0.8rem）：條件標籤；說明與次要資訊用 0.75–0.85rem 的 `--muted`。
+- **Serial**（900, 1.75rem, 1, 等寬數字）：抽選序號「第 0004 抽」，單位字用 `--fs-small`。
+- **Action**（900, 1.2rem, 字距 0.12em；冰果室 0.2em）：「幫我決定！」主按鈕；結果畫面兩顆按鈕用 `--fs-title`、0.08em。
+- **Title**（700, `--fs-title`）：面板標題；對話框標題 `--fs-dialog`；分頁與「這七天」用 `--fs-body`。
+- **Body**（400, `--fs-body`, 1.6）：一般內容、輸入框、外觀選項名稱。
+- **Small**（400, `--fs-small`）：說明（`.panel-note` 行高 1.7）、欄位標籤、紀錄列、候選數、提示訊息、次要與文字按鈕。
+- **Label**（700, `--fs-small`）：條件標籤與表單勾選標籤。
+- **Meta**（400, `--fs-meta`）：七天格、日期、徽章、底部導覽、圖例；這是最小字級，不再往下縮。
 - **Board slot**（700, 最大 16px，依格寬縮放，行距 1.14）：格內直書料理名稱，超出時以「︙」截斷。
 
 ### Named Rules
 **唯一大數字原則。** 抽選序號是首頁唯一的大數字；候選數、天數等其他數字都用小字說明，不放大。
 
 **直書落格原則。** 檯面格內的名稱一律直書、一字一行，格寬固定，切換條件時只換文字不換格子。
+
+**中文排版原則。** 標題類（招呼語、結果料理名、面板與對話框標題）開 `font-feature-settings: "palt"`，全形標點收成半寬；說明文字用 `text-wrap: pretty`，避免最後一行只剩一個字。內文字距冰果室 0.02em、夜市深底淺字 0.03em（`--track`）；七天格歸零以塞進窄格。計數與日期用等寬數字。
 
 ## Layout
 

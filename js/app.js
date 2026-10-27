@@ -1134,6 +1134,7 @@
   renderGreeting();
   refresh();
   layout();
-  // 網頁字型載入後，檯面上的字要重畫一次
+  // 網頁字型載入後，檯面上的字要重畫一次；中文字型是分片載入的，之後每補到一批字形都再畫一次
   document.fonts?.ready.then(() => draw());
+  document.fonts?.addEventListener("loadingdone", () => draw());
 })();
