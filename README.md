@@ -24,6 +24,10 @@ python -m http.server 5173
 
 然後打開 http://localhost:5173
 
+## 發佈更新
+
+`index.html` 與 `settings.html` 引用 CSS／JS 時帶有版本號（例如 `js/app.js?v=20261027b`）。改了 `css/` 或 `js/` 底下的檔案後，要一起更新兩個 HTML 裡的版本號，否則加到主畫面的 iPhone 可能繼續使用舊檔。
+
 ## 專案結構
 
 ```
