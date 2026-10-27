@@ -1,12 +1,15 @@
-// 主題：依時間自動切換（白天冰果室、晚上夜市霓虹），或在設定頁固定其中一個
+// 主題：依時間自動切換（早上廟口、白天冰果室、晚上夜市霓虹），或在設定頁固定其中一個
+// 每個主題配一種抽法：廟口求籤、冰果室彈珠台、夜市戳戳樂
 // 放在 <head> 同步載入，避免頁面先閃過另一個主題
 const SpinEatTheme = (() => {
   "use strict";
 
-  const DAY_START = 6; // 06:00 起是白天
+  const MORNING_START = 5; // 05:00 起是早上，廟口
+  const DAY_START = 10; // 10:00 起是白天
   const NIGHT_START = 18; // 18:00 起是晚上
-  const THEMES = ["icefruit", "neon"];
-  const THEME_COLOR = { icefruit: "#dcc58a", neon: "#1b1546" };
+  const THEMES = ["icefruit", "neon", "temple"];
+  const THEME_COLOR = { icefruit: "#dcc58a", neon: "#1b1546", temple: "#8c2216" };
+  const DRAWS = { icefruit: "pinball", neon: "poke", temple: "fortune" };
 
   function readSettings() {
     try {
@@ -24,6 +27,7 @@ const SpinEatTheme = (() => {
   function resolve(pref = preference(), now = new Date()) {
     if (THEMES.includes(pref)) return pref;
     const h = now.getHours();
+    if (h >= MORNING_START && h < DAY_START) return "temple";
     return h >= DAY_START && h < NIGHT_START ? "icefruit" : "neon";
   }
 
@@ -61,6 +65,51 @@ const SpinEatTheme = (() => {
     return `<svg width="${w}" height="${h}" aria-hidden="true"><defs><filter id="bokeh" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="22"/></filter></defs>${s}</svg>`;
   }
 
+  // 廟埕的石板：一排排錯縫的長石，深淺略有不同
+  function templeBackdrop() {
+    const rnd = seeded(5);
+    const rowH = 56;
+    const W = Math.max(840, window.innerWidth);
+    const H = Math.max(1120, window.innerHeight);
+    let s = "";
+    for (let y = 0; y < H; y += rowH) {
+      let x = -Math.floor(rnd() * 80);
+      while (x < W) {
+        const w = 90 + Math.floor(rnd() * 4) * 22;
+        const shade = rnd();
+        if (shade < 0.35) s += `<rect x="${x + 1}" y="${y + 1}" width="${w - 2}" height="${rowH - 2}" fill="var(--slab)" opacity="${shade < 0.15 ? 0.55 : 0.32}"/>`;
+        s += `<path d="M${x} ${y}V${y + rowH}" stroke="var(--grout)" stroke-width="2"/>`;
+        x += w;
+      }
+      s += `<path d="M0 ${y}H${W}" stroke="var(--grout)" stroke-width="2"/>`;
+    }
+    return `<svg width="${W}" height="${H}" aria-hidden="true">${s}</svg>`;
+  }
+
+  // 廟口的朱紅橫樑，下面掛一排紅燈籠；依實際寬度排，間距固定
+  function templeEave(width) {
+    let s =
+      `<rect x="0" y="0" width="${width}" height="26" fill="var(--beam)"/>` +
+      `<rect x="0" y="4" width="${width}" height="1.5" fill="var(--gold)"/>` +
+      `<rect x="0" y="20" width="${width}" height="1.5" fill="var(--gold)"/>` +
+      `<rect x="0" y="26" width="${width}" height="3" fill="var(--beam-shade)"/>`;
+    const count = Math.max(3, Math.round(width / 130));
+    for (let k = 0; k < count; k++) {
+      const x = ((k + 0.5) * width) / count;
+      const drop = k % 2 ? 6 : 0; // 高低錯開，不要排成一直線
+      const cy = 46 + drop;
+      s +=
+        `<path d="M${x} 29V${cy - 15}" stroke="var(--gold)" stroke-width="1.2"/>` +
+        `<rect x="${x - 6}" y="${cy - 17}" width="12" height="4" rx="1" fill="var(--gold)"/>` +
+        `<ellipse cx="${x}" cy="${cy}" rx="13" ry="14" fill="var(--lantern)"/>` +
+        `<path d="M${x - 6} ${cy - 13}Q${x - 10} ${cy} ${x - 6} ${cy + 13}M${x + 6} ${cy - 13}Q${x + 10} ${cy} ${x + 6} ${cy + 13}M${x} ${cy - 14}V${cy + 14}" stroke="var(--lantern-rib)" stroke-width="1" fill="none"/>` +
+        `<ellipse cx="${x - 4}" cy="${cy - 5}" rx="3.5" ry="5" fill="#fff" opacity=".18"/>` +
+        `<rect x="${x - 6}" y="${cy + 13}" width="12" height="4" rx="1" fill="var(--gold)"/>` +
+        `<path d="M${x - 2} ${cy + 17}V${cy + 25}M${x} ${cy + 17}V${cy + 27}M${x + 2} ${cy + 17}V${cy + 25}" stroke="var(--gold)" stroke-width="1"/>`;
+    }
+    return `<svg width="${width}" height="76" aria-hidden="true">${s}</svg>`;
+  }
+
   // 依實際寬度畫一串下垂的燈泡，避免寬螢幕上被拉扁
   const BULB_COLORS = ["#ff5c9a", "#d8ff3c", "#7a6bff", "#ff9a3c", "#3cf0ff"];
   function bulbString(width) {
@@ -77,7 +126,7 @@ const SpinEatTheme = (() => {
     return `<svg width="${width}" height="64" aria-hidden="true"><defs><filter id="glow" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="4"/></filter></defs>${s}</svg>`;
   }
 
-  function renderBulbs() {
+  function renderAwning() {
     const el = document.querySelector(".awning");
     if (!el) return;
     const theme = document.documentElement.dataset.theme;
@@ -85,22 +134,22 @@ const SpinEatTheme = (() => {
     const key = `${theme}:${width}`;
     if (el.dataset.key === key) return;
     el.dataset.key = key;
-    el.innerHTML = theme === "neon" ? bulbString(width) : "";
+    el.innerHTML = theme === "neon" ? bulbString(width) : theme === "temple" ? templeEave(width) : "";
   }
 
   function renderBackdrop(theme) {
     const el = document.querySelector(".backdrop");
     if (!el) return;
-    // 夜市的散景依視口尺寸產生，尺寸改變時要重畫
-    const key = theme === "neon" ? `neon:${window.innerWidth}x${window.innerHeight}` : theme;
+    // 夜市的散景和廟口的石板依視口尺寸產生，尺寸改變時要重畫
+    const key = theme === "icefruit" ? theme : `${theme}:${window.innerWidth}x${window.innerHeight}`;
     if (el.dataset.key === key) return;
     el.dataset.key = key;
-    el.innerHTML = theme === "neon" ? neonBackdrop() : icefruitBackdrop();
+    el.innerHTML = theme === "neon" ? neonBackdrop() : theme === "temple" ? templeBackdrop() : icefruitBackdrop();
   }
 
   function renderDecor(theme) {
     renderBackdrop(theme);
-    renderBulbs();
+    renderAwning();
   }
 
   // ---------- 套用 ----------
@@ -127,5 +176,8 @@ const SpinEatTheme = (() => {
     if (!document.hidden) apply();
   });
 
-  return { DAY_START, NIGHT_START, apply, resolve };
+  // 現在的主題用哪一種抽法
+  const draw = () => DRAWS[document.documentElement.dataset.theme] || "pinball";
+
+  return { MORNING_START, DAY_START, NIGHT_START, apply, resolve, draw };
 })();

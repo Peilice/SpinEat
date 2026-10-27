@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@700;900&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=20261027g">
-  <script src="js/theme.js?v=20261027g"></script>
+  <link rel="stylesheet" href="css/style.css?v=20261027i">
+  <script src="js/theme.js?v=20261027i"></script>
 </head>
 <body>
   <div class="backdrop" aria-hidden="true"></div>
@@ -70,9 +70,32 @@
       </div>
     </details>
 
-    <section class="board-area" aria-label="彈珠台">
+    <section class="board-area" aria-label="抽選" id="board-area">
       <div class="board-wrap">
         <canvas id="board" role="img" aria-label="彈珠台"></canvas>
+        <div class="poke-sheet" id="poke" role="img" aria-label="戳戳樂" hidden>
+          <div class="poke-head" aria-hidden="true">
+            <span class="poke-title">戳戳樂</span>
+            <span class="poke-sub">挑一格戳下去</span>
+          </div>
+          <div class="poke-grid" aria-hidden="true"></div>
+        </div>
+        <div class="temple" id="temple" role="img" aria-label="籤筒" hidden>
+          <p class="temple-plaque" aria-hidden="true">有求必應</p>
+          <p class="qian-slot" aria-hidden="true">點籤筒求一支籤</p>
+          <svg class="tube" viewBox="0 0 120 220" aria-hidden="true">
+            <g class="tube-sticks"></g>
+            <ellipse class="tube-rim" cx="60" cy="82" rx="42" ry="9"/>
+            <rect class="tube-body" x="18" y="82" width="84" height="130" rx="10"/>
+            <rect class="tube-band" x="18" y="98" width="84" height="7"/>
+            <rect class="tube-band" x="18" y="190" width="84" height="7"/>
+            <text class="tube-word" x="60" y="160" text-anchor="middle">籤</text>
+          </svg>
+          <div class="qian" aria-hidden="true" hidden>
+            <span class="qian-no"></span>
+            <span class="qian-name"></span>
+          </div>
+        </div>
         <div class="board-empty" id="board-empty" hidden>
           <p id="board-empty-text"></p>
           <a class="btn-secondary btn-sm" href="settings.html" id="board-empty-link" hidden>前往設定新增店家</a>
@@ -133,8 +156,10 @@
 
   <div class="toast" id="toast" role="status" hidden></div>
 
-  <script src="js/foods.js?v=20261027g"></script>
-  <script src="js/store.js?v=20261027g"></script>
-  <script src="js/app.js?v=20261027g"></script>
+  <script src="js/foods.js?v=20261027i"></script>
+  <script src="js/store.js?v=20261027i"></script>
+  <script src="js/fortune.js?v=20261027i"></script>
+  <script src="js/poke.js?v=20261027i"></script>
+  <script src="js/app.js?v=20261027i"></script>
 </body>
 </html>

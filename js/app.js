@@ -33,6 +33,9 @@
   const settings = D.getSettings();
   // 系統要求減少動態效果、而且設定頁沒選「一律播放」時，抽選直接落格
   const calm = () => reduceMotion.matches && settings.motion !== "always";
+  // 抽法跟著主題：冰果室彈珠台、夜市戳戳樂、廟口求籤；三種共用候選、結果與紀錄，只換演出
+  // 自動模式跨時段時主題會換，所以每次都即時問，不在載入時記住
+  const drawKind = () => SpinEatTheme.draw();
   const state = {
     meal: defaultMealByTime(),
     prices: new Set(), // 空集合代表不限
@@ -66,6 +69,8 @@
     excludeRecent: $("exclude-recent"),
     excludeDays: $("exclude-days"),
     canvas: $("board"),
+    temple: $("temple"),
+    poke: $("poke"),
     boardWrap: document.querySelector(".board-wrap"),
     boardEmpty: $("board-empty"),
     boardEmptyText: $("board-empty-text"),
@@ -92,6 +97,8 @@
     toast: $("toast"),
   };
   const ctx = el.canvas.getContext("2d");
+  const fortune = SpinEatFortune.create(el.temple);
+  const poke = SpinEatPoke.create(el.poke);
 
   // ---------- 抽選項目 ----------
   // 把料理和店家統一成同樣的格式：{ key, name, emoji, price, typeText, store? }
@@ -252,6 +259,7 @@
 
   function onFilterChange() {
     state.rejected.clear();
+    poke.renew();
     refresh();
   }
 
@@ -262,6 +270,17 @@
     state.types.clear();
     renderGreeting();
     onFilterChange();
+  }
+
+  // ---------- 抽選舞台 ----------
+  // 只顯示這個主題的那一種；彈珠台被藏起來時量不到寬度，換回來要重新排版
+  function syncStage() {
+    const kind = drawKind();
+    const wasHidden = el.canvas.hidden;
+    el.canvas.hidden = kind !== "pinball";
+    el.temple.hidden = kind !== "fortune";
+    el.poke.hidden = kind !== "poke";
+    if (kind === "pinball" && wasHidden) layout();
   }
 
   // ---------- 招呼與序號 ----------
@@ -758,7 +777,8 @@
     board.raf = requestAnimationFrame(step);
   }
 
-  function spin() {
+  // cell：戳戳樂時被點的那一格；按按鈕抽時不帶
+  function spin(cell = null) {
     if (state.spinning || state.candidates.length === 0) return;
     state.spinning = true;
     state.lit = -1;
@@ -770,26 +790,47 @@
     settings.draws = (settings.draws || 0) + 1;
     D.saveSettings(settings);
 
-    const finished = () => {
+    const finished = (place) => {
       state.spinning = false;
       setControlsDisabled(false);
-      showResult(winner, target);
+      showResult(winner, place);
     };
+
+    const pause = () => (calm() ? 200 : LAND_PAUSE_MS);
+    if (drawKind() === "fortune") {
+      // 籤號就是它在候選裡的順序
+      const no = state.candidates.indexOf(winner) + 1;
+      const place = { label: `第${SpinEatFortune.numeral(no)}籤`, slot: -1 };
+      if (!calm()) el.count.textContent = "再按一次按鈕直接出籤";
+      fortune.draw(winner, no, calm()).then(() => setTimeout(() => finished(place), pause()));
+      return;
+    }
+    if (drawKind() === "poke") {
+      if (!poke.left()) poke.renew();
+      if (!calm()) el.count.textContent = "再按一次按鈕直接戳下去";
+      poke.poke(winner, cell, calm()).then((i) => setTimeout(() => finished({ label: `戳開第 ${i + 1} 格`, slot: -1 }), pause()));
+      return;
+    }
+
+    const place = { label: `落在第 ${target + 1} 格`, slot: target };
 
     if (calm()) {
       board.ball = null;
       state.lit = target;
       draw();
-      setTimeout(finished, 200);
+      setTimeout(() => finished(place), 200);
       return;
     }
     el.count.textContent = "拍一下檯面可以推珠子・再按一次按鈕直接落格";
-    drop(target, () => setTimeout(finished, LAND_PAUSE_MS));
+    drop(target, () => setTimeout(() => finished(place), LAND_PAUSE_MS));
   }
 
-  // 下落中再按一次按鈕，就直接落格
+  // 下落中再按一次按鈕，就直接落格；求籤時直接出籤
   function skipDrop() {
-    if (board.finish) board.finish();
+    const kind = drawKind();
+    if (kind === "fortune") fortune.skip();
+    else if (kind === "poke") poke.skip();
+    else if (board.finish) board.finish();
   }
 
   function setControlsDisabled(disabled) {
@@ -800,19 +841,21 @@
   }
 
   // ---------- 結果 ----------
-  function showResult(item, slotIndex) {
+  // place：{ label: 落在第幾格或第幾籤, slot: 落中的格子，求籤時是 -1、不畫落格小地圖 }
+  function showResult(item, place) {
     state.current = item;
     const num = document.createElement("span");
     num.className = "serial-num";
     num.textContent = formatSerial(settings.draws);
     const slot = document.createElement("span");
     slot.className = "result-slot";
-    slot.textContent = `落在第 ${slotIndex + 1} 格`;
+    slot.textContent = place.label;
     el.resultSerial.replaceChildren("第", num, "抽", slot);
+    el.resultLane.hidden = place.slot < 0;
     el.resultLane.replaceChildren(
       ...state.slots.map((_, i) => {
         const li = document.createElement("li");
-        if (i === slotIndex) li.className = "lit";
+        if (i === place.slot) li.className = "lit";
         return li;
       })
     );
@@ -822,7 +865,9 @@
 
     const avoided = avoidedNames();
     el.resultWhy.textContent =
-      (state.candidates.length === 1 ? "台上只剩這一個了" : `從 ${state.candidates.length} 個候選中抽出`) +
+      (state.candidates.length === 1
+        ? { fortune: "籤筒裡只剩這一支了", poke: "只剩這一個候選了" }[drawKind()] || "台上只剩這一個了"
+        : `從 ${state.candidates.length} 個候選中抽出`) +
       (avoided.length ? `・已避開${avoided.slice(0, 2).join("、")}${avoided.length > 2 ? "等" : ""}` : "");
 
     if (item.store) {
@@ -870,6 +915,7 @@
     state.history = state.history.slice(0, HISTORY_LIMIT);
     D.saveHistory(state.history);
     state.rejected.clear();
+    poke.renew();
     state.justAte = true;
     closeResult();
     // 讓人知道它記住了：排除開著時，說出這一餐多久內不會再上台
@@ -1055,6 +1101,9 @@
       state.slots = dealSlots();
       state.lit = -1;
       board.ball = null;
+      fortune.reset();
+      poke.settle();
+      syncStage();
     }
 
     // 篩選按鈕會重建，先記住焦點位置，重建後還原
@@ -1070,7 +1119,7 @@
     const n = state.candidates.length;
     renderEmptyState(n);
     const notes = [];
-    if (n > MAX_SLOTS) notes.push(`每次隨機 ${MAX_SLOTS} 個上台`);
+    if (n > MAX_SLOTS && drawKind() === "pinball") notes.push(`每次隨機 ${MAX_SLOTS} 個上台`);
     if (settings.excludeOn) {
       const recent = recentKeys();
       const excluded = allItems().filter((item) => recent.has(item.key) && item.meals.includes(state.meal)).length;
@@ -1082,6 +1131,9 @@
       "aria-label",
       n ? `彈珠台，台上 ${state.slots.length} 格：${state.slots.map((s) => s.name).join("、")}` : "彈珠台，目前沒有候選"
     );
+    fortune.setSticks(n);
+    el.temple.setAttribute("aria-label", n ? `籤筒，裡面 ${n} 支籤` : "籤筒，目前沒有候選");
+    el.poke.setAttribute("aria-label", n ? `戳戳樂，還有 ${poke.left()} 格沒戳` : "戳戳樂，目前沒有候選");
     setControlsDisabled(state.spinning);
     draw();
   }
@@ -1096,6 +1148,22 @@
   el.canvas.addEventListener("pointerdown", (e) => {
     const rect = el.canvas.getBoundingClientRect();
     slap(e.clientX - rect.left, e.clientY - rect.top);
+  });
+  // 點籤筒就求籤；正在出籤時不理會，免得連點變成跳過
+  el.temple.addEventListener("pointerdown", (e) => {
+    if (e.button === 0 && !state.spinning && !el.result.open) spin();
+  });
+  // 搖一搖手機也能求籤（不需授權就能讀加速度的手機）；門檻跟彈珠台甩手機拍台一樣
+  window.addEventListener("devicemotion", (e) => {
+    const a = e.acceleration;
+    if (!a || drawKind() !== "fortune" || state.spinning || el.result.open || document.hidden) return;
+    if (Math.hypot(a.x || 0, a.y || 0) > 12) spin();
+  });
+  // 戳戳樂：手指一碰到沒戳過的格子就戳，不用等放開
+  el.poke.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0 || state.spinning || el.result.open) return;
+    const i = poke.cellIndex(e.target);
+    if (i >= 0 && poke.isOpen(i)) spin(i);
   });
   el.boardEmptyAction.addEventListener("click", () => {
     if (!emptyFixRun) return;
@@ -1123,9 +1191,10 @@
     D.saveHistory(state.history);
     refresh();
   });
+  // 換主題也換抽法；抽到一半就等這一輪結束，關掉結果畫面時 refresh 會換
   document.addEventListener("spineat:theme", () => {
     readColors();
-    draw();
+    if (!state.spinning) refresh();
   });
   window.addEventListener("resize", layout);
   setInterval(renderGreeting, 30 * 1000);

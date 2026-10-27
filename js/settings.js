@@ -549,19 +549,20 @@
   });
 
   // ---------- 外觀 ----------
-  const THEME_NAMES = { icefruit: "老派冰果室", neon: "夜市霓虹" };
+  const THEME_NAMES = { icefruit: "老派冰果室", neon: "夜市霓虹", temple: "廟口朱紅" };
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   function renderAppearance() {
     const { appearance, motion } = D.getSettings();
     for (const input of el.themeOptions.querySelectorAll("input")) input.checked = input.value === appearance;
-    const { DAY_START, NIGHT_START } = SpinEatTheme;
-    el.autoHint.textContent = `${DAY_START}:00–${NIGHT_START}:00 冰果室，其餘時間夜市霓虹`;
+    const { MORNING_START, DAY_START, NIGHT_START } = SpinEatTheme;
+    const hh = (h) => `${String(h).padStart(2, "0")}:00`;
+    el.autoHint.textContent = `${hh(MORNING_START)} 廟口，${hh(DAY_START)} 冰果室，${hh(NIGHT_START)} 夜市霓虹`;
     for (const input of el.motionOptions.querySelectorAll("input")) input.checked = input.value === (motion === "always" ? "always" : "system");
     // 直接說出這台裝置現在的狀態，才知道為什麼沒有動畫
     el.motionHint.textContent = reduceMotion.matches
-      ? "這台裝置目前開著「減少動態效果」，所以會直接落格"
+      ? "這台裝置目前開著「減少動態效果」，所以會直接出結果"
       : "這台裝置目前沒有要求減少動態效果，會正常播放";
   }
 
