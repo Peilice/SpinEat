@@ -800,7 +800,8 @@
     if (drawKind() === "fortune") {
       // 籤號就是它在候選裡的順序
       const no = state.candidates.indexOf(winner) + 1;
-      const place = { label: `第${SpinEatFortune.numeral(no)}籤`, slot: -1 };
+      const label = `第${SpinEatFortune.numeral(no)}籤`;
+      const place = { label, map: { kind: "qian", label } };
       if (!calm()) el.count.textContent = "再按一次按鈕直接出籤";
       fortune.draw(winner, no, calm()).then(() => setTimeout(() => finished(place), pause()));
       return;
@@ -808,11 +809,14 @@
     if (drawKind() === "poke") {
       if (!poke.left()) poke.renew();
       if (!calm()) el.count.textContent = "再按一次按鈕直接戳下去";
-      poke.poke(winner, cell, calm()).then((i) => setTimeout(() => finished({ label: `戳開第 ${i + 1} 格`, slot: -1 }), pause()));
+      poke.poke(winner, cell, calm()).then((i) => {
+        const place = { label: `戳開第 ${i + 1} 格`, map: { kind: "sheet", cells: poke.states() } };
+        setTimeout(() => finished(place), pause());
+      });
       return;
     }
 
-    const place = { label: `落在第 ${target + 1} 格`, slot: target };
+    const place = { label: `落在第 ${target + 1} 格`, map: { kind: "slots", lit: target } };
 
     if (calm()) {
       board.ball = null;
@@ -841,7 +845,26 @@
   }
 
   // ---------- 結果 ----------
-  // place：{ label: 落在第幾格或第幾籤, slot: 落中的格子，求籤時是 -1、不畫落格小地圖 }
+  // 結果畫面上方的小地圖：彈珠台是一排格子、戳戳樂是整張紙板、求籤是抽到的那支籤
+  function renderMap(map) {
+    el.resultLane.className = `lane lane-${map.kind}`;
+    if (map.kind === "qian") {
+      const li = document.createElement("li");
+      li.textContent = map.label;
+      el.resultLane.replaceChildren(li);
+      return;
+    }
+    const states = map.kind === "sheet" ? map.cells : state.slots.map((_, i) => (i === map.lit ? "lit" : "open"));
+    el.resultLane.replaceChildren(
+      ...states.map((s) => {
+        const li = document.createElement("li");
+        if (s !== "open") li.className = s;
+        return li;
+      })
+    );
+  }
+
+  // place：{ label: 落在第幾格、戳開第幾格或第幾籤, map: 小地圖，見 renderMap }
   function showResult(item, place) {
     state.current = item;
     const num = document.createElement("span");
@@ -851,14 +874,7 @@
     slot.className = "result-slot";
     slot.textContent = place.label;
     el.resultSerial.replaceChildren("第", num, "抽", slot);
-    el.resultLane.hidden = place.slot < 0;
-    el.resultLane.replaceChildren(
-      ...state.slots.map((_, i) => {
-        const li = document.createElement("li");
-        if (i === place.slot) li.className = "lit";
-        return li;
-      })
-    );
+    renderMap(place.map);
     el.resultName.textContent = item.name;
     const mealLabel = MEALS.find((m) => m.id === state.meal).label;
     el.resultMeta.textContent = [item.typeText, D.PRICE_LABELS[item.price], mealLabel].filter(Boolean).join("・");

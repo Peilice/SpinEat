@@ -587,7 +587,7 @@ a { color: inherit; text-underline-offset: 3px; }
 .stick-body { fill: var(--stick); }
 .stick-tip { fill: var(--lacquer); }
 
-/* 籤落下的位置；還沒抽時是虛線框加提示 */
+/* 籤落下的位置；還沒抽時是供桌上刻出的一道淺槽加提示 */
 .qian-slot,
 .qian {
   position: absolute;
@@ -604,12 +604,12 @@ a { color: inherit; text-underline-offset: 3px; }
 .qian-slot {
   display: grid;
   place-items: center;
-  border: 1.5px dashed var(--label-muted);
+  background: rgba(46, 21, 11, 0.22);
+  box-shadow: inset 0 2px 6px rgba(46, 21, 11, 0.45), 0 1px 0 rgba(231, 191, 95, 0.35);
   color: var(--label-muted);
   font-size: var(--fs-small);
   font-weight: 700;
   letter-spacing: 0.2em;
-  opacity: 0.7;
 }
 .qian {
   display: flex;
@@ -692,18 +692,20 @@ a { color: inherit; text-underline-offset: 3px; }
   place-items: center;
   background: radial-gradient(circle at 35% 30%, #3b3196, var(--btn) 75%);
   color: var(--btn-ink);
-  box-shadow: inset 0 0 0 1.5px var(--pin), 0 0 8px rgba(255, 92, 154, 0.25);
+  /* 24 格平常只是淡淡的桃紅細框，被瞄準的那格才整個亮起來 */
+  box-shadow: inset 0 0 0 1.5px rgba(255, 92, 154, 0.55);
   font-family: var(--font-display);
   font-weight: 900;
   font-size: var(--fs-small);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
-  transition: scale 0.12s, box-shadow 0.12s;
+  transition: scale 0.12s, box-shadow 0.12s, color 0.12s;
 }
 .poke-cell:not(.is-poked):hover .poke-foil,
 .poke-cell.is-aim .poke-foil {
-  scale: 1.08;
-  box-shadow: inset 0 0 0 2px var(--pin), 0 0 14px rgba(255, 92, 154, 0.6);
+  scale: 1.1;
+  color: #fff;
+  box-shadow: inset 0 0 0 2px var(--pin), inset 0 0 12px rgba(255, 92, 154, 0.45), 0 0 16px rgba(255, 92, 154, 0.65);
 }
 
 /* 洞裡捲出來的小紙條 */
@@ -948,19 +950,45 @@ a { color: inherit; text-underline-offset: 3px; }
 .result-close { color: var(--label); font-weight: 700; }
 .result-close:hover { color: var(--label); }
 
-.lane {
-  list-style: none;
-  margin: 16px 0 0;
-  padding: 0;
+.lane { list-style: none; margin: 16px 0 0; padding: 0; }
+/* 彈珠台：同格數的一排格子，中獎格亮起 */
+.lane-slots {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
   border-bottom: 1.5px solid var(--pin);
 }
-.lane li { height: 28px; border-left: 1.5px solid var(--pin); }
-.lane li:last-child { border-right: 1.5px solid var(--pin); }
-.lane li.lit { background: var(--lit); }
-[data-theme="neon"] .lane li.lit { box-shadow: 0 0 16px var(--lit); }
+.lane-slots li { height: 28px; border-left: 1.5px solid var(--pin); }
+.lane-slots li:last-child { border-right: 1.5px solid var(--pin); }
+.lane-slots li.lit { background: var(--lit); }
+/* 戳戳樂：整張紙板縮小，戳過的洞是暗的，這次戳中的那格亮起 */
+.lane-sheet { display: grid; grid-template-columns: repeat(6, 30px); gap: 10px; }
+.lane-sheet li { aspect-ratio: 1; border-radius: 50%; box-shadow: inset 0 0 0 1.5px rgba(255, 92, 154, 0.55); }
+.lane-sheet li.poked { background: rgba(5, 2, 20, 0.45); box-shadow: none; }
+.lane-sheet li.lit { background: var(--lit); box-shadow: none; }
+[data-theme="neon"] .lane-slots li.lit,
+[data-theme="neon"] .lane-sheet li.lit { box-shadow: 0 0 16px var(--lit); }
+/* 求籤：抽到的那一支籤，斜斜立在上方 */
+.lane-qian li {
+  width: 42px;
+  height: 176px;
+  margin: 6px 0 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  background: var(--stick);
+  color: var(--stick-ink);
+  border-top: 16px solid var(--lacquer);
+  border-radius: 4px;
+  box-shadow: 0 0 0 1.5px var(--gold), 0 12px 22px rgba(46, 21, 11, 0.45);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: var(--fs-title);
+  letter-spacing: 0.12em;
+  rotate: -4deg;
+}
 
 .result-body { margin-top: auto; padding-top: 40px; }
 .result-name {
@@ -1120,6 +1148,7 @@ a { color: inherit; text-underline-offset: 3px; }
 .theme-text { display: flex; flex-direction: column; }
 .theme-text strong { font-size: var(--fs-body); }
 .theme-text small { font-size: var(--fs-small); color: var(--surface-muted); text-wrap: balance; }
+.theme-text .nowrap { white-space: nowrap; }
 .theme-swatch {
   flex: none;
   position: relative;

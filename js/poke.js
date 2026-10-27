@@ -97,7 +97,11 @@ const SpinEatPoke = (() => {
       return cell ? +cell.dataset.i : -1;
     }
 
-    return { poke, skip, renew, settle, isOpen, cellIndex, left: () => openCells().length };
+    // 整張紙板目前的樣子，給結果畫面畫小地圖：open／poked／lit
+    const states = () =>
+      cells.map((c) => (c.classList.contains("is-lit") ? "lit" : c.classList.contains("is-poked") ? "poked" : "open"));
+
+    return { poke, skip, renew, settle, isOpen, cellIndex, states, left: () => openCells().length };
   }
 
   return { create };

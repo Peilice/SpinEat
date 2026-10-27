@@ -558,7 +558,14 @@
     for (const input of el.themeOptions.querySelectorAll("input")) input.checked = input.value === appearance;
     const { MORNING_START, DAY_START, NIGHT_START } = SpinEatTheme;
     const hh = (h) => `${String(h).padStart(2, "0")}:00`;
-    el.autoHint.textContent = `${hh(MORNING_START)} 廟口，${hh(DAY_START)} 冰果室，${hh(NIGHT_START)} 夜市霓虹`;
+    // 每一段不拆行，避免「冰果室」被折成兩半
+    const parts = [[MORNING_START, "廟口"], [DAY_START, "冰果室"], [NIGHT_START, "夜市霓虹"]].map(([h, name], i) => {
+      const span = document.createElement("span");
+      span.className = "nowrap";
+      span.textContent = `${hh(h)} ${name}${i < 2 ? "，" : ""}`;
+      return span;
+    });
+    el.autoHint.replaceChildren(...parts);
     for (const input of el.motionOptions.querySelectorAll("input")) input.checked = input.value === (motion === "always" ? "always" : "system");
     // 直接說出這台裝置現在的狀態，才知道為什麼沒有動畫
     el.motionHint.textContent = reduceMotion.matches
