@@ -838,6 +838,38 @@ input[type="text"]::placeholder { color: var(--surface-muted); }
 .tag-item input { flex: 1; }
 .tag-count { flex: none; color: var(--surface-muted); font-size: 0.85rem; min-width: 3em; text-align: right; }
 
+/* 料理清單：依類型分組，可收合 */
+.food-group { border-top: 1px solid var(--surface-line); }
+.food-group:first-child { border-top: none; }
+.food-group summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  cursor: pointer;
+}
+.food-group summary::-webkit-details-marker { display: none; }
+.food-group summary:hover .food-group-name { text-decoration: underline; text-underline-offset: 3px; }
+.food-group-name { font-weight: 700; }
+.food-group-count { margin-left: auto; color: var(--surface-muted); font-size: 0.85rem; }
+.food-group[open] .chevron { transform: rotate(180deg); }
+.food-group .store-list { padding-left: 12px; margin-bottom: 8px; }
+.food-type-row { padding: 0 0 4px 12px; }
+.food-type-label { flex: none; color: var(--surface-muted); font-size: 0.85rem; }
+.panel-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--surface-line);
+  color: var(--surface-muted);
+  font-size: 0.85rem;
+}
+.panel-foot .btn-text { color: var(--surface-muted); }
+
 .backup-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .file-btn { position: relative; cursor: pointer; }
 .file-btn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }

@@ -11,8 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=20261027b">
-  <script src="js/theme.js?v=20261027b"></script>
+  <link rel="stylesheet" href="css/style.css?v=20261027d">
+  <script src="js/theme.js?v=20261027d"></script>
 </head>
 <body>
   <div class="backdrop" aria-hidden="true"></div>
@@ -50,8 +50,22 @@
       </div>
     </section>
 
+    <!-- 料理清單 -->
+    <section class="panel" id="foods" aria-labelledby="foods-title">
+      <div class="panel-head">
+        <h2 id="foods-title">料理清單</h2>
+        <button type="button" class="btn-primary btn-sm" id="add-food-btn"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>新增料理</button>
+      </div>
+      <p class="panel-note">「料理」模式從這份清單抽選。可以停用不想抽到的、調整類型和餐別，或加入自己的口袋名單。</p>
+      <div class="food-groups" id="food-groups"></div>
+      <div class="panel-foot">
+        <span id="food-summary"></span>
+        <button type="button" class="btn-text" id="reset-foods-btn">恢復預設清單</button>
+      </div>
+    </section>
+
     <!-- 店家 -->
-    <section class="panel" aria-labelledby="stores-title">
+    <section class="panel" id="stores" aria-labelledby="stores-title">
       <div class="panel-head">
         <h2 id="stores-title">我的店家</h2>
         <button type="button" class="btn-primary btn-sm" id="add-store-btn"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>新增店家</button>
@@ -132,6 +146,47 @@
     </form>
   </dialog>
 
+  <!-- 料理編輯表單 -->
+  <dialog class="store-dialog" id="food-dialog" aria-labelledby="food-dialog-title">
+    <form id="food-form" novalidate>
+      <h2 id="food-dialog-title">新增料理</h2>
+
+      <label class="field">
+        <span>名稱 <em>*</em></span>
+        <input type="text" name="name" maxlength="20" required autocomplete="off">
+      </label>
+
+      <fieldset class="field">
+        <legend>類型 <em>*</em></legend>
+        <div class="chips" id="food-form-types"></div>
+        <label class="visually-hidden" for="food-new-type">或輸入新類型</label>
+        <input type="text" id="food-new-type" name="newType" maxlength="8" autocomplete="off" placeholder="或輸入新類型，例如：素食">
+      </fieldset>
+
+      <fieldset class="field">
+        <legend>餐別 <em>*</em></legend>
+        <div class="chips" id="food-form-meals"></div>
+      </fieldset>
+
+      <fieldset class="field">
+        <legend>預算</legend>
+        <div class="chips" id="food-form-price"></div>
+      </fieldset>
+
+      <label class="switch-row">
+        <input type="checkbox" name="enabled" checked>
+        <span>啟用（關閉後不會出現在彈珠台上）</span>
+      </label>
+
+      <p class="form-error" id="food-form-error" role="alert" hidden></p>
+
+      <div class="dialog-actions">
+        <button type="button" class="btn-secondary" id="cancel-food-btn">取消</button>
+        <button type="submit" class="btn-primary">儲存</button>
+      </div>
+    </form>
+  </dialog>
+
   <nav class="bottom-nav" aria-label="主要頁面">
     <a href="index.html">
       <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="3"/><circle cx="9" cy="8" r=".6"/><circle cx="15" cy="8" r=".6"/><circle cx="12" cy="11.5" r=".6"/><path d="M8 21v-4M12 21v-4M16 21v-4"/></svg>
@@ -145,8 +200,8 @@
 
   <div class="toast" id="toast" role="status" hidden></div>
 
-  <script src="js/foods.js?v=20261027b"></script>
-  <script src="js/store.js?v=20261027b"></script>
-  <script src="js/settings.js?v=20261027b"></script>
+  <script src="js/foods.js?v=20261027d"></script>
+  <script src="js/store.js?v=20261027d"></script>
+  <script src="js/settings.js?v=20261027d"></script>
 </body>
 </html>

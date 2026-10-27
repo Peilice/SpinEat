@@ -36,6 +36,7 @@
     prices: new Set(), // 空集合代表不限
     types: new Set(), // 空集合代表全部；料理模式存類型名稱，店家模式存標籤 id
     history: D.getHistory(),
+    foods: D.getFoods(),
     tags: D.getTags(),
     stores: D.getStores(),
     rejected: new Set(), // 這一輪按「再抽一次」略過的項目 key
@@ -93,8 +94,8 @@
   // ---------- 抽選項目 ----------
   // 把料理和店家統一成同樣的格式：{ key, name, emoji, price, typeText, store? }
   function foodItems() {
-    return FOODS.map((f) => ({
-      key: `food:${f.name}`,
+    return state.foods.filter((f) => f.enabled).map((f) => ({
+      key: `food:${f.id}`,
       name: f.name,
       emoji: f.emoji,
       meals: f.meals,
@@ -183,7 +184,7 @@
   function typeOptions() {
     return settings.mode === "store"
       ? state.tags.map((t) => ({ value: t.id, label: t.name }))
-      : TYPES.map((t) => ({ value: t, label: t }));
+      : D.foodTypes(state.foods.filter((f) => f.enabled)).map((t) => ({ value: t, label: t }));
   }
 
   // 收合時顯示的一行摘要
@@ -893,13 +894,11 @@
     return str.slice(5).replace("-", "/");
   }
 
-  // 店家改名後，紀錄跟著顯示新名稱
+  // 店家或料理改名後，紀錄跟著顯示新名稱
   function historyName(h) {
-    if (h.key.startsWith("store:")) {
-      const store = state.stores.find((s) => `store:${s.id}` === h.key);
-      if (store) return store.name;
-    }
-    return h.name;
+    const list = h.key.startsWith("store:") ? state.stores : state.foods;
+    const prefix = h.key.startsWith("store:") ? "store:" : "food:";
+    return list.find((x) => `${prefix}${x.id}` === h.key)?.name ?? h.name;
   }
 
   // 今天往回七天，每天一格；排除範圍內的格子會標出來
@@ -1029,16 +1028,21 @@
   function renderEmptyState(n) {
     el.boardEmpty.hidden = n > 0;
     if (n > 0) return;
-    const noStores = settings.mode === "store" && state.stores.filter((s) => s.enabled).length === 0;
-    const fix = noStores ? null : emptyFix();
-    el.boardEmptyText.textContent = noStores
-      ? state.stores.length === 0
-        ? "還沒有店家，先新增幾家常去的店吧！"
-        : "所有店家都停用了"
+    // 清單本身就沒有可抽的項目，只能去設定頁處理
+    const isStore = settings.mode === "store";
+    const source = isStore ? state.stores : state.foods;
+    const noItems = source.filter((s) => s.enabled).length === 0;
+    const fix = noItems ? null : emptyFix();
+    el.boardEmptyText.textContent = noItems
+      ? source.length === 0
+        ? isStore ? "還沒有店家，先新增幾家常去的店吧！" : "料理清單是空的"
+        : isStore ? "所有店家都停用了" : "所有料理都停用了"
       : fix.text;
-    el.boardEmptyLink.hidden = !noStores;
-    el.boardEmptyLink.textContent = state.stores.length === 0 ? "前往設定新增店家" : "前往設定管理店家";
-    el.boardEmptyAction.hidden = noStores;
+    el.boardEmptyLink.hidden = !noItems;
+    el.boardEmptyLink.textContent =
+      isStore && state.stores.length === 0 ? "前往設定新增店家" : isStore ? "前往設定管理店家" : "前往設定管理料理";
+    el.boardEmptyLink.href = isStore ? "settings.html#stores" : "settings.html#foods";
+    el.boardEmptyAction.hidden = noItems;
     el.boardEmptyAction.textContent = fix ? fix.label : "";
     emptyFixRun = fix && fix.run;
   }

@@ -1,8 +1,9 @@
-// 共用資料層：標籤、店家、吃過紀錄、設定，全部存在 localStorage
+// 共用資料層：料理清單、標籤、店家、吃過紀錄、設定，全部存在 localStorage
 const SpinEatData = (() => {
   "use strict";
 
   const KEYS = {
+    foods: "spineat.foods",
     tags: "spineat.tags",
     stores: "spineat.stores",
     history: "spineat.history",
@@ -37,6 +38,51 @@ const SpinEatData = (() => {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   }
 
+  // ---------- 料理清單 ----------
+  // 使用者沒改過就沿用 foods.js 的內建清單，這樣內建清單更新時也會跟著更新
+  // 內建料理的 id 由內建名稱產生，使用者改名或內建清單調整順序都不會變
+  function defaultFoods() {
+    return FOODS.map((f) => ({ id: `default:${f.name}`, ...f, enabled: true }));
+  }
+
+  function getFoods() {
+    return load(KEYS.foods, null) || defaultFoods();
+  }
+
+  function saveFoods(foods) {
+    return save(KEYS.foods, foods);
+  }
+
+  function resetFoods() {
+    try {
+      localStorage.removeItem(KEYS.foods);
+    } catch {
+      // 無法存取就當作已經是預設清單
+    }
+  }
+
+  // 清單中出現的所有類型，內建類型照原本順序排在前面
+  function foodTypes(foods) {
+    const used = new Set(foods.map((f) => f.type));
+    return [...TYPES.filter((t) => used.has(t)), ...[...used].filter((t) => !TYPES.includes(t))];
+  }
+
+  function sanitizeFoods(list) {
+    const seen = new Set();
+    return list
+      .filter((f) => f && typeof f.name === "string" && f.name.trim() && typeof f.type === "string" && f.type.trim())
+      .map((f) => ({
+        id: typeof f.id === "string" ? f.id : uid(),
+        name: f.name.trim(),
+        emoji: typeof f.emoji === "string" ? f.emoji : "",
+        type: f.type.trim(),
+        meals: Array.isArray(f.meals) ? f.meals.filter((m) => typeof m === "string") : [],
+        price: [1, 2, 3].includes(f.price) ? f.price : 1,
+        enabled: f.enabled !== false,
+      }))
+      .filter((f) => !seen.has(f.name) && seen.add(f.name));
+  }
+
   // ---------- 標籤 ----------
   function getTags() {
     const tags = load(KEYS.tags, null);
@@ -69,9 +115,22 @@ const SpinEatData = (() => {
   }
 
   // ---------- 紀錄與設定 ----------
-  // 舊版紀錄沒有 key，一律視為料理
+  // 舊版紀錄沒有 key，一律視為料理；料理以前用名稱當 key（food:蛋餅），
+  // 現在改用 id（food:default:蛋餅），讀取時換成同名料理的 id 並寫回
   function getHistory() {
-    return load(KEYS.history, []).map((h) => (h.key ? h : { ...h, key: `food:${h.name}` }));
+    const stored = load(KEYS.history, []);
+    const foods = getFoods();
+    const ids = new Set(foods.map((f) => `food:${f.id}`));
+    const idByName = new Map(foods.map((f) => [`food:${f.name}`, `food:${f.id}`]));
+    let migrated = false;
+    const history = stored.map((h) => {
+      const key = h.key || `food:${h.name}`;
+      if (ids.has(key) || !idByName.has(key)) return h.key ? h : { ...h, key };
+      migrated = true;
+      return { ...h, key: idByName.get(key) };
+    });
+    if (migrated) saveHistory(history);
+    return history;
   }
 
   function saveHistory(history) {
@@ -92,6 +151,7 @@ const SpinEatData = (() => {
       app: "SpinEat",
       version: EXPORT_VERSION,
       exportedAt: new Date().toISOString(),
+      foods: getFoods(),
       tags: getTags(),
       stores: getStores(),
       history: getHistory(),
@@ -122,6 +182,8 @@ const SpinEatData = (() => {
 
     saveTags(tags);
     saveStores(stores);
+    // 舊版備份沒有料理清單，就保留目前的
+    if (Array.isArray(data.foods)) saveFoods(sanitizeFoods(data.foods));
     if (Array.isArray(data.history)) saveHistory(data.history);
     if (data.settings && typeof data.settings === "object") saveSettings({ ...DEFAULT_SETTINGS, ...data.settings });
     return { tags: tags.length, stores: stores.length };
@@ -141,6 +203,10 @@ const SpinEatData = (() => {
   return {
     PRICE_LABELS,
     uid,
+    getFoods,
+    saveFoods,
+    resetFoods,
+    foodTypes,
     getTags,
     saveTags,
     deleteTag,
