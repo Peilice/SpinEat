@@ -7,7 +7,7 @@ const SpinEatTheme = (() => {
   const DAY_START = 5; // 05:00 起是白天，廟口
   const NIGHT_START = 18; // 18:00 起是晚上，夜市
   const THEMES = ["neon", "temple"];
-  const THEME_COLOR = { neon: "#1b1546", temple: "#8c2216" };
+  const THEME_COLOR = { neon: "#1b1546", temple: "#86281b" };
   const DRAWS = { neon: "poke", temple: "fortune" };
 
   function readSettings() {
