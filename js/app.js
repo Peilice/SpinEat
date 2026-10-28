@@ -397,8 +397,7 @@
       el.resultMap.href = D.mapsUrl(item.store);
       el.resultMapText.textContent = item.store.address || "在 Google 地圖搜尋";
     } else {
-      el.resultMap.href = D.nearbyUrl(item.name, freshPosition());
-      el.resultMapText.textContent = `找附近的${item.name}`;
+      prepareNearby(item);
     }
     el.resultMap.hidden = false;
 
@@ -443,23 +442,40 @@
     });
   }
 
-  // 料理還沒有新座標時，先同步開一個分頁（等定位完才開會被擋），拿到座標再導過去
+  // 連結換成定位後的網址；ready 之後點擊就照一般連結開新分頁
+  function setNearby(item, coords, label) {
+    el.resultMap.href = D.nearbyUrl(item.name, coords);
+    el.resultMap.dataset.ready = "1";
+    el.resultMapText.textContent = label;
+  }
+
+  // 結果畫面打開時：已經有座標就直接用；之前允許過定位就在背景先定位，不會跳出詢問
+  function prepareNearby(item) {
+    delete el.resultMap.dataset.ready;
+    el.resultMapText.textContent = `找附近的${item.name}`;
+    el.resultMap.href = D.nearbyUrl(item.name, null);
+    if (freshPosition()) return setNearby(item, freshPosition(), `找附近的${item.name}`);
+    navigator.permissions?.query({ name: "geolocation" }).then((p) => {
+      if (p.state !== "granted") return;
+      locate().then((coords) => {
+        if (coords && state.current === item) setNearby(item, coords, `找附近的${item.name}`);
+      });
+    }, () => {});
+  }
+
+  // 第一次按：留在原畫面定位（詢問權限的視窗才看得到），定位完把連結換掉，再按一次開地圖。
+  // 不能等定位完才 window.open，手機瀏覽器會把非點擊當下開的分頁擋掉
   async function openNearby(e) {
     const item = state.current;
-    if (!item || item.store || freshPosition()) return; // 店家或已有座標：照連結原本的網址走
+    if (!item || item.store || el.resultMap.dataset.ready) return;
     e.preventDefault();
     if (locating) return;
     locating = true;
-    const tab = window.open("", "_blank");
-    if (tab) tab.opener = null;
-    const label = el.resultMapText.textContent;
     el.resultMapText.textContent = "定位中…";
-    const url = D.nearbyUrl(item.name, await locate());
+    const coords = await locate();
     locating = false;
-    el.resultMapText.textContent = label;
-    el.resultMap.href = url;
-    if (tab) tab.location.href = url;
-    else location.href = url;
+    if (state.current !== item) return;
+    setNearby(item, coords, coords ? `已定位，開啟地圖找${item.name}` : `開啟地圖找附近的${item.name}`);
   }
 
   function closeResult() {
