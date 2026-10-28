@@ -171,6 +171,7 @@
     toggle.className = "mini-switch";
     const input = document.createElement("input");
     input.type = "checkbox";
+    input.setAttribute("role", "switch");
     input.id = `on-${id}`;
     input.checked = enabled;
     input.setAttribute("aria-label", `啟用 ${name}`);
