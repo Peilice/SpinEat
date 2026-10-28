@@ -202,6 +202,13 @@ const SpinEatData = (() => {
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
   }
 
+  // 在 Google 地圖搜尋附近的某種料理；有座標就以座標為中心，沒有就交給地圖用它自己的定位
+  function nearbyUrl(keyword, coords) {
+    if (!coords) return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${keyword} 附近`)}`;
+    const { latitude, longitude } = coords;
+    return `https://www.google.com/maps/search/${encodeURIComponent(keyword)}/@${latitude.toFixed(6)},${longitude.toFixed(6)},16z`;
+  }
+
   return {
     PRICE_LABELS,
     uid,
@@ -222,5 +229,6 @@ const SpinEatData = (() => {
     importAll,
     todayStr,
     mapsUrl,
+    nearbyUrl,
   };
 })();

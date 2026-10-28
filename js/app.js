@@ -396,10 +396,11 @@
     if (item.store) {
       el.resultMap.href = D.mapsUrl(item.store);
       el.resultMapText.textContent = item.store.address || "在 Google 地圖搜尋";
-      el.resultMap.hidden = false;
     } else {
-      el.resultMap.hidden = true;
+      el.resultMap.href = D.nearbyUrl(item.name, freshPosition());
+      el.resultMapText.textContent = `找附近的${item.name}`;
     }
+    el.resultMap.hidden = false;
 
     el.result.classList.remove("is-in");
     el.result.showModal();
@@ -416,6 +417,49 @@
       .filter((h) => recent.has(h.key) && !seen.has(h.key) && seen.add(h.key))
       .filter((h) => allItems().some((i) => i.key === h.key && i.meals.includes(state.meal)))
       .map(historyName);
+  }
+
+  // ---------- 找附近 ----------
+  // 定位只在使用者按「找附近」時才問，座標只放在記憶體裡，不寫進 localStorage
+  const POSITION_TTL = 5 * 60 * 1000;
+  let lastPosition = null; // { coords, at }
+  let locating = false;
+
+  function freshPosition() {
+    return lastPosition && Date.now() - lastPosition.at < POSITION_TTL ? lastPosition.coords : null;
+  }
+
+  function locate() {
+    return new Promise((resolve) => {
+      if (!navigator.geolocation) return resolve(null);
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          lastPosition = { coords: pos.coords, at: Date.now() };
+          resolve(pos.coords);
+        },
+        () => resolve(null), // 拒絕或逾時就交給 Google 地圖自己定位
+        { enableHighAccuracy: false, timeout: 8000, maximumAge: POSITION_TTL }
+      );
+    });
+  }
+
+  // 料理還沒有新座標時，先同步開一個分頁（等定位完才開會被擋），拿到座標再導過去
+  async function openNearby(e) {
+    const item = state.current;
+    if (!item || item.store || freshPosition()) return; // 店家或已有座標：照連結原本的網址走
+    e.preventDefault();
+    if (locating) return;
+    locating = true;
+    const tab = window.open("", "_blank");
+    if (tab) tab.opener = null;
+    const label = el.resultMapText.textContent;
+    el.resultMapText.textContent = "定位中…";
+    const url = D.nearbyUrl(item.name, await locate());
+    locating = false;
+    el.resultMapText.textContent = label;
+    el.resultMap.href = url;
+    if (tab) tab.location.href = url;
+    else location.href = url;
   }
 
   function closeResult() {
@@ -682,6 +726,7 @@
   el.acceptBtn.addEventListener("click", accept);
   el.respinBtn.addEventListener("click", respin);
   el.closeResult.addEventListener("click", closeResult);
+  el.resultMap.addEventListener("click", openNearby);
   el.result.addEventListener("close", onResultClosed);
   el.excludeRecent.addEventListener("change", () => {
     settings.excludeOn = el.excludeRecent.checked;
