@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@700;900&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=20261028e">
+  <link rel="stylesheet" href="css/style.css?v=20261028f">
   <script src="js/theme.js?v=20261028a"></script>
 </head>
 <body>
@@ -26,90 +26,108 @@
       </div>
     </header>
 
-    <!-- 外觀 -->
-    <section class="panel" aria-labelledby="appearance-title">
-      <div class="panel-head">
-        <h2 id="appearance-title">外觀</h2>
+    <!-- 分頁列：捲動時固定在上方；料理分頁多帶搜尋和類型篩選 -->
+    <div class="settings-bar">
+      <div class="mode-tabs" role="tablist" aria-label="設定分類" id="settings-tabs">
+        <button type="button" role="tab" id="tab-foods" aria-controls="panel-foods" data-tab="foods">料理</button>
+        <button type="button" role="tab" id="tab-stores" aria-controls="panel-stores" data-tab="stores">店家</button>
+        <button type="button" role="tab" id="tab-prefs" aria-controls="panel-prefs" data-tab="prefs">偏好</button>
       </div>
-      <div class="theme-options" id="theme-options" role="radiogroup" aria-labelledby="appearance-title">
-        <label class="theme-option">
-          <input type="radio" name="appearance" value="auto">
-          <span class="theme-swatch theme-swatch-auto" aria-hidden="true"><i></i><i></i></span>
-          <span class="theme-text"><strong>依時間自動</strong><small id="auto-hint">白天廟口，晚上夜市霓虹</small></span>
+      <div class="food-tools" id="food-tools">
+        <label class="search-box">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/></svg>
+          <span class="visually-hidden">搜尋料理</span>
+          <input type="search" id="food-search" placeholder="搜尋料理" autocomplete="off" enterkeyhint="search">
         </label>
-        <label class="theme-option">
-          <input type="radio" name="appearance" value="neon">
-          <span class="theme-swatch theme-swatch-neon" aria-hidden="true"><i></i></span>
-          <span class="theme-text"><strong>夜市霓虹</strong><small>戳戳樂</small></span>
-        </label>
-        <label class="theme-option">
-          <input type="radio" name="appearance" value="temple">
-          <span class="theme-swatch theme-swatch-temple" aria-hidden="true"><i></i></span>
-          <span class="theme-text"><strong>廟口朱紅</strong><small>求籤</small></span>
-        </label>
+        <div class="filter-row" id="type-filter" role="group" aria-label="依類型篩選"></div>
       </div>
-      <h3 class="motion-head" id="motion-title">抽選動畫</h3>
-      <div class="theme-options motion-options" id="motion-options" role="radiogroup" aria-labelledby="motion-title">
-        <label class="theme-option">
-          <input type="radio" name="motion" value="system">
-          <span class="theme-text"><strong>跟隨系統</strong><small id="motion-hint">系統開啟「減少動態效果」時，直接出結果</small></span>
-        </label>
-        <label class="theme-option">
-          <input type="radio" name="motion" value="always">
-          <span class="theme-text"><strong>一律播放</strong><small>戳破紙板、搖籤筒都照常播放</small></span>
-        </label>
-      </div>
-    </section>
+    </div>
 
-    <!-- 料理清單 -->
-    <section class="panel" id="foods" aria-labelledby="foods-title">
-      <div class="panel-head">
-        <h2 id="foods-title">料理清單</h2>
+    <!-- 料理 -->
+    <section class="tab-panel" id="panel-foods" role="tabpanel" aria-labelledby="tab-foods">
+      <div class="list-bar">
+        <span class="list-count" id="food-summary" aria-live="polite"></span>
+        <button type="button" class="btn-text" id="rename-type-btn" hidden>改類型名稱</button>
         <button type="button" class="btn-primary btn-sm" id="add-food-btn"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>新增料理</button>
       </div>
-      <p class="panel-note">「料理」模式從這份清單抽選。可以停用不想抽到的、調整類型和餐別，或加入自己的口袋名單。</p>
-      <div class="food-groups" id="food-groups"></div>
-      <div class="panel-foot">
-        <span id="food-summary"></span>
-        <button type="button" class="btn-text" id="reset-foods-btn">恢復預設清單</button>
+      <form class="inline-form type-rename" id="type-rename-form" hidden>
+        <label class="visually-hidden" for="type-rename-input">類型名稱</label>
+        <input type="text" id="type-rename-input" maxlength="8" autocomplete="off">
+        <button type="submit" class="btn-secondary btn-sm">儲存</button>
+        <button type="button" class="btn-text" id="type-rename-cancel">取消</button>
+      </form>
+      <div class="panel list-panel">
+        <ul class="store-list" id="food-list"></ul>
       </div>
+      <p class="list-foot"><button type="button" class="btn-text" id="reset-foods-btn">恢復預設清單</button></p>
     </section>
 
     <!-- 店家 -->
-    <section class="panel" id="stores" aria-labelledby="stores-title">
-      <div class="panel-head">
-        <h2 id="stores-title">我的店家</h2>
+    <section class="tab-panel" id="panel-stores" role="tabpanel" aria-labelledby="tab-stores" hidden>
+      <div class="filter-head">
+        <div class="filter-row" id="tag-filter" role="group" aria-label="依分類標籤篩選"></div>
+        <button type="button" class="btn-text" id="manage-tags-btn">管理標籤</button>
+      </div>
+      <div class="list-bar">
+        <span class="list-count" id="store-summary" aria-live="polite"></span>
         <button type="button" class="btn-primary btn-sm" id="add-store-btn"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>新增店家</button>
       </div>
-      <ul class="store-list" id="store-list"></ul>
+      <div class="panel list-panel">
+        <ul class="store-list" id="store-list"></ul>
+      </div>
     </section>
 
-    <!-- 標籤 -->
-    <section class="panel" aria-labelledby="tags-title">
-      <div class="panel-head">
-        <h2 id="tags-title">分類標籤</h2>
-      </div>
-      <form class="inline-form" id="tag-form">
-        <label class="visually-hidden" for="tag-input">新標籤名稱</label>
-        <input type="text" id="tag-input" placeholder="例如：公司附近、可外送" maxlength="12" autocomplete="off">
-        <button type="submit" class="btn-secondary btn-sm">新增</button>
-      </form>
-      <ul class="tag-list" id="tag-list"></ul>
-    </section>
+    <!-- 偏好：外觀、抽選動畫、資料備份 -->
+    <section class="tab-panel" id="panel-prefs" role="tabpanel" aria-labelledby="tab-prefs" hidden>
+      <!-- 外觀 -->
+      <section class="panel" aria-labelledby="appearance-title">
+        <div class="panel-head">
+          <h2 id="appearance-title">外觀</h2>
+        </div>
+        <div class="theme-options" id="theme-options" role="radiogroup" aria-labelledby="appearance-title">
+          <label class="theme-option">
+            <input type="radio" name="appearance" value="auto">
+            <span class="theme-swatch theme-swatch-auto" aria-hidden="true"><i></i><i></i></span>
+            <span class="theme-text"><strong>依時間自動</strong><small id="auto-hint">白天廟口，晚上夜市霓虹</small></span>
+          </label>
+          <label class="theme-option">
+            <input type="radio" name="appearance" value="neon">
+            <span class="theme-swatch theme-swatch-neon" aria-hidden="true"><i></i></span>
+            <span class="theme-text"><strong>夜市霓虹</strong><small>戳戳樂</small></span>
+          </label>
+          <label class="theme-option">
+            <input type="radio" name="appearance" value="temple">
+            <span class="theme-swatch theme-swatch-temple" aria-hidden="true"><i></i></span>
+            <span class="theme-text"><strong>廟口朱紅</strong><small>求籤</small></span>
+          </label>
+        </div>
+        <h3 class="motion-head" id="motion-title">抽選動畫</h3>
+        <div class="theme-options motion-options" id="motion-options" role="radiogroup" aria-labelledby="motion-title">
+          <label class="theme-option">
+            <input type="radio" name="motion" value="system">
+            <span class="theme-text"><strong>跟隨系統</strong><small id="motion-hint">系統開啟「減少動態效果」時，直接出結果</small></span>
+          </label>
+          <label class="theme-option">
+            <input type="radio" name="motion" value="always">
+            <span class="theme-text"><strong>一律播放</strong><small>戳破紙板、搖籤筒都照常播放</small></span>
+          </label>
+        </div>
+      </section>
 
-    <!-- 備份 -->
-    <section class="panel" aria-labelledby="backup-title">
-      <div class="panel-head">
-        <h2 id="backup-title">資料備份</h2>
-      </div>
-      <p class="panel-note">資料只存在這個瀏覽器裡，清除瀏覽資料就會消失。建議定期匯出備份，也可以用來把資料搬到另一台裝置。</p>
-      <div class="backup-actions">
-        <button type="button" class="btn-secondary btn-sm" id="export-btn">匯出 JSON</button>
-        <label class="btn-secondary btn-sm file-btn">
-          匯入 JSON
-          <input type="file" id="import-input" accept="application/json,.json">
-        </label>
-      </div>
+      <!-- 備份 -->
+      <section class="panel" aria-labelledby="backup-title">
+        <div class="panel-head">
+          <h2 id="backup-title">資料備份</h2>
+        </div>
+        <p class="panel-note">資料只存在這個瀏覽器裡，清除瀏覽資料就會消失。建議定期匯出備份，也可以用來把資料搬到另一台裝置。</p>
+        <div class="backup-actions">
+          <button type="button" class="btn-secondary btn-sm" id="export-btn">匯出 JSON</button>
+          <label class="btn-secondary btn-sm file-btn">
+            匯入 JSON
+            <input type="file" id="import-input" accept="application/json,.json">
+          </label>
+        </div>
+      </section>
     </section>
   </main>
 
@@ -151,6 +169,7 @@
       <p class="form-error" id="form-error" role="alert" hidden></p>
 
       <div class="dialog-actions">
+        <button type="button" class="btn-text btn-danger dialog-delete" id="delete-store-btn">刪除這家店</button>
         <button type="button" class="btn-secondary" id="cancel-store-btn">取消</button>
         <button type="submit" class="btn-primary">儲存</button>
       </div>
@@ -192,10 +211,26 @@
       <p class="form-error" id="food-form-error" role="alert" hidden></p>
 
       <div class="dialog-actions">
+        <button type="button" class="btn-text btn-danger dialog-delete" id="delete-food-btn">刪除這道料理</button>
         <button type="button" class="btn-secondary" id="cancel-food-btn">取消</button>
         <button type="submit" class="btn-primary">儲存</button>
       </div>
     </form>
+  </dialog>
+
+  <!-- 分類標籤管理 -->
+  <dialog class="store-dialog" id="tag-dialog" aria-labelledby="tag-dialog-title">
+    <h2 id="tag-dialog-title">分類標籤</h2>
+    <p class="panel-note">標籤用來替店家分類，例如公司附近、可外送。改名會套用到所有用到它的店家。</p>
+    <form class="inline-form" id="tag-form">
+      <label class="visually-hidden" for="tag-input">新標籤名稱</label>
+      <input type="text" id="tag-input" placeholder="新標籤名稱" maxlength="12" autocomplete="off">
+      <button type="submit" class="btn-secondary btn-sm">新增</button>
+    </form>
+    <ul class="tag-list" id="tag-list"></ul>
+    <div class="dialog-actions">
+      <button type="button" class="btn-primary" id="close-tag-btn">完成</button>
+    </div>
   </dialog>
 
   <nav class="bottom-nav" aria-label="主要頁面">
@@ -213,6 +248,6 @@
 
   <script src="js/foods.js?v=20261028a"></script>
   <script src="js/store.js?v=20261028a"></script>
-  <script src="js/settings.js?v=20261028a"></script>
+  <script src="js/settings.js?v=20261028b"></script>
 </body>
 </html>

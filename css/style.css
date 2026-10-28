@@ -307,7 +307,8 @@ a { color: inherit; text-underline-offset: 3px; }
   cursor: pointer;
 }
 .mode-tabs button:hover { color: var(--text); }
-.mode-tabs button[aria-checked="true"] {
+.mode-tabs button[aria-checked="true"],
+.mode-tabs button[aria-selected="true"] {
   color: var(--text);
   font-weight: 900;
   border-bottom-color: var(--mark);
@@ -1290,9 +1291,6 @@ input[type="text"]::placeholder { color: var(--surface-muted); }
 .store-name { font-weight: 700; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .store-address { color: var(--surface-muted); font-size: var(--fs-small); text-decoration: none; overflow-wrap: anywhere; }
 .store-address:hover { color: var(--surface-text); text-decoration: underline; }
-.store-actions { flex: none; display: flex; align-items: center; gap: 2px; }
-.store-actions .btn-text { color: var(--surface-muted); }
-.store-actions .btn-danger { color: var(--danger); }
 
 .badges { display: flex; flex-wrap: wrap; gap: 4px; }
 .badge {
@@ -1312,25 +1310,112 @@ input[type="text"]::placeholder { color: var(--surface-muted); }
 .tag-item input { flex: 1; }
 .tag-count { flex: none; color: var(--surface-muted); font-size: var(--fs-small); min-width: 3em; text-align: right; font-variant-numeric: tabular-nums; }
 
-/* 料理清單：依類型分組，可收合 */
-.food-group { border-top: 1px solid var(--surface-line); }
-.food-group:first-child { border-top: none; }
-.food-group summary {
-  list-style: none;
+/* ==========================================================
+   設定頁：分頁、搜尋、篩選
+   ========================================================== */
+/* 分頁列捲動時黏在上方；料理分頁連搜尋框和類型篩選一起黏住 */
+.settings-bar {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 3;
+  margin: 0 -16px;
+  padding: 8px 16px 10px;
+  background: var(--ground);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+/* 鍵盤移動時，焦點不要被黏住的分頁列蓋住 */
+html:has(.settings-bar) { scroll-padding-top: 168px; }
+
+.food-tools { display: flex; flex-direction: column; gap: 8px; }
+.search-box {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 0;
+  padding: 0 12px;
+  border: 1px solid var(--surface-line);
+  border-radius: var(--radius);
+  background: var(--input);
+  color: var(--surface-muted);
+}
+.search-box:focus-within { outline: 2px solid var(--focus); outline-offset: 1px; }
+.search-box input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  padding: 9px 0;
+  color: var(--surface-text);
+  outline: none;
+}
+.search-box input::placeholder { color: var(--surface-muted); }
+/* 清除鈕換成主題色的線條叉叉，不用瀏覽器預設的藍色 */
+.search-box input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--surface-muted);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6 6 18'/%3E%3C/svg%3E") center / contain no-repeat;
   cursor: pointer;
 }
-.food-group summary::-webkit-details-marker { display: none; }
-.food-group summary:hover .food-group-name { text-decoration: underline; text-underline-offset: 3px; }
-.food-group-name { font-weight: 700; }
-.food-group-count { margin-left: auto; color: var(--surface-muted); font-size: var(--fs-small); font-variant-numeric: tabular-nums; }
-.food-group[open] .chevron { transform: rotate(180deg); }
-.food-group .store-list { padding-left: 12px; margin-bottom: 8px; }
-.food-type-row { padding: 0 0 4px 12px; }
-.food-type-label { flex: none; color: var(--surface-muted); font-size: var(--fs-small); }
+
+/* 篩選鈕排成一列，太多就橫向捲動，不換行把清單往下推 */
+.filter-row {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0 -16px;
+  padding: 2px 16px;
+}
+.filter-row::-webkit-scrollbar { display: none; }
+.filter-row .chip { flex: none; }
+.chip-count { margin-left: 5px; font-family: var(--font-body); font-weight: 400; font-size: var(--fs-meta); opacity: 0.75; font-variant-numeric: tabular-nums; }
+
+.tab-panel { display: flex; flex-direction: column; gap: 10px; }
+.tab-panel[hidden] { display: none; }
+#panel-prefs { gap: 14px; }
+
+/* 清單上方：左邊數量，右邊新增 */
+.list-bar { display: flex; align-items: center; gap: 4px; padding: 0 6px; min-height: 36px; }
+.list-count { color: var(--muted); font-size: var(--fs-small); font-variant-numeric: tabular-nums; }
+.list-bar .btn-text { color: var(--muted); }
+.list-bar .btn-primary { margin-left: auto; }
+.type-rename { padding: 0 6px; align-items: center; }
+.type-rename .btn-text { flex: none; }
+
+.filter-head { display: flex; align-items: center; gap: 4px; }
+.filter-head .filter-row { flex: 1; min-width: 0; margin-right: 0; }
+.filter-head .btn-text { flex: none; margin-left: auto; color: var(--muted); }
+
+.list-panel { padding-block: 4px; }
+.list-foot { margin: 0; text-align: center; }
+.list-foot .btn-text { color: var(--muted); }
+
+/* 整列名稱區是一顆按鈕，點下去打開編輯表單 */
+.item-open {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.item-open:hover .store-name { text-decoration: underline; text-underline-offset: 3px; }
+.store-item .store-main { flex: 1; }
+.store-item .mini-switch { flex: none; display: flex; align-items: center; min-height: 28px; padding-left: 8px; }
+/* 搜尋符合的字：--lit 只給抽中的那一張，這裡用 --mark 的淡底 */
+.hit { background: color-mix(in srgb, var(--mark) 22%, transparent); color: inherit; border-radius: 2px; }
+
+/* 標籤管理對話框 */
+#tag-dialog .tag-list { margin-bottom: 16px; }
+
 .panel-foot {
   display: flex;
   justify-content: space-between;
@@ -1385,6 +1470,7 @@ input[type="text"]::placeholder { color: var(--surface-muted); }
 [data-theme="neon"] .switch-row input { accent-color: var(--glow); }
 .form-error { color: var(--danger); font-size: var(--fs-small); margin: 0 0 12px; }
 .dialog-actions { display: flex; justify-content: flex-end; gap: 10px; }
+.dialog-delete { margin-right: auto; }
 .store-dialog .btn-primary { background: var(--btn); }
 .store-dialog .btn-secondary { color: var(--surface-text); }
 
@@ -1397,6 +1483,7 @@ input[type="text"]::placeholder { color: var(--surface-muted); }
   :root:not([data-motion="always"]) .result.is-in .result-slip,
   :root:not([data-motion="always"]) .result.is-in .lane-qian li { animation: none; }
   .chevron { transition: none; }
+  .chip { transition: none; }
   /* 不蓋章，只留顏色退掉，仍看得出今天剛記下 */
   :root:not([data-motion="always"]) .day.is-stamped .day-food { animation: none; }
 }
