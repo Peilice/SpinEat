@@ -1,517 +1,650 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-28T00:00:00.000Z",
+  "generatedAt": "2026-10-28T03:14:27+00:00",
   "title": "Design System: SpinEat",
-  "provenance": {
-    "direction": "抽到的那一張：廟口求籤、夜市戳戳樂（2026-10-27 由「夜市彈珠台」改版；原方向為 concept-seed key 85800b72，operate mode，擲骰指定的 grounded direction）",
-    "directionContract": ".impeccable/surfaces/index-html.md",
-    "review": "彈珠台版最終審查結論：ship；廟口／戳戳樂改版後尚未重新審查",
-    "userDecisions": [
-      "2026-10-27 回覆「1.拿掉」：移除格內與結果畫面的料理 emoji",
-      "2026-10-27：主題決定抽法，不另設「抽選方式」；廟口求籤、夜市戳戳樂",
-      "2026-10-27：求籤，但不要擲筊",
-      "2026-10-27：移除老派冰果室主題與彈珠台（原本保留的冰果室錯位硬陰影隨之移除）",
-      "設定頁新增「抽選動畫：跟隨系統／一律播放」，因 iPhone 在使用者以為已關閉時仍回報減少動態效果"
-    ],
-    "rasterAssets": "無；所有裝飾皆為 CSS、內嵌 SVG 或 data URI SVG 遮罩產生",
-    "screenshots": [
-      ".impeccable/review/mobile.jpg",
-      ".impeccable/review/mobile-result.jpg",
-      ".impeccable/review/desktop.jpg"
-    ],
-    "screenshotsNote": "截圖為改版前的冰果室／彈珠台畫面，尚未重拍"
-  },
   "extensions": {
     "themes": [
       {
         "name": "temple",
         "displayName": "廟口朱紅",
-        "selector": ":root, [data-theme=\"temple\"]",
+        "draw": "求籤",
+        "hours": "05:00–17:59",
         "colorScheme": "light",
-        "schedule": "05:00–17:59",
-        "themeColor": "#8c2216",
-        "draw": "fortune（求籤，js/fortune.js）"
+        "default": true
       },
       {
         "name": "neon",
         "displayName": "夜市霓虹",
-        "selector": "[data-theme=\"neon\"]",
-        "colorScheme": "dark",
-        "schedule": "18:00–04:59",
-        "themeColor": "#1b1546",
-        "draw": "poke（戳戳樂，js/poke.js）"
+        "draw": "戳戳樂",
+        "hours": "18:00–04:59",
+        "colorScheme": "dark"
       }
     ],
     "colorMeta": {
       "temple-ground": {
         "role": "neutral",
-        "displayName": "石埕米色",
+        "displayName": "廟埕石板",
+        "purpose": "廟口牆面（--ground）。",
+        "theme": "temple",
         "canonical": "oklch(91.5% 0.039 87.6)",
         "tonalRamp": [
-          "#110a00",
-          "#2c230c",
-          "#493f27",
-          "#675d44",
-          "#877c63",
-          "#a99d83",
-          "#cfc3a8",
-          "#faeed1"
+          "#0f0a02",
+          "#2b2415",
+          "#49412f",
+          "#6a604a",
+          "#8c8168",
+          "#aea48d",
+          "#d2c8b3",
+          "#f6eedb"
         ]
       },
       "temple-slab": {
         "role": "neutral",
-        "displayName": "深石板",
+        "displayName": "深色石板",
+        "purpose": "石埕上隨機散落的深色石板（--slab）。",
+        "theme": "temple",
         "canonical": "oklch(86.8% 0.051 86.9)",
         "tonalRamp": [
           "#110a00",
-          "#2f2202",
-          "#4b3e1e",
-          "#6a5c3c",
-          "#8a7c5a",
-          "#ac9d7a",
-          "#d2c39f",
-          "#fdedc8"
+          "#2d2410",
+          "#4b4128",
+          "#6d6043",
+          "#8f815f",
+          "#b1a485",
+          "#d4c8ac",
+          "#f9eed5"
         ]
       },
       "temple-text": {
         "role": "neutral",
-        "displayName": "檀木深褐文字",
+        "displayName": "廟柱深褐",
+        "purpose": "廟口主要文字（--text）。",
+        "theme": "temple",
         "canonical": "oklch(27.7% 0.052 43.6)",
         "tonalRamp": [
-          "#190400",
-          "#381b0e",
-          "#573729",
-          "#775446",
-          "#987465",
-          "#bb9585",
-          "#e2baaa",
-          "#ffe9e0"
+          "#160703",
+          "#341f16",
+          "#553b30",
+          "#78594c",
+          "#9d796a",
+          "#bf9c8e",
+          "#e1c1b4",
+          "#ffe8dc"
         ]
       },
       "temple-muted": {
         "role": "neutral",
-        "displayName": "次要文字褐",
+        "displayName": "廊下褐",
+        "purpose": "廟口次要文字（--muted）。",
+        "theme": "temple",
         "canonical": "oklch(41.5% 0.073 50.3)",
         "tonalRamp": [
-          "#180600",
-          "#3d1800",
-          "#5e3319",
-          "#7f5137",
-          "#a17155",
-          "#c49276",
-          "#ecb79a",
-          "#ffeade"
+          "#190500",
+          "#381d0c",
+          "#5b3825",
+          "#80563f",
+          "#a6765b",
+          "#c79a81",
+          "#e9bfa8",
+          "#ffe6d1"
         ]
       },
       "temple-display": {
-        "role": "tertiary",
-        "displayName": "招呼語朱紅",
+        "role": "primary",
+        "displayName": "春聯朱",
+        "purpose": "招呼語、籤詩上的料理名（--display）。",
+        "theme": "temple",
         "canonical": "oklch(44.5% 0.152 31.0)",
         "tonalRamp": [
-          "#1e0100",
-          "#4a0400",
-          "#7a0b00",
-          "#a23020",
-          "#c75341",
-          "#ee7662",
-          "#ffab9c",
-          "#ffe9e4"
+          "#260000",
+          "#4c0200",
+          "#751f13",
+          "#a03b2c",
+          "#cd5947",
+          "#ee826f",
+          "#ffab99",
+          "#ffd5c4"
         ]
       },
       "temple-mark": {
-        "role": "tertiary",
-        "displayName": "標記朱紅",
+        "role": "primary",
+        "displayName": "廟門朱",
+        "purpose": "分頁底線、排除標線、目前頁導覽（--mark）。",
+        "theme": "temple",
         "canonical": "oklch(47.4% 0.161 30.7)",
         "tonalRamp": [
-          "#1e0100",
-          "#4a0300",
-          "#7b0900",
-          "#a52b1c",
-          "#cb4f3e",
-          "#f2725e",
-          "#ffab9c",
-          "#ffe9e4"
+          "#280000",
+          "#4e0000",
+          "#781b10",
+          "#a33829",
+          "#d05543",
+          "#f17f6d",
+          "#ffa997",
+          "#ffd3c2"
         ]
       },
       "temple-surface": {
         "role": "neutral",
-        "displayName": "籤紙米白面板",
+        "displayName": "籤詩紙",
+        "purpose": "面板、條件標籤、底部導覽、對話框（--surface）。",
+        "theme": "temple",
         "canonical": "oklch(97.1% 0.020 87.5)",
         "tonalRamp": [
-          "#0f0b03",
-          "#282419",
-          "#443f34",
-          "#625d51",
-          "#827d70",
-          "#a39e91",
-          "#c9c4b6",
-          "#f4eee0"
+          "#0d0b06",
+          "#28251e",
+          "#454239",
+          "#656156",
+          "#878275",
+          "#aaa599",
+          "#cdc9be",
+          "#f2eee5"
+        ]
+      },
+      "temple-surface-muted": {
+        "role": "neutral",
+        "displayName": "籤詩紙上的淡字",
+        "purpose": "面板內的次要文字（--surface-muted）。",
+        "theme": "temple",
+        "canonical": "oklch(42.7% 0.071 51.0)",
+        "tonalRamp": [
+          "#180500",
+          "#381d0d",
+          "#5a3925",
+          "#7f573f",
+          "#a5765b",
+          "#c69a81",
+          "#e8bfa9",
+          "#ffe6d2"
         ]
       },
       "temple-input": {
         "role": "neutral",
-        "displayName": "輸入框米白",
+        "displayName": "香案白",
+        "purpose": "輸入框底色（--input）。",
+        "theme": "temple",
         "canonical": "oklch(98.6% 0.014 84.6)",
         "tonalRamp": [
-          "#0e0b05",
-          "#27241c",
-          "#433f37",
-          "#615d55",
-          "#817d74",
-          "#a29e95",
-          "#c8c4ba",
-          "#f3eee4"
+          "#0d0b07",
+          "#272520",
+          "#45423b",
+          "#656159",
+          "#868279",
+          "#a9a59c",
+          "#ccc9c1",
+          "#f1eee7"
         ]
       },
       "temple-board": {
         "role": "primary",
-        "displayName": "廟口朱紅",
+        "displayName": "供桌朱紅",
+        "purpose": "舞台、結果畫面、橫樑、選中標籤、theme-color（--board）。",
+        "theme": "temple",
         "canonical": "oklch(42.5% 0.143 30.3)",
         "tonalRamp": [
-          "#1e0000",
-          "#4a0200",
-          "#7a0c03",
-          "#9f3427",
-          "#c45647",
-          "#ea7967",
-          "#ffab9d",
-          "#ffe9e5"
+          "#250000",
+          "#4b0602",
+          "#732318",
+          "#9d3e31",
+          "#c95c4c",
+          "#ea8474",
+          "#ffad9d",
+          "#ffd6c7"
         ]
       },
       "temple-label": {
         "role": "neutral",
-        "displayName": "朱紅底上的淺米字",
+        "displayName": "燭光米",
+        "purpose": "供桌朱紅上的文字（--label）。",
+        "theme": "temple",
         "canonical": "oklch(94.6% 0.048 87.6)",
         "tonalRamp": [
-          "#110a00",
-          "#2e2204",
-          "#4b3e20",
-          "#695c3d",
-          "#897c5c",
-          "#ab9d7c",
-          "#d1c3a1",
-          "#fcedca"
+          "#100a00",
+          "#2c2411",
+          "#4b412a",
+          "#6c6044",
+          "#8f8161",
+          "#b0a487",
+          "#d4c8ae",
+          "#f8eed6"
+        ]
+      },
+      "temple-label-muted": {
+        "role": "neutral",
+        "displayName": "燭光米（淡）",
+        "purpose": "供桌朱紅上的次要文字（--label-muted）。",
+        "theme": "temple",
+        "canonical": "oklch(87.3% 0.063 71.5)",
+        "tonalRamp": [
+          "#150800",
+          "#32210a",
+          "#533d22",
+          "#765c3c",
+          "#9a7c58",
+          "#bca07e",
+          "#dec4a6",
+          "#ffead0"
         ]
       },
       "temple-lit": {
-        "role": "secondary",
-        "displayName": "中獎金",
+        "role": "tertiary",
+        "displayName": "光明燈金",
+        "purpose": "中獎專用：「就吃這個」、蓋章底色、文字選取（--lit）。",
+        "theme": "temple",
         "canonical": "oklch(82.4% 0.145 85.0)",
         "tonalRamp": [
-          "#110a00",
-          "#302100",
-          "#523c00",
-          "#775800",
-          "#9e7600",
-          "#c79600",
-          "#efbc44",
-          "#ffedc7"
+          "#1b0400",
+          "#3b1e00",
+          "#5e3a00",
+          "#835900",
+          "#a97900",
+          "#ca9e35",
+          "#ebc36e",
+          "#ffeaa1"
         ]
       },
       "temple-btn": {
-        "role": "primary",
-        "displayName": "檀木匾額底",
+        "role": "secondary",
+        "displayName": "匾額檀木",
+        "purpose": "所有按鈕與招牌的底色（--btn）。",
+        "theme": "temple",
         "canonical": "oklch(29.5% 0.072 35.0)",
         "tonalRamp": [
-          "#1c0200",
-          "#401409",
-          "#603025",
-          "#814e42",
-          "#a36e60",
-          "#c78f80",
-          "#efb4a5",
-          "#ffe9e3"
+          "#1a0402",
+          "#3a1b14",
+          "#5d362d",
+          "#825448",
+          "#a87365",
+          "#ca978a",
+          "#ebbdb1",
+          "#ffe4d9"
         ]
       },
       "temple-btn-ink": {
-        "role": "primary",
+        "role": "secondary",
         "displayName": "匾額金字",
+        "purpose": "按鈕與招牌上的字（--btn-ink）。",
+        "theme": "temple",
         "canonical": "oklch(87.3% 0.114 89.4)",
         "tonalRamp": [
-          "#100a00",
-          "#2e2200",
-          "#503d00",
-          "#745a00",
-          "#987917",
-          "#ba9b41",
-          "#e1c169",
-          "#ffedbf"
+          "#160800",
+          "#342200",
+          "#553e00",
+          "#785d00",
+          "#9d7e20",
+          "#bea256",
+          "#e0c784",
+          "#ffedb3"
         ]
       },
       "temple-gold": {
-        "role": "primary",
-        "displayName": "匾額金框",
+        "role": "secondary",
+        "displayName": "神龕金邊",
+        "purpose": "匾額內框、供桌外圈、籤詩邊框；只畫線（--gold）。",
+        "theme": "temple",
         "canonical": "oklch(75.8% 0.133 83.2)",
         "tonalRamp": [
-          "#110a00",
-          "#302100",
-          "#533b00",
-          "#785700",
-          "#a07500",
-          "#c69626",
-          "#eebc54",
-          "#ffecc9"
+          "#1a0500",
+          "#3a1e00",
+          "#5d3a00",
+          "#825900",
+          "#a87900",
+          "#c99e44",
+          "#eac377",
+          "#ffeaa8"
         ]
       },
       "temple-lantern": {
         "role": "tertiary",
         "displayName": "燈籠紅",
+        "purpose": "只畫在橫樑燈籠上（--lantern）。",
+        "theme": "temple",
         "canonical": "oklch(54.8% 0.191 30.4)",
         "tonalRamp": [
-          "#1e0000",
-          "#4a0300",
-          "#7b0800",
-          "#b01000",
-          "#d7402e",
-          "#ff6550",
-          "#ffab9d",
-          "#ffe9e5"
+          "#2c0000",
+          "#550000",
+          "#800400",
+          "#ae2819",
+          "#dd4734",
+          "#fd7561",
+          "#ffa18d",
+          "#ffcdb9"
         ]
       },
       "temple-tube": {
         "role": "tertiary",
         "displayName": "籤筒檀木",
+        "purpose": "籤筒筒身（--tube）。",
+        "theme": "temple",
         "canonical": "oklch(30.9% 0.063 42.8)",
         "tonalRamp": [
-          "#1a0400",
-          "#3c1808",
-          "#5c3424",
-          "#7c5241",
-          "#9e715f",
-          "#c1927f",
-          "#e9b7a4",
-          "#ffe9e1"
+          "#180501",
+          "#371d13",
+          "#59392c",
+          "#7d5747",
+          "#a37664",
+          "#c49a89",
+          "#e6bfb0",
+          "#ffe6d8"
+        ]
+      },
+      "temple-tube-rim": {
+        "role": "tertiary",
+        "displayName": "筒口",
+        "purpose": "籤筒筒口（--tube-rim）。",
+        "theme": "temple",
+        "canonical": "oklch(23.0% 0.045 42.1)",
+        "tonalRamp": [
+          "#140704",
+          "#322019",
+          "#533c33",
+          "#765a4f",
+          "#9a7a6e",
+          "#bc9d92",
+          "#dec2b8",
+          "#ffe8df"
         ]
       },
       "temple-tube-band": {
         "role": "tertiary",
         "displayName": "籤筒金箍",
+        "purpose": "籤筒金箍與「籤」字（--tube-band）。",
+        "theme": "temple",
         "canonical": "oklch(82.1% 0.123 86.8)",
         "tonalRamp": [
-          "#110a00",
-          "#2f2200",
-          "#513c00",
-          "#755900",
-          "#9c7700",
-          "#c09935",
-          "#e7bf5f",
-          "#ffedc4"
+          "#180600",
+          "#372000",
+          "#583d00",
+          "#7c5c00",
+          "#a27c07",
+          "#c3a04d",
+          "#e5c57e",
+          "#ffecad"
         ]
       },
       "temple-stick": {
         "role": "tertiary",
-        "displayName": "籤紙米色",
+        "displayName": "籤紙米黃",
+        "purpose": "結果畫面的籤詩紙面（--stick）。",
+        "theme": "temple",
         "canonical": "oklch(87.7% 0.077 87.4)",
         "tonalRamp": [
-          "#110a00",
-          "#2f2200",
-          "#513d00",
-          "#705b25",
-          "#917b45",
-          "#b39c66",
-          "#d9c28a",
-          "#ffedc3"
+          "#130900",
+          "#302300",
+          "#504017",
+          "#725f30",
+          "#96804b",
+          "#b7a373",
+          "#dac79c",
+          "#feedc7"
         ]
       },
       "temple-bamboo": {
         "role": "tertiary",
         "displayName": "竹籤本色",
+        "purpose": "竹籤竹身（--bamboo-tone）。",
+        "theme": "temple",
         "canonical": "oklch(80.3% 0.085 79.7)",
         "tonalRamp": [
-          "#120900",
-          "#322000",
-          "#553a00",
-          "#77571c",
-          "#98773e",
-          "#bb995f",
-          "#e2be84",
-          "#ffeccd"
+          "#160700",
+          "#342100",
+          "#553d10",
+          "#785c2a",
+          "#9d7c44",
+          "#bea06e",
+          "#e1c598",
+          "#ffebc3"
         ]
       },
       "temple-lacquer": {
         "role": "tertiary",
         "displayName": "籤頭朱漆",
+        "purpose": "竹籤的葫蘆形籤頭（--lacquer）。",
+        "theme": "temple",
         "canonical": "oklch(50.8% 0.178 30.1)",
         "tonalRamp": [
-          "#1f0000",
-          "#4b0200",
-          "#7c0500",
-          "#ab1e11",
-          "#d24736",
-          "#f96b58",
-          "#ffab9d",
-          "#ffe9e5"
+          "#2a0000",
+          "#520000",
+          "#7c1107",
+          "#a93022",
+          "#d74d3c",
+          "#f87a67",
+          "#ffa592",
+          "#ffd0be"
         ]
       },
       "temple-danger": {
-        "role": "danger",
-        "displayName": "廟口危險色",
+        "role": "neutral",
+        "displayName": "警示色（廟口）",
+        "purpose": "刪除與表單錯誤（--danger）。",
+        "theme": "temple",
         "canonical": "oklch(49.1% 0.145 29.5)",
         "tonalRamp": [
-          "#1f0000",
-          "#4b0100",
-          "#7b0904",
-          "#9f3328",
-          "#c45647",
-          "#eb7867",
-          "#ffab9e",
-          "#ffe9e5"
+          "#250000",
+          "#4b0502",
+          "#732219",
+          "#9e3e32",
+          "#ca5b4d",
+          "#eb8474",
+          "#ffac9d",
+          "#ffd6c8"
         ]
       },
       "neon-night": {
         "role": "neutral",
-        "displayName": "靛紫夜空",
+        "displayName": "夜市天空",
+        "purpose": "夜市牆面、輸入框、theme-color（--ground／--input）。",
+        "theme": "neon",
         "canonical": "oklch(23.8% 0.088 283.0)",
         "tonalRamp": [
-          "#0a002e",
-          "#201b4c",
-          "#3a386c",
-          "#57568e",
-          "#7676b0",
-          "#9698d4",
-          "#bbbdfc",
-          "#ecedff"
+          "#090720",
+          "#212042",
+          "#3d3c66",
+          "#5b5b8d",
+          "#7b7bb5",
+          "#9e9fd5",
+          "#c2c4f6",
+          "#e8eaff"
         ]
       },
       "neon-panel": {
         "role": "neutral",
-        "displayName": "夜市面板",
+        "displayName": "攤位帆布",
+        "purpose": "面板與對話框（--surface）。",
+        "theme": "neon",
         "canonical": "oklch(28.1% 0.105 282.5)",
         "tonalRamp": [
-          "#0a002e",
-          "#201754",
-          "#393675",
-          "#555497",
-          "#7475ba",
-          "#9596de",
-          "#bbbdfe",
-          "#ecedfe"
+          "#090524",
+          "#211f47",
+          "#3c3b6d",
+          "#5a5995",
+          "#797abf",
+          "#9c9ede",
+          "#c0c3fe",
+          "#e6e9ff"
         ]
       },
       "neon-board": {
         "role": "primary",
-        "displayName": "夜市紙板靛藍",
+        "displayName": "戳戳樂檯面",
+        "purpose": "紙板底與結果畫面底色（--board）。",
+        "theme": "neon",
         "canonical": "oklch(31.7% 0.129 281.4)",
         "tonalRamp": [
-          "#09002f",
-          "#1f105f",
-          "#373280",
-          "#5351a3",
-          "#7172c7",
-          "#9194ec",
-          "#babefe",
-          "#ebedfe"
+          "#09032a",
+          "#201c4f",
+          "#3a3977",
+          "#5757a1",
+          "#7677cc",
+          "#999ceb",
+          "#bdc2ff",
+          "#e4e8ff"
         ]
       },
       "neon-button": {
-        "role": "neutral",
-        "displayName": "夜市按鈕深紫",
+        "role": "secondary",
+        "displayName": "攤車深紫",
+        "purpose": "所有按鈕的底色（--btn）。",
+        "theme": "neon",
         "canonical": "oklch(34.2% 0.145 280.0)",
         "tonalRamp": [
-          "#09002f",
-          "#1e0866",
-          "#352e89",
-          "#504fac",
-          "#6e70d1",
-          "#8e92f6",
-          "#b8befe",
-          "#ebedfe"
+          "#08012e",
+          "#1e1a54",
+          "#38377d",
+          "#5455a9",
+          "#7376d6",
+          "#969bf4",
+          "#bac1ff",
+          "#e1e8ff"
         ]
       },
       "neon-pink": {
         "role": "primary",
-        "displayName": "霓虹桃紅",
+        "displayName": "招牌霓虹",
+        "purpose": "招牌字、膠帶、瞄準光圈、按鈕霓虹框、選中底線（--pin／--glow／--mark／--focus）。",
+        "theme": "neon",
         "canonical": "oklch(70.5% 0.204 0.3)",
         "tonalRamp": [
-          "#1e000a",
-          "#480122",
-          "#78003c",
-          "#ab0158",
-          "#d53278",
-          "#fd5a98",
-          "#fea6c1",
-          "#ffe8ed"
+          "#2b0009",
+          "#530022",
+          "#7f003e",
+          "#ac195c",
+          "#db3a7d",
+          "#fc6ca0",
+          "#ff99c4",
+          "#ffc6ea"
         ]
       },
       "neon-pink-pale": {
-        "role": "neutral",
-        "displayName": "淡桃紅按鈕字",
+        "role": "secondary",
+        "displayName": "霓虹餘光",
+        "purpose": "按鈕上的字（--btn-ink）。",
+        "theme": "neon",
         "canonical": "oklch(90.5% 0.056 352.8)",
         "tonalRamp": [
-          "#1b010d",
-          "#381726",
-          "#573342",
-          "#775060",
-          "#987080",
-          "#bb90a1",
-          "#e2b6c7",
-          "#ffe7f0"
+          "#16050c",
+          "#341d27",
+          "#553844",
+          "#795564",
+          "#9e7585",
+          "#bf99a8",
+          "#e1becc",
+          "#ffe4f1"
         ]
       },
       "neon-lime": {
-        "role": "secondary",
-        "displayName": "萊姆螢光綠中獎格",
+        "role": "tertiary",
+        "displayName": "中獎螢光",
+        "purpose": "中獎專用：戳中的紙條、結果畫面的中獎紙條（--lit）。",
+        "theme": "neon",
         "canonical": "oklch(94.0% 0.209 120.8)",
         "tonalRamp": [
-          "#090d00",
-          "#202800",
-          "#394600",
-          "#556701",
-          "#728902",
-          "#90ad05",
-          "#b3d60b",
-          "#dfff7a"
+          "#070f00",
+          "#1d2c00",
+          "#374c00",
+          "#546e00",
+          "#729100",
+          "#95b500",
+          "#bad950",
+          "#e1fd8c"
         ]
       },
       "neon-moon": {
         "role": "neutral",
-        "displayName": "月光白",
+        "displayName": "月光",
+        "purpose": "夜市主要文字（--text）。",
+        "theme": "neon",
         "canonical": "oklch(96.1% 0.022 300.2)",
         "tonalRamp": [
-          "#0d0913",
-          "#26222d",
-          "#413d4a",
-          "#5f5b68",
-          "#7f7b89",
-          "#a09caa",
-          "#c6c1d1",
-          "#f0ebfb"
+          "#0c0a10",
+          "#26232c",
+          "#43404a",
+          "#635f6b",
+          "#84808e",
+          "#a7a2b0",
+          "#cbc7d3",
+          "#f0ecf7"
         ]
       },
       "neon-lilac": {
         "role": "neutral",
-        "displayName": "丁香灰紫",
+        "displayName": "夜霧丁香",
+        "purpose": "夜市次要文字（--muted）。",
+        "theme": "neon",
         "canonical": "oklch(76.2% 0.076 290.5)",
         "tonalRamp": [
-          "#0d0228",
-          "#251b45",
-          "#403864",
-          "#5d5685",
-          "#7d76a7",
-          "#9e97cb",
-          "#c3bcf2",
-          "#eeecff"
+          "#0c071c",
+          "#25203d",
+          "#423c60",
+          "#615a85",
+          "#827bac",
+          "#a49ecd",
+          "#c8c3ee",
+          "#eee9ff"
+        ]
+      },
+      "neon-label-muted": {
+        "role": "neutral",
+        "displayName": "夜霧丁香（檯面）",
+        "purpose": "檯面上的次要文字（--label-muted）。",
+        "theme": "neon",
+        "canonical": "oklch(83.5% 0.064 291.9)",
+        "tonalRamp": [
+          "#0c081a",
+          "#252139",
+          "#423d5b",
+          "#625b80",
+          "#837ca6",
+          "#a59fc7",
+          "#c9c4e8",
+          "#eeeaff"
         ]
       },
       "neon-danger": {
-        "role": "danger",
-        "displayName": "夜市危險粉紅",
+        "role": "neutral",
+        "displayName": "警示色（夜市）",
+        "purpose": "刪除與表單錯誤（--danger）。",
+        "theme": "neon",
         "canonical": "oklch(76.5% 0.142 13.4)",
         "tonalRamp": [
-          "#1e0005",
-          "#4a0015",
-          "#790829",
-          "#9d3246",
-          "#c25464",
-          "#e87684",
-          "#ffa9b1",
-          "#fee8ea"
+          "#240003",
+          "#4a0416",
+          "#722130",
+          "#9c3c4c",
+          "#c85969",
+          "#e9828e",
+          "#ffabb4",
+          "#ffd4db"
         ]
       }
     },
     "decorativePalette": [
       {
-        "name": "夜市燈泡色組",
+        "name": "封紙",
+        "values": [
+          "#e8467f",
+          "#f0a338",
+          "#2fb5e0"
+        ],
+        "purpose": "戳戳樂色紙；只在紙板上。"
+      },
+      {
+        "name": "膠帶條紋",
+        "values": [
+          "#ff5c9a",
+          "#f4dbe8"
+        ],
+        "purpose": "紙板外框 6px 條紋。"
+      },
+      {
+        "name": "普通紙條",
+        "values": [
+          "#d6cfee",
+          "#2b2270"
+        ],
+        "purpose": "戳過但沒中的紙條底與字。"
+      },
+      {
+        "name": "夜市燈泡",
         "values": [
           "#ff5c9a",
           "#d8ff3c",
@@ -519,149 +652,140 @@
           "#ff9a3c",
           "#3cf0ff"
         ],
-        "purpose": "只用於 js/theme.js 產生的散景光點與燈泡串，不進入介面元件。"
+        "purpose": "散景光點與燈泡串。"
       },
       {
-        "name": "戳戳樂色紙",
+        "name": "供桌頂光",
         "values": [
-          "#e8467f",
-          "#f0a338",
-          "#2fb5e0",
-          "#2f2680"
+          "#a12a1b"
         ],
-        "purpose": "封紙的桃紅點點、橘黃斜線、青色格子與素紫，每張紙板隨機貼；萊姆綠留給中獎。"
-      },
-      {
-        "name": "戳戳樂膠帶",
-        "values": [
-          "#ff5c9a",
-          "#f4dbe8"
-        ],
-        "purpose": "紙板外圈 6px 條紋膠帶。"
+        "purpose": "供桌與結果畫面頂端的放射漸層。"
       }
     ],
     "typographyMeta": {
       "result": {
-        "displayName": "結果料理名",
-        "purpose": "結果畫面的料理名稱，全系統最大字。"
+        "displayName": "Result",
+        "purpose": "結果畫面的料理名稱，全系統最大的字，只出現在這裡。"
       },
       "display": {
-        "displayName": "招呼語",
-        "purpose": "首頁招呼語與頁面標題；廟口明體、夜市黑體（--font-display 依主題切換）。"
+        "displayName": "Display",
+        "purpose": "首頁招呼語、設定頁標題。夜市改用 Noto Sans TC 900。"
       },
       "action": {
-        "displayName": "主動作",
-        "purpose": "「幫我決定！」與結果畫面按鈕，字距加寬。"
+        "displayName": "Action",
+        "purpose": "「幫我決定！」主按鈕；廟口字距 0.2em。"
+      },
+      "dialog": {
+        "displayName": "Dialog",
+        "purpose": "對話框標題、「戳戳樂」招牌、竹籤上直書的料理名（--fs-dialog）。"
       },
       "title": {
-        "displayName": "面板標題",
-        "purpose": "設定頁面板與對話框標題。"
+        "displayName": "Title",
+        "purpose": "面板標題、籤詩橫帶；結果按鈕用此階 900（--fs-title）。"
       },
       "body": {
-        "displayName": "內文",
-        "purpose": "一般內容與清單。"
+        "displayName": "Body",
+        "purpose": "內文、輸入框、分頁（--fs-body）；夜市字距 0.03em。"
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "說明、欄位標籤、紀錄、候選數、提示訊息（--fs-small）。"
       },
       "label": {
-        "displayName": "標籤",
-        "purpose": "條件標籤；廟口改用明體。"
+        "displayName": "Label",
+        "purpose": "廟口的條件標籤，display 字體 700。"
+      },
+      "meta": {
+        "displayName": "Meta",
+        "purpose": "七天格、日期、徽章、導覽、紙條、籤號；最小字級（--fs-meta）。"
       },
       "stamp": {
-        "displayName": "手寫印章",
-        "purpose": "戳戳樂剩餘格數印章（Iansui，以 text= 子集載入「剩格0123456789」）。"
+        "displayName": "Stamp",
+        "purpose": "Iansui 手寫字，只用在戳戳樂「剩 N 格」印章。"
       }
     },
     "shadows": [
       {
-        "name": "temple-plaque",
-        "value": "inset 0 0 0 1.5px var(--gold), inset 0 0 0 3px var(--btn), inset 0 0 0 4px var(--gold), 0 3px 8px rgba(61, 31, 18, 0.22)",
-        "purpose": "廟口 SpinEat 招牌；「有求必應」小匾額同一做法、落影 0 6px 12px。"
+        "name": "plaque",
+        "value": "inset 0 0 0 1.5px #d9a83e, inset 0 0 0 3px #4a1d12, inset 0 0 0 4px #d9a83e, 0 3px 8px rgba(61,31,18,.22)",
+        "purpose": "廟口招牌與「有求必應」小匾額（後者落影 0 6px 12px rgba(46,21,11,.35)）。"
       },
       {
-        "name": "temple-go",
-        "value": "inset 0 0 0 3px var(--btn), inset 0 0 0 4.5px var(--gold), 0 6px 14px rgba(61, 31, 18, 0.25)",
-        "purpose": "廟口主按鈕的匾額金框；一般主要按鈕只留 inset 0 0 0 1.5px var(--gold)。"
+        "name": "plaque-button",
+        "value": "inset 0 0 0 3px #4a1d12, inset 0 0 0 4.5px #d9a83e, 0 6px 14px rgba(61,31,18,.25)",
+        "purpose": "廟口主按鈕。"
       },
       {
-        "name": "temple-altar",
-        "value": "0 0 0 3px var(--gold), 0 0 0 5px var(--btn), 0 12px 22px rgba(61, 31, 18, 0.24)",
-        "purpose": "朱紅供桌外框，內再加 9px 內縮、40% 金色細線。"
+        "name": "altar",
+        "value": "0 0 0 3px #d9a83e, 0 0 0 5px #4a1d12, 0 12px 22px rgba(61,31,18,.24)",
+        "purpose": "廟口供桌舞台。"
       },
       {
-        "name": "temple-qian",
-        "value": "filter: drop-shadow(2px 8px 6px rgba(46, 21, 11, 0.45))",
-        "purpose": "竹籤落影；形狀由遮罩剪出，不能用 box-shadow。"
+        "name": "qian",
+        "value": "filter: drop-shadow(2px 8px 6px rgba(46,21,11,.45))",
+        "purpose": "竹籤（遮罩形狀，用 drop-shadow）。"
       },
       {
-        "name": "temple-accept",
-        "value": "inset 0 0 0 3px var(--lit), inset 0 0 0 4.5px var(--btn), 0 8px 18px rgba(46, 21, 11, 0.35)",
+        "name": "fortune-slip",
+        "value": "0 0 0 1.5px #d9a83e, 0 20px 40px rgba(46,21,11,.5)",
+        "purpose": "結果畫面的籤詩。"
+      },
+      {
+        "name": "accept-temple",
+        "value": "inset 0 0 0 3px #f0bd45, inset 0 0 0 4.5px #4a1d12, 0 8px 18px rgba(46,21,11,.35)",
         "purpose": "廟口「就吃這個」。"
       },
       {
-        "name": "neon-go",
-        "value": "inset 0 0 0 1.5px var(--glow), 0 0 18px rgba(255, 92, 154, 0.25)",
-        "purpose": "夜市主按鈕；懸停外光暈 26px / 0.4。"
+        "name": "neon-button",
+        "value": "inset 0 0 0 1.5px #ff5c9a, 0 0 18px rgba(255,92,154,.25)",
+        "purpose": "夜市主按鈕；懸停光暈 0 0 26px .4。"
       },
       {
-        "name": "neon-sheet",
-        "value": "0 12px 32px rgba(0, 0, 0, 0.35)",
+        "name": "poke-board",
+        "value": "0 12px 32px rgba(0,0,0,.35)",
         "purpose": "夜市戳戳樂紙板。"
       },
       {
-        "name": "neon-aim",
-        "value": "inset 0 0 0 2px var(--pin), inset 0 0 12px rgba(255, 92, 154, 0.45), 0 0 16px rgba(255, 92, 154, 0.65)",
-        "purpose": "戳戳樂被瞄準或懸停的封紙，另放大 1.1 倍。"
+        "name": "poke-aim",
+        "value": "inset 0 0 0 2px #ff5c9a, inset 0 0 12px rgba(255,92,154,.45), 0 0 16px rgba(255,92,154,.65)",
+        "purpose": "被瞄準或懸停的封紙。"
       },
       {
-        "name": "neon-lit-slip",
-        "value": "0 0 16px var(--lit)",
-        "purpose": "戳中那格的紙條與結果小地圖的中獎格光暈。"
+        "name": "prize-slip",
+        "value": "filter: drop-shadow(0 0 22px rgba(216,255,60,.35)) drop-shadow(0 14px 16px rgba(0,0,0,.45))",
+        "purpose": "夜市結果畫面的中獎紙條（遮罩形狀）。"
       },
       {
-        "name": "neon-result-slip",
-        "value": "filter: drop-shadow(0 0 22px rgba(216, 255, 60, 0.35)) drop-shadow(0 14px 16px rgba(0, 0, 0, 0.45))",
-        "purpose": "結果畫面的中獎紙條，掛在外層才不會被撕痕遮罩切掉。"
-      },
-      {
-        "name": "overlay-dialog",
-        "value": "0 18px 48px rgba(0, 0, 0, 0.35)",
-        "purpose": "店家對話框。"
-      },
-      {
-        "name": "overlay-toast",
-        "value": "0 8px 20px rgba(0, 0, 0, 0.25)",
-        "purpose": "提示訊息。"
+        "name": "overlay",
+        "value": "0 18px 48px rgba(0,0,0,.35)",
+        "purpose": "店家對話框；提示訊息用 0 8px 20px rgba(0,0,0,.25)。"
       }
     ],
     "motion": [
       {
         "name": "fortune-shake",
-        "value": "650ms ease-in-out，以籤筒底部為軸左右晃",
-        "purpose": "求籤：搖籤筒。"
+        "value": "650ms ease-in-out，以籤筒底部為軸",
+        "purpose": "廟口：搖籤筒。"
       },
       {
         "name": "fortune-rise",
         "value": "520ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "求籤：一支竹籤從筒口跳出、落到籤位立好；同時震動 15ms。"
+        "purpose": "廟口：竹籤跳出筒口落到籤位；震動 15ms。"
       },
       {
         "name": "poke-aim",
         "value": "5 × 70ms",
-        "purpose": "戳戳樂：按主按鈕時手指在幾格之間跳，最後一下落在要戳的格子。"
+        "purpose": "夜市：按主按鈕時在格子間跳。"
       },
       {
         "name": "poke-tear",
-        "value": "560ms：封紙凹下 240ms、5 片紙屑 500ms、紙條捲出再攤開 420ms（延遲 140ms）",
-        "purpose": "戳戳樂：戳破封紙、抽出紙條；同時震動 15ms。"
+        "value": "封紙凹陷 240ms ease-out；紙屑 500ms cubic-bezier(0.2, 0.7, 0.4, 1)；紙條攤開 420ms cubic-bezier(0.16, 1, 0.3, 1)，延遲 140ms",
+        "purpose": "夜市：戳破封紙、抽出紙條；震動 15ms。"
       },
       {
         "name": "land-pause",
         "value": "450ms（減少動態效果時 200ms）",
-        "purpose": "出籤或戳開後停頓再顯示結果。"
-      },
-      {
-        "name": "week-stamp",
-        "value": "0.45s cubic-bezier(0.16, 1, 0.3, 1)，延遲 0.2s，scale(1.9) rotate(-9deg) → 原位；底色 55% --lit 於 1.4s ease-out 褪掉",
-        "purpose": "按「就吃這個」後七天紀錄「今」格蓋章。"
+        "purpose": "出籤或戳破後停頓，再進結果畫面。"
       },
       {
         "name": "result-fade",
@@ -669,193 +793,200 @@
         "purpose": "結果畫面淡入。"
       },
       {
-        "name": "result-slip-in",
-        "value": "廟口 0.6s cubic-bezier(0.16, 1, 0.3, 1) clip-path 展開，竹籤 0.45s 於 0.4s 靠上；夜市 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 彈出",
-        "purpose": "籤詩由上往下展開、竹籤從紙後靠上去；中獎紙條從紙板裡彈出來。"
+        "name": "result-unroll",
+        "value": "0.6s cubic-bezier(0.16, 1, 0.3, 1)，延遲 0.08s；竹籤 0.45s 延遲 0.4s",
+        "purpose": "廟口：籤詩由上往下展開，竹籤靠上來。"
+      },
+      {
+        "name": "result-pop",
+        "value": "0.5s cubic-bezier(0.34, 1.56, 0.64, 1)，延遲 0.12s",
+        "purpose": "夜市：中獎紙條從紙板裡彈出。"
+      },
+      {
+        "name": "week-stamp",
+        "value": "0.45s cubic-bezier(0.16, 1, 0.3, 1)，延遲 0.2s；底色 1.4s ease-out",
+        "purpose": "七天紀錄「今」格蓋章，55% --lit 底色褪掉。"
       },
       {
         "name": "state-color",
-        "value": "0.15s",
-        "purpose": "標籤顏色與邊框轉換；封紙瞄準 0.12s。"
+        "value": "0.15s（封紙瞄準 0.12s）",
+        "purpose": "標籤顏色與邊框轉換。"
       },
       {
         "name": "reduced-motion",
-        "value": "prefers-reduced-motion: reduce，且設定為「跟隨系統」（:root:not([data-motion=\"always\"])，JS 以 calm() 判斷）",
-        "purpose": "不晃籤筒、不飛籤、不跳格、不破紙，直接亮出籤或紙條（200ms 後進結果），不震動；取消結果進場動畫；蓋章只保留底色褪掉。選「一律播放」時全部照常。"
+        "value": ":root:not([data-motion=\"always\"]) + prefers-reduced-motion: reduce；JS 用 calm()",
+        "purpose": "不晃、不跳、不戳破，直接亮出結果，停頓 200ms，不震動；只保留蓋章底色褪掉。"
       }
     ],
     "breakpoints": [
       {
         "name": "column",
         "value": "480px",
-        "purpose": "單欄最大寬度，桌面置中，背景延伸全視窗。"
+        "purpose": "內容欄最大寬度，桌面上置中。"
+      },
+      {
+        "name": "altar-narrow",
+        "value": "@container (max-width: 380px)",
+        "purpose": "供桌變窄時竹籤縮為 34×66、字降一階。"
       }
     ]
   },
   "components": [
     {
-      "name": "幫我決定（廟口）",
+      "name": "主按鈕（廟口）",
       "kind": "button",
       "refersTo": "go-button-temple",
-      "description": "首頁拇指位置的主按鈕，檀木底、金字、金色內框的匾額做法。",
-      "html": "<button class=\"ds-go\">幫我決定！</button>",
-      "css": ".ds-go { width: 100%; height: 58px; border: none; border-radius: 14px; background: #4a1d12; color: #f3d27a; font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: 1.2rem; letter-spacing: .2em; cursor: pointer; box-shadow: inset 0 0 0 3px #4a1d12, inset 0 0 0 4.5px #d9a83e, 0 6px 14px rgba(61,31,18,.25); transition: transform .1s, box-shadow .2s; } .ds-go:active { transform: scale(.98); } .ds-go:focus-visible { outline: 2px solid #8c2216; outline-offset: 2px; }"
+      "description": "「幫我決定！」：匾額檀木底、金字、金色雙框的匾額按鈕。",
+      "html": "<button class=\"ds-go-temple\">幫我決定！</button>",
+      "css": ".ds-go-temple { width: 100%; height: 58px; border: none; border-radius: 14px; background: #4a1d12; color: #f3d27a; font-family: 'Noto Serif TC', 'Noto Sans TC', serif; font-weight: 900; font-size: 1.2rem; letter-spacing: 0.2em; box-shadow: inset 0 0 0 3px #4a1d12, inset 0 0 0 4.5px #d9a83e, 0 6px 14px rgba(61,31,18,.25); cursor: pointer; transition: transform .1s, box-shadow .2s; } .ds-go-temple:active { transform: scale(.98); } .ds-go-temple:focus-visible { outline: 2px solid #8c2216; outline-offset: 2px; }"
     },
     {
-      "name": "幫我決定（夜市）",
+      "name": "主按鈕（夜市）",
       "kind": "button",
       "refersTo": "go-button-neon",
-      "description": "夜市主按鈕：深紫底、桃紅霓虹內框與外光暈，不用亮色實底。",
-      "html": "<div class=\"ds-night\"><button class=\"ds-go-neon\">幫我決定！</button></div>",
-      "css": ".ds-night { background: #1b1546; padding: 20px; } .ds-go-neon { width: 100%; height: 58px; border: none; border-radius: 14px; background: #2f2680; color: #ffd1e3; font-family: 'Noto Sans TC', sans-serif; font-weight: 900; font-size: 1.2rem; letter-spacing: .12em; cursor: pointer; box-shadow: inset 0 0 0 1.5px #ff5c9a, 0 0 18px rgba(255,92,154,.25); transition: transform .1s, box-shadow .2s; } .ds-go-neon:hover { box-shadow: inset 0 0 0 1.5px #ff5c9a, 0 0 26px rgba(255,92,154,.4); } .ds-go-neon:active { transform: scale(.98); } .ds-go-neon:focus-visible { outline: 2px solid #ff5c9a; outline-offset: 2px; }"
+      "description": "「幫我決定！」：攤車深紫底、霓虹桃紅內框與光暈，從不用亮色實底。",
+      "html": "<div style=\"background:#1b1546;padding:16px\"><button class=\"ds-go-neon\">幫我決定！</button></div>",
+      "css": ".ds-go-neon { width: 100%; height: 58px; border: none; border-radius: 14px; background: #2f2680; color: #ffd1e3; font-family: 'Noto Sans TC', system-ui, sans-serif; font-weight: 900; font-size: 1.2rem; letter-spacing: 0.12em; box-shadow: inset 0 0 0 1.5px #ff5c9a, 0 0 18px rgba(255,92,154,.25); cursor: pointer; transition: transform .1s, box-shadow .2s; } .ds-go-neon:hover { box-shadow: inset 0 0 0 1.5px #ff5c9a, 0 0 26px rgba(255,92,154,.4); } .ds-go-neon:active { transform: scale(.98); } .ds-go-neon:focus-visible { outline: 2px solid #ff5c9a; outline-offset: 2px; }"
     },
     {
       "name": "就吃這個（廟口）",
       "kind": "button",
       "refersTo": "button-accept-temple",
-      "description": "結果畫面的接受按鈕，中獎金底、檀木內框加柔和落影。",
-      "html": "<div class=\"ds-result-bg\"><button class=\"ds-accept\">就吃這個</button></div>",
-      "css": ".ds-result-bg { background: #8c2216; padding: 20px; } .ds-accept { width: 100%; height: 56px; border: none; border-radius: 10px; background: #f0bd45; color: #3d1f12; font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: 1.125rem; letter-spacing: .08em; cursor: pointer; box-shadow: inset 0 0 0 3px #f0bd45, inset 0 0 0 4.5px #4a1d12, 0 8px 18px rgba(46,21,11,.35); } .ds-accept:active { transform: scale(.98); } .ds-accept:focus-visible { outline: 2px solid #fbecc9; outline-offset: 2px; }"
+      "description": "結果畫面的接受按鈕：中獎才發光，光明燈金底、檀木內框。",
+      "html": "<div style=\"background:#8c2216;padding:16px\"><button class=\"ds-accept-temple\">就吃這個</button></div>",
+      "css": ".ds-accept-temple { width: 100%; height: 56px; border: none; border-radius: 10px; background: #f0bd45; color: #3d1f12; font-family: 'Noto Serif TC', 'Noto Sans TC', serif; font-weight: 900; font-size: 1.125rem; letter-spacing: 0.08em; box-shadow: inset 0 0 0 3px #f0bd45, inset 0 0 0 4.5px #4a1d12, 0 8px 18px rgba(46,21,11,.35); cursor: pointer; transition: transform .1s; } .ds-accept-temple:active { transform: scale(.98); } .ds-accept-temple:focus-visible { outline: 2px solid #fbecc9; outline-offset: 2px; }"
     },
     {
-      "name": "一般按鈕",
-      "kind": "button",
-      "refersTo": "button-primary-temple",
-      "description": "設定頁的主要與次要按鈕；廟口主要按鈕帶 1.5px 金色內框。",
-      "html": "<button class=\"ds-btn\">新增店家</button> <button class=\"ds-btn-secondary\">匯入</button>",
-      "css": ".ds-btn, .ds-btn-secondary { border-radius: 10px; padding: 10px 20px; font-weight: 700; cursor: pointer; } .ds-btn { border: none; background: #4a1d12; color: #f3d27a; box-shadow: inset 0 0 0 1.5px #d9a83e; } .ds-btn-secondary { border: 1.5px solid currentColor; background: transparent; color: #3d1f12; } .ds-btn:focus-visible, .ds-btn-secondary:focus-visible { outline: 2px solid #8c2216; outline-offset: 2px; }"
-    },
-    {
-      "name": "匾額招牌（廟口）",
+      "name": "招牌匾額（廟口）",
       "kind": "custom",
       "refersTo": "plaque-temple",
-      "description": "頁首 SpinEat 招牌與供桌上的「有求必應」：檀木底、金字、金色雙框。",
-      "html": "<span class=\"ds-plaque\">SpinEat</span>",
-      "css": ".ds-plaque { display: inline-block; padding: 2px 10px; border-radius: 3px; background: #4a1d12; color: #f3d27a; font-family: 'Noto Serif TC', serif; font-weight: 900; font-size: .875rem; letter-spacing: .06em; box-shadow: inset 0 0 0 1.5px #d9a83e, inset 0 0 0 3px #4a1d12, inset 0 0 0 4px #d9a83e, 0 3px 8px rgba(61,31,18,.22); }"
+      "description": "頁首的 SpinEat 小匾額：檀木底、金字、金色雙框。",
+      "html": "<div style=\"background:#eee2c6;padding:16px\"><span class=\"ds-plaque\">SpinEat</span></div>",
+      "css": ".ds-plaque { display: inline-block; padding: 2px 10px; border-radius: 3px; background: #4a1d12; color: #f3d27a; font-family: 'Noto Serif TC', 'Noto Sans TC', serif; font-weight: 900; font-size: .875rem; letter-spacing: .06em; box-shadow: inset 0 0 0 1.5px #d9a83e, inset 0 0 0 3px #4a1d12, inset 0 0 0 4px #d9a83e, 0 3px 8px rgba(61,31,18,.22); }"
     },
     {
       "name": "條件標籤（廟口）",
       "kind": "chip",
       "refersTo": "chip-temple",
-      "description": "籤條式的條件標籤：直角、細朱紅框、明體 700，選中轉朱紅底。",
-      "html": "<span class=\"ds-chip\">宵夜</span> <span class=\"ds-chip ds-chip-on\">排除 3 天</span>",
-      "css": ".ds-chip { display: inline-block; padding: 3px 11px; font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: .875rem; background: #fbf5e7; color: #3d1f12; border: 1px solid rgba(163,41,26,.45); border-radius: 3px; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s; } .ds-chip:hover { border-color: #a3291a; } .ds-chip-on { background: #8c2216; border-color: #8c2216; color: #fbecc9; }"
+      "description": "籤條：籤詩紙底、3px 直角、朱紅細框；選中換成供桌朱紅底。",
+      "html": "<div style=\"background:#eee2c6;padding:16px;display:flex;gap:6px\"><button class=\"ds-chip-temple\" aria-pressed=\"true\">午餐</button><button class=\"ds-chip-temple\">$$</button><button class=\"ds-chip-temple\">麵食</button></div>",
+      "css": ".ds-chip-temple { padding: 3px 11px; border-radius: 3px; border: 1px solid rgba(163,41,26,.45); background: #fbf5e7; color: #3d1f12; font-family: 'Noto Serif TC', 'Noto Sans TC', serif; font-weight: 700; font-size: .875rem; line-height: 1.5; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s; } .ds-chip-temple:hover { border-color: #a3291a; } .ds-chip-temple[aria-pressed=\"true\"] { background: #8c2216; border-color: #8c2216; color: #fbecc9; } .ds-chip-temple:focus-visible { outline: 2px solid #8c2216; outline-offset: 2px; }"
     },
     {
       "name": "條件標籤（夜市）",
       "kind": "chip",
       "refersTo": "chip-neon",
-      "description": "夜市膠囊標籤，選中為桃紅框。",
-      "html": "<div class=\"ds-night-c\"><span class=\"ds-chip-n\">宵夜</span> <span class=\"ds-chip-n ds-chip-n-on\">排除 3 天</span></div>",
-      "css": ".ds-night-c { background: #1b1546; padding: 12px; } .ds-chip-n { display: inline-block; padding: 3px 11px; font-size: .8rem; border-radius: 999px; background: rgba(255,255,255,.07); color: #f4efff; border: 1px solid rgba(244,239,255,.14); cursor: pointer; transition: background-color .15s, border-color .15s, color .15s; } .ds-chip-n:hover { border-color: #ff5c9a; } .ds-chip-n-on { background: rgba(255,92,154,.2); border-color: #ff5c9a; color: #fff; }"
-    },
-    {
-      "name": "面板",
-      "kind": "card",
-      "refersTo": "panel-temple",
-      "description": "設定頁區塊，1px 細線分層、無陰影。",
-      "html": "<section class=\"ds-panel\"><h2>我的店家</h2><p>還沒有店家。</p></section>",
-      "css": ".ds-panel { background: #fbf5e7; color: #3d1f12; border: 1px solid rgba(61,31,18,.18); border-radius: 10px; padding: 16px; } .ds-panel h2 { margin: 0 0 12px; font-family: 'Noto Serif TC', serif; font-size: 1.125rem; } .ds-panel p { margin: 0; color: #6e4329; font-size: .875rem; }"
+      "description": "霓虹膠囊：7% 白底細框；選中換成 20% 桃紅底與霓虹框。",
+      "html": "<div style=\"background:#1b1546;padding:16px;display:flex;gap:6px\"><button class=\"ds-chip-neon\" aria-pressed=\"true\">宵夜</button><button class=\"ds-chip-neon\">$</button><button class=\"ds-chip-neon\">小吃</button></div>",
+      "css": ".ds-chip-neon { padding: 3px 11px; border-radius: 999px; border: 1px solid rgba(244,239,255,.14); background: rgba(255,255,255,.07); color: #f4efff; font-family: 'Noto Sans TC', system-ui, sans-serif; font-size: .875rem; line-height: 1.5; letter-spacing: .03em; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s; } .ds-chip-neon:hover { border-color: #ff5c9a; } .ds-chip-neon[aria-pressed=\"true\"] { background: rgba(255,92,154,.2); border-color: #ff5c9a; color: #fff; } .ds-chip-neon:focus-visible { outline: 2px solid #ff5c9a; outline-offset: 2px; }"
     },
     {
       "name": "文字輸入",
       "kind": "input",
-      "refersTo": "input-text",
-      "description": "設定頁表單欄位。",
-      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"例如：公司附近、可外送\">",
-      "css": ".ds-input { width: 100%; border: 1px solid rgba(61,31,18,.18); background: #fffaf0; color: #3d1f12; border-radius: 8px; padding: 8px 10px; font: inherit; } .ds-input::placeholder { color: #6e4329; } .ds-input:focus-visible { outline: 2px solid #8c2216; outline-offset: 2px; }"
+      "refersTo": "input-temple",
+      "description": "細線框、香案白底、8px 圓角；焦點是 2px 主題色外框。",
+      "html": "<div style=\"background:#fbf5e7;padding:16px\"><label class=\"ds-field\"><span>店家名稱</span><input class=\"ds-input\" type=\"text\" placeholder=\"例如：巷口牛肉麵\"></label></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 6px; } .ds-field span { font-size: .875rem; color: #6e4329; font-family: 'Noto Sans TC', system-ui, sans-serif; } .ds-input { width: 100%; box-sizing: border-box; border: 1px solid rgba(61,31,18,.18); background: #fffaf0; color: #3d1f12; border-radius: 8px; padding: 8px 10px; font: 1rem 'Noto Sans TC', system-ui, sans-serif; caret-color: #a3291a; } .ds-input::placeholder { color: #6e4329; } .ds-input:focus-visible { outline: 2px solid #8c2216; outline-offset: 2px; }"
     },
     {
-      "name": "底部導覽",
+      "name": "分頁",
       "kind": "nav",
-      "refersTo": "bottom-nav",
-      "description": "固定底部導覽，描邊 SVG 圖示加小字標籤；廟口 2px 朱紅頂線、目前頁轉 --mark。",
-      "html": "<nav class=\"ds-nav\"><a href=\"#\" aria-current=\"page\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"3\"/><circle cx=\"9\" cy=\"8\" r=\".6\"/><circle cx=\"15\" cy=\"8\" r=\".6\"/><circle cx=\"12\" cy=\"11.5\" r=\".6\"/><path d=\"M8 21v-4M12 21v-4M16 21v-4\"/></svg>抽選</a><a href=\"#\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 7h10M18 7h2M4 17h4M12 17h8\"/><circle cx=\"16\" cy=\"7\" r=\"2\"/><circle cx=\"10\" cy=\"17\" r=\"2\"/></svg>設定</a></nav>",
-      "css": ".ds-nav { display: flex; justify-content: center; gap: 8px; padding: 6px 16px; background: #fbf5e7; border-top: 2px solid #8c2216; } .ds-nav a { flex: 0 1 160px; display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 5px 0 3px; font-size: .75rem; color: #6e4329; text-decoration: none; border-radius: 10px; } .ds-nav svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; } .ds-nav a:hover { color: #3d1f12; } .ds-nav a[aria-current=page] { color: #a3291a; font-weight: 700; } .ds-nav a:focus-visible { outline: 2px solid #8c2216; outline-offset: 2px; }"
+      "refersTo": "",
+      "description": "「料理／我的店家」：明體 700／900 對比，選中加 2.5px 廟門朱底線。",
+      "html": "<div style=\"background:#eee2c6;padding:16px\"><div class=\"ds-tabs\" role=\"radiogroup\"><button role=\"radio\" aria-checked=\"true\">料理</button><button role=\"radio\" aria-checked=\"false\">我的店家</button></div></div>",
+      "css": ".ds-tabs { display: flex; gap: 24px; padding: 0 6px; border-bottom: 1px solid rgba(61,31,18,.18); } .ds-tabs button { border: none; background: none; padding: 0 0 9px; margin-bottom: -1px; border-bottom: 2.5px solid transparent; font-family: 'Noto Serif TC', 'Noto Sans TC', serif; font-size: 1rem; font-weight: 700; color: #6b3f25; cursor: pointer; } .ds-tabs button:hover { color: #3d1f12; } .ds-tabs button[aria-checked=\"true\"] { color: #3d1f12; font-weight: 900; border-bottom-color: #a3291a; } .ds-tabs button:focus-visible { outline: 2px solid #8c2216; outline-offset: 2px; }"
     },
     {
-      "name": "竹籤（靜態示意）",
-      "kind": "custom",
-      "refersTo": "qian",
-      "description": "求籤的那支竹籤：葫蘆輪廓朱漆籤頭以遮罩剪出，竹身帶圓弧暗邊與纖維；料理名直書在籤頭下、朱墨籤號在籤尾。此為簡化示意，實際元件見 css/style.css 的 .qian 與 --qian-head。",
-      "html": "<div class=\"ds-altar\"><div class=\"ds-qian\"><b>牛肉麵</b><small>第七籤</small></div></div>",
-      "css": ".ds-altar { background: radial-gradient(120% 90% at 50% 0%, #a12a1b, #8c2216 60%); border-radius: 10px; box-shadow: 0 0 0 3px #d9a83e, 0 0 0 5px #4a1d12; margin: 8px; padding: 20px; display: flex; justify-content: center; } .ds-qian { position: relative; width: 40px; height: 230px; display: flex; justify-content: space-between; align-items: center; padding: 70px 0 10px; writing-mode: vertical-rl; text-orientation: upright; font-family: 'Noto Serif TC', serif; font-weight: 900; color: #3d1f12; background: linear-gradient(90deg, rgba(110,72,28,.45), transparent 22%, rgba(255,246,222,.42) 42%, transparent 62%, rgba(110,72,28,.5)), #dcb97f; border-radius: 20px 20px 2px 2px / 26px 26px 2px 2px; filter: drop-shadow(2px 8px 6px rgba(46,21,11,.45)); } .ds-qian::before { content: ''; position: absolute; inset: 0 0 auto; height: 58px; border-radius: 20px 20px 0 0 / 26px 26px 0 0; background: #b52a1c; } .ds-qian b { font-size: 1.25rem; } .ds-qian small { color: #8c2216; font-size: .75rem; letter-spacing: .14em; }"
+      "name": "底部導覽（廟口）",
+      "kind": "nav",
+      "refersTo": "",
+      "description": "籤詩紙底、2px 朱紅頂線；22px 線條圖示加 meta 字，目前頁轉廟門朱。",
+      "html": "<nav class=\"ds-bottom-nav\"><a href=\"#\" aria-current=\"page\"><svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"8\"/><path d=\"M12 8v4l3 2\"/></svg>抽選</a><a href=\"#\"><svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 3v3M12 18v3M3 12h3M18 12h3\"/></svg>設定</a></nav>",
+      "css": ".ds-bottom-nav { display: flex; justify-content: center; gap: 8px; padding: 6px 16px; background: #fbf5e7; border-top: 2px solid #8c2216; } .ds-bottom-nav a { flex: 0 1 160px; display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 5px 0 3px; font: .75rem 'Noto Sans TC', system-ui, sans-serif; color: #6e4329; text-decoration: none; border-radius: 10px; } .ds-bottom-nav svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; } .ds-bottom-nav a:hover { color: #3d1f12; } .ds-bottom-nav a[aria-current=\"page\"] { color: #a3291a; font-weight: 700; } .ds-bottom-nav a:focus-visible { outline: 2px solid #8c2216; outline-offset: 2px; }"
     },
     {
-      "name": "戳戳樂紙板（靜態示意）",
+      "name": "中獎紙條（夜市）",
       "kind": "custom",
-      "refersTo": "poke-sheet",
-      "description": "夜市的 24 格紙板：桃紅條紋膠帶外框、招牌與剩餘格數印章、多色封紙；戳過的格子露出紙條，戳中的那張是萊姆綠。此為 6×1 的縮小示意。",
-      "html": "<div class=\"ds-sheet\"><div class=\"ds-head\"><span>戳戳樂</span><i>剩 22 格</i></div><div class=\"ds-cells\"><span class=\"p0\">1</span><span class=\"p1\">2</span><span class=\"slip\">滷肉飯</span><span class=\"p2\">4</span><span class=\"slip on\">炒飯</span><span class=\"p3\">6</span></div></div>",
-      "css": ".ds-sheet { background: linear-gradient(#2b2270, #2b2270) padding-box, repeating-linear-gradient(-45deg, #ff5c9a 0 7px, #f4dbe8 7px 14px) border-box; border: 6px solid transparent; border-radius: 18px; box-shadow: 0 12px 32px rgba(0,0,0,.35); margin: 8px; color: #f4efff; } .ds-head { display: flex; align-items: center; gap: 12px; padding: 8px 14px; border-bottom: 1px solid rgba(255,92,154,.3); } .ds-head span { flex: 1; font-weight: 900; font-size: 1.25rem; letter-spacing: .3em; color: #ff5c9a; text-shadow: 0 0 10px rgba(255,92,154,.55); } .ds-head i { font-style: normal; font-size: .75rem; color: rgba(255,92,154,.8); border: 1.5px solid currentColor; border-radius: 6px; padding: 1px 7px; rotate: -8deg; } .ds-cells { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; padding: 10px; } .ds-cells span { aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; font-weight: 900; font-size: .875rem; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.35); } .ds-cells .p0 { background: radial-gradient(#ffffff55 22%, transparent 24%) 0 0 / 8px 8px, #e8467f; color: #fff; } .ds-cells .p1 { background: repeating-linear-gradient(45deg, #ffffff40 0 3px, transparent 3px 7px), #f0a338; color: #1b1546; } .ds-cells .p2 { background: #2fb5e0; color: #1b1546; } .ds-cells .p3 { background: radial-gradient(circle at 35% 30%, #3b3196, #2f2680 75%); color: #ffd1e3; } .ds-cells .slip { aspect-ratio: auto; align-self: center; border-radius: 2px; padding: 3px 2px; background: #d6cfee; color: #2b2270; font-size: .75rem; font-weight: 700; box-shadow: 0 2px 4px rgba(5,2,20,.5); } .ds-cells .slip.on { background: #d8ff3c; color: #1b1546; font-weight: 900; box-shadow: 0 0 16px #d8ff3c; }"
+      "refersTo": "stage-neon",
+      "description": "結果畫面的中獎螢光紙條：上緣撕痕、斜 -2.5°、發光；中獎螢光唯一的大面積用法。",
+      "html": "<div style=\"background:#2b2270;padding:32px 16px\"><div class=\"ds-prize\"><p class=\"ds-prize-head\">戳開第 7 格</p><p class=\"ds-prize-name\">鹽酥雞</p></div></div>",
+      "css": ".ds-prize { position: relative; isolation: isolate; max-width: 300px; margin: 0 auto; padding: 18px 20px 20px; text-align: center; color: #1b1546; rotate: -2.5deg; filter: drop-shadow(0 0 22px rgba(216,255,60,.35)) drop-shadow(0 14px 16px rgba(0,0,0,.45)); font-family: 'Noto Sans TC', system-ui, sans-serif; } .ds-prize::before { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: 0 0 6px 6px; background: #d8ff3c; -webkit-mask: radial-gradient(circle at 7px 0, #0000 4.5px, #000 5px) 0 0 / 14px 100% repeat-x; mask: radial-gradient(circle at 7px 0, #0000 4.5px, #000 5px) 0 0 / 14px 100% repeat-x; } .ds-prize-head { margin: 0; padding-bottom: 10px; border-bottom: 1.5px dashed rgba(27,21,70,.3); font-weight: 900; font-size: .875rem; letter-spacing: .2em; } .ds-prize-name { margin: 16px 0 0; font-weight: 900; font-size: 2.75rem; line-height: 1.1; }"
     }
   ],
   "narrative": {
-    "northStar": "抽到的那一張",
-    "overview": "這一餐不是轉出來的數字，而是一件拿在手上的實物：白天在廟口搖籤筒，跳出一支竹籤；晚上在夜市戳破一格紙板，洞裡抽出一張紙條。整套系統圍繞「拿到那一張」的瞬間建構：舞台佔據畫面中段，抽中後結果畫面就是那張籤詩或中獎紙條，料理名稱放到最大。它刻意拒絕這類工具的預設長相（彩虹扇形轉盤擺在白色卡片上）。\n\n兩個主題共用同一副骨架，只換 `css/style.css` 裡的變數與少數裝飾，而且每個主題配一種抽法：「廟口朱紅」是求籤、「夜市霓虹」是戳戳樂（使用者 2026-10-27 決定由主題決定抽法；同日移除老派冰果室主題與彈珠台）。依時間自動切換：05:00–17:59 廟口、18:00–04:59 夜市，設定頁可手動固定其中一個（`js/theme.js`，每分鐘與切回分頁時重新判斷）。廟口是預設主題，也是白天的廟埕：米色長條石板地、頂端朱紅橫樑掛一排紅燈籠、朱紅供桌、檀木底金字的匾額式按鈕與招牌。夜市霓虹是靛紫夜空、散景光暈、頂端一串下垂的彩色燈泡，紙板外圈纏桃紅條紋膠帶、中獎紙條是會發光的萊姆綠，按鈕是深紫底配桃紅霓虹外框，從不用亮色實底。\n\n密度偏手機單欄：內容欄最寬 480px，桌面上置中，左右空間交給背景（石埕或散景）延伸。所有裝飾都是 CSS、內嵌 SVG 或 data URI SVG 遮罩即時產生，不出貨任何點陣圖。使用者明確避開的方向：太幼稚、太冷、動畫拖慢速度、模板感、廉價感、沉悶色調、亮眼刺目的按鈕；料理 emoji 已依使用者決定全數移除。",
+    "northStar": "問一下就知道",
+    "overview": "**Creative North Star: \"問一下就知道\"**\n\nSpinEat 把「今天吃什麼」變成一個問了就有答案的小儀式。白天像在廟口搖籤筒，跳出一支竹籤；晚上像在夜市戳破一格紙板，洞裡抽出一張紙條。兩種問法都源自台灣人本來就會做的事，所以不用教：看到籤筒就知道要搖，看到紙板就知道要戳。儀式要有期待感，但它是為了「快點得到答案」服務的。整段抽選約在 1.6 秒內演完，再按一次就跳過，結果在按下的那一刻就以等機率決定，舞台只負責演出。\n\n兩個主題共用同一副骨架，只換 `css/style.css` 的語意變數與少數裝飾，每個主題對應一種問法：「廟口朱紅」是求籤，「夜市霓虹」是戳戳樂。05:00–17:59 自動用廟口，18:00–04:59 自動用夜市，設定頁也可以固定其中一個（`js/theme.js` 每分鐘、以及切回分頁時重新判斷；抽到一半換主題時，等這一輪結束才換舞台）。廟口是白天的廟埕：米色長條石板地，頂端是朱紅橫樑掛一排紅燈籠，舞台是朱紅供桌，按鈕和招牌是檀木底金字的匾額。夜市是靛紫夜空，有散景光暈，頂端掛一串下垂的彩色燈泡，舞台是纏著桃紅條紋膠帶的紙板，按鈕是深紫底配霓虹桃紅框。\n\n畫面上每個元素都屬於場景：條件標籤在廟口是籤條，在夜市是霓虹膠囊；底部導覽在廟口壓一道朱紅頂線；結果畫面借用首頁的橫樑或燈泡串，讓人感覺還站在同一個地方。密度是手機單欄，桌面上置中，左右空間留給石埕或散景延伸。背景、燈籠、燈泡、籤、封紙都由 CSS、內嵌 SVG 或 data URI 遮罩即時產生。",
     "keyCharacteristics": [
-      "舞台是唯一的主角：廟口是朱紅供桌與籤筒，夜市是 24 格戳戳樂紙板，兩者同尺寸",
-      "兩個主題、同一副骨架、各配一種抽法，依時段自動切換",
-      "結果畫面是抽到的實物（籤詩／中獎紙條），由料理名稱獨佔，只留「就吃這個」與「再抽一次」",
-      "抽選約 1–1.6 秒內完成、再按一次按鈕即跳過；減少動態效果時直接出結果",
-      "結果在按下的那一刻就以等機率決定，舞台只負責演出",
-      "按「就吃這個」後七天紀錄的今天蓋上章，讓人看見它記住了",
-      "裝飾全部由程式產生，無點陣圖"
+      "一問一答：按下就決定結果，舞台演出約 1.6 秒，隨時可以跳過",
+      "兩個場景、同一副骨架：白天廟口求籤，晚上夜市戳戳樂，依時段切換",
+      "舞台是視覺主角，兩個主題的舞台同尺寸（寬高比 1 : 0.86），換主題時版面不跳動",
+      "結果是拿在手上的一件東西：籤詩或中獎紙條，料理名稱放到最大",
+      "每個元件都帶場景的材質，沒有中性的「通用元件」",
+      "回饋放在本來就會發生的時刻（出籤、戳破、接受、蓋章），並說出實際作用"
     ],
     "rules": [
       {
         "name": "中獎才發光原則",
-        "section": "colors",
-        "body": "中獎色（金／萊姆綠）只屬於抽中的那一張（戳中那格的紙條、結果畫面的中獎紙條）和接受結果的動作（含接受後七天紀錄「今」格短暫褪掉的蓋章底色）；它不當作一般強調色、不放在其他按鈕或標籤上。"
+        "body": "`--lit`（光明燈金／中獎螢光）只屬於抽中的那一張：戳中那格的紙條、結果畫面的中獎紙條、廟口的「就吃這個」，以及接受後七天紀錄「今」格褪掉的蓋章底色和文字選取色。其他按鈕、標籤或提示都不准用。",
+        "section": "colors"
       },
       {
         "name": "霓虹不實心原則",
-        "section": "colors",
-        "body": "夜市的按鈕永遠是深紫底（neon-button）配 1.5px 桃紅內框與柔和外光暈；桃紅不作為大面積實底（膠帶條紋例外，它只是 6px 外框）。"
+        "body": "夜市的按鈕永遠是攤車深紫底，加 1.5px 招牌霓虹內框和柔和外光暈。桃紅不當大面積實底，膠帶條紋例外，因為它只是 6px 的外框。",
+        "section": "colors"
       },
       {
-        "name": "匾額原則",
-        "section": "colors",
-        "body": "廟口的強調用匾額語言（檀木底、金字、金色細框）；朱紅只作供桌、橫樑、籤詩橫帶與選中狀態的大面積底色，金色不當文字以外的大面積底色（「就吃這個」除外）。"
-      },
-      {
-        "name": "數字不放大原則",
-        "section": "typography",
-        "body": "候選數、天數、剩餘格數等數字都用小字說明，不放大。"
+        "name": "金只畫線原則",
+        "body": "廟口的金色是匾額與神龕的框線和字。大面積底色只能是供桌朱紅、匾額檀木或籤詩紙；唯一的金色實底是「就吃這個」，它屬於中獎才發光原則。",
+        "section": "colors"
       },
       {
         "name": "直書出籤原則",
-        "section": "typography",
-        "body": "竹籤上的字一律直書，料理名寫在籤頭下、籤號落在籤尾；籤寬固定，名稱太長時降字級，不加寬籤身。"
+        "body": "竹籤上的字一律直書（`writing-mode: vertical-rl`、`text-orientation: upright`），料理名寫在籤頭下，籤號落在籤尾。籤寬固定；名稱超過四個字或供桌變窄時降一階字級，不加寬籤身。",
+        "section": "typography"
+      },
+      {
+        "name": "數字不放大原則",
+        "body": "候選數、天數、剩餘格數都用小字說明，用等寬數字（`tabular-nums`），不做成大數字。",
+        "section": "typography"
+      },
+      {
+        "name": "中文排版原則",
+        "body": "標題類（招呼語、結果料理名、籤上料理名、面板與對話框標題）開 `font-feature-settings: \"palt\"`，全形標點收成半寬。說明文字用 `text-wrap: pretty`，避免最後一行只剩一個字。內文字距廟口 0.02em，夜市深底淺字 0.03em（`--track`）；七天格字距歸零，才塞得進窄格。",
+        "section": "typography"
+      },
+      {
+        "name": "只有器物有體積原則",
+        "body": "新增介面元件（面板、列表、表單）時不要加陰影，只用 `--surface-line` 細線；只有場景中的器物可以投影或發光。",
+        "section": "elevation"
       },
       {
         "name": "遮罩形狀用 drop-shadow 原則",
-        "section": "elevation",
-        "body": "凡是用 mask 剪出輪廓的元素（竹籤、撕痕紙條、殘紙），陰影與光暈一律放在外層的 filter: drop-shadow，不要用 box-shadow。"
+        "body": "用 `mask` 剪出輪廓的元素（竹籤、撕痕紙條、殘紙），陰影與光暈一律放在外層的 `filter: drop-shadow`，因為 `box-shadow` 會畫成方框或被遮罩切掉。",
+        "section": "elevation"
       }
     ],
     "dos": [
-      "**Do** 所有顏色、字體、圓角都透過主題變數（`--ground`、`--board`、`--lit`、`--font-display`、`--radius` 等）引用，讓兩個主題自動成立。",
-      "**Do** 廟口的強調用匾額語言（檀木底、金字、金色細框）。",
-      "**Do** 把中獎色只留給抽中的那一張與「就吃這個」。",
-      "**Do** 夜市用桃紅內框與光暈表現強調。",
-      "**Do** 遮罩剪出的形狀用 `filter: drop-shadow` 上陰影。",
-      "**Do** 背景與裝飾用 CSS、內嵌 SVG 或 data URI SVG 產生；背景圖樣使用固定種子讓每次載入一致，殘紙與色紙這類「每張紙板不同」的細節才用隨機。",
-      "**Do** 每個動畫都提供減少動態效果的直接結果路徑，抽選過程控制在約 1.6 秒內且可跳過。",
-      "**Do** 圖示用 24px 網格、1.8 線寬的描邊 SVG。",
-      "**Do** 把回饋放在本來就有的時刻（出籤、戳破、接受、候選空了），並讓它說出實際作用，例如提示訊息寫出幾天內不會再抽到。"
+      "**Do** 所有顏色、字體、圓角都透過語意變數（`--ground`、`--board`、`--lit`、`--btn`、`--font-display`、`--radius` 等）引用，讓兩個主題自動成立。",
+      "**Do** 讓新元件屬於場景：廟口用籤條、匾額、籤詩紙的語言（檀木底、金字、金框線），夜市用膠囊、霓虹框與光暈。",
+      "**Do** 把抽選演出控制在約 1.6 秒內，並且讓再按一次主按鈕就跳到結果。",
+      "**Do** 在按下的那一刻以等機率決定結果，舞台只負責演出。",
+      "**Do** 每段動畫都提供減少動態效果時的直接路徑，並尊重「一律播放」設定。",
+      "**Do** 讓舞台與空狀態維持寬高比 1 : 0.86，換主題時版面不跳動。",
+      "**Do** 把回饋放在本來就有的時刻（出籤、戳破、接受、候選空了），並說出實際作用。",
+      "**Do** 遮罩剪出的形狀用外層 `filter: drop-shadow` 上陰影。",
+      "**Do** 背景圖樣（石埕、散景、燈籠）用固定種子，每次載入一致；只有「每張紙板不同」的細節（色紙、殘紙、紙條角度）才用隨機。"
     ],
     "donts": [
-      "**Don't** 使用圓形轉盤或彩虹扇形。",
-      "**Don't** 在籤上、紙條上、結果畫面、按鈕或導覽放 emoji（使用者 2026-10-27 決定拿掉）。",
-      "**Don't** 在夜市主題使用亮色實底按鈕，或讓桃紅成為大面積底色。",
-      "**Don't** 使用錯位硬陰影（那是已移除的冰果室主題的手法）。",
-      "**Don't** 放大數字。",
-      "**Don't** 讓抽選動畫超過約 1.6 秒或無法跳過。",
-      "**Don't** 讓舞台上的操作（點哪一格、搖幾下）改變抽中的機率；結果永遠在按下時以等機率決定。",
-      "**Don't** 加回擲筊或另設「抽選方式」選項；抽法由主題決定。",
-      "**Don't** 為了慶祝效果延長停頓，或替例行點擊加上慶祝；空狀態不要只叫人「放寬條件」而不給按鈕。",
-      "**Don't** 出貨點陣圖裝飾。"
+      "**Don't** 另設「抽選方式」選項；抽法由主題決定，廟口求籤、夜市戳戳樂。",
+      "**Don't** 加回擲筊。",
+      "**Don't** 把 `--lit`（光明燈金／中獎螢光）用在中獎物與「就吃這個」以外的地方。",
+      "**Don't** 在夜市使用亮色實底按鈕，或讓桃紅成為大面積底色。",
+      "**Don't** 替面板、列表、表單這類介面元件加陰影；只有器物有體積。",
+      "**Don't** 讓舞台上的操作（點哪一格、搖幾下）影響抽中機率。",
+      "**Don't** 為了慶祝而延長停頓，或替例行點擊加上慶祝效果。",
+      "**Don't** 讓空狀態只叫人「放寬條件」卻不附可以直接操作的按鈕。",
+      "**Don't** 放大數字，或新增五階之外的字級。"
     ]
   }
 }
